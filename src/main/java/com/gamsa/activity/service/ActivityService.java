@@ -17,6 +17,12 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
 
+    public void save(ActivitySaveRequest saveRequest) {
+        Activity activity = activityRepository.findById(saveRequest.getActId())
+            .orElseThrow(() -> new ActivityAlreadyExistsException("이미 활동이 존재합니다."));
+        activityRepository.save(activity);
+    }
+
     public List<ActivityFindAllResponse> findAll() {
         List<Activity> activities = activityRepository.findAll();
         return activities.stream()
@@ -28,11 +34,5 @@ public class ActivityService {
         Activity activity = activityRepository.findById(activityId)
             .orElseThrow(() -> new NoSuchElementException("존재하지 않는 활동입니다."));
         return ActivityDetailResponse.from(activity);
-    }
-
-    public void save(ActivitySaveRequest saveRequest) {
-        Activity activity = activityRepository.findById(saveRequest.getActId())
-            .orElseThrow(() -> new ActivityAlreadyExistsException("이미 활동이 존재합니다."));
-        activityRepository.save(activity);
     }
 }
