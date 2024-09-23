@@ -2,10 +2,10 @@ package com.gamsa.activity.dto;
 
 import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Data
+@Getter
 @RequiredArgsConstructor
 public class ActivitySaveRequest {
 

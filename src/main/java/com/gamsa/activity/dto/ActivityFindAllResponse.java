@@ -4,18 +4,20 @@ import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @Builder
+@RequiredArgsConstructor
 public class ActivityFindAllResponse {
 
-    private Long actId;
-    private String actLocation;
-    private LocalDateTime noticeStartDate;
-    private LocalDateTime noticeEndDate;
-    private LocalDateTime actStartDate;
-    private LocalDateTime actEndDate;
-    private int recruitTotalNum;
+    private final Long actId;
+    private final String actLocation;
+    private final LocalDateTime noticeStartDate;
+    private final LocalDateTime noticeEndDate;
+    private final LocalDateTime actStartDate;
+    private final LocalDateTime actEndDate;
+    private final int recruitTotalNum;
 
     public static ActivityFindAllResponse from(Activity activity) {
         return ActivityFindAllResponse.builder()

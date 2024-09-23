@@ -5,27 +5,29 @@ import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @Builder
+@RequiredArgsConstructor
 public class ActivityDetailResponse {
 
-    private Long actId;
-    private String actLocation;
-    private String description;
-    private LocalDateTime noticeStartDate;
-    private LocalDateTime noticeEndDate;
-    private LocalDateTime actStartDate;
-    private LocalDateTime actEndDate;
-    private int recruitTotalNum;
-    private boolean adultPossible;
-    private boolean teenPossible;
-    private boolean groupPossible;
-    private boolean onlinePossible;
-    private int actWeek;
-    private String actManager;
-    private String actPhone;
-    private String url;
+    private final Long actId;
+    private final String actLocation;
+    private final String description;
+    private final LocalDateTime noticeStartDate;
+    private final LocalDateTime noticeEndDate;
+    private final LocalDateTime actStartDate;
+    private final LocalDateTime actEndDate;
+    private final int recruitTotalNum;
+    private final boolean adultPossible;
+    private final boolean teenPossible;
+    private final boolean groupPossible;
+    private final boolean onlinePossible;
+    private final int actWeek;
+    private final String actManager;
+    private final String actPhone;
+    private final String url;
 
     public static ActivityDetailResponse from(Activity activity) {
         return ActivityDetailResponse.builder()
