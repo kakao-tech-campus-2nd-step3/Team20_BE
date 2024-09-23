@@ -14,11 +14,12 @@ public class Activity {
     private LocalDateTime noticeEndDate;
     private LocalDateTime actStartDate;
     private LocalDateTime actEndDate;
+    private int actStartTime;
+    private int actEndTime;
     private int recruitTotalNum;
     private boolean adultPossible;
     private boolean teenPossible;
     private boolean groupPossible;
-    private boolean onlinePossible;
     private int actWeek;
     private String actManager;
     private String actPhone;
@@ -28,8 +29,9 @@ public class Activity {
     public Activity(Long actId, String actLocation, String description,
         LocalDateTime noticeStartDate, LocalDateTime noticeEndDate,
         LocalDateTime actStartDate, LocalDateTime actEndDate,
-        int recruitTotalNum, boolean adultPossible, boolean teenPossible, boolean groupPossible,
-        boolean onlinePossible, int actWeek, String actManager, String actPhone, String url) {
+        int actStartTime, int actEndTime, int recruitTotalNum, boolean adultPossible,
+        boolean teenPossible, boolean groupPossible,
+        int actWeek, String actManager, String actPhone, String url) {
         this.actId = actId;
         this.actLocation = actLocation;
         this.description = description;
@@ -37,11 +39,12 @@ public class Activity {
         this.noticeEndDate = noticeEndDate;
         this.actStartDate = actStartDate;
         this.actEndDate = actEndDate;
+        this.actStartTime = actStartTime;
+        this.actEndTime = actEndTime;
         this.recruitTotalNum = recruitTotalNum;
         this.adultPossible = adultPossible;
         this.teenPossible = teenPossible;
         this.groupPossible = groupPossible;
-        this.onlinePossible = onlinePossible;
         this.actWeek = actWeek;
         this.actManager = actManager;
         this.actPhone = actPhone;

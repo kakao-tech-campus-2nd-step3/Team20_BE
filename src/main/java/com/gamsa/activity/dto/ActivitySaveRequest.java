@@ -2,10 +2,12 @@ package com.gamsa.activity.dto;
 
 import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
+@Builder
 @RequiredArgsConstructor
 public class ActivitySaveRequest {
 
@@ -16,11 +18,12 @@ public class ActivitySaveRequest {
     private final LocalDateTime noticeEndDate;
     private final LocalDateTime actStartDate;
     private final LocalDateTime actEndDate;
+    private final int actStartTime;
+    private final int actEndTime;
     private final int recruitTotalNum;
     private final boolean adultPossible;
     private final boolean teenPossible;
     private final boolean groupPossible;
-    private final boolean onlinePossible;
     private final int actWeek;
     private final String actManager;
     private final String actPhone;
@@ -35,11 +38,12 @@ public class ActivitySaveRequest {
             .noticeEndDate(noticeEndDate)
             .actStartDate(actStartDate)
             .actEndDate(actEndDate)
+            .actStartTime(actStartTime)
+            .actEndTime(actEndTime)
             .recruitTotalNum(recruitTotalNum)
             .adultPossible(adultPossible)
             .teenPossible(teenPossible)
             .groupPossible(groupPossible)
-            .onlinePossible(onlinePossible)
             .actWeek(actWeek)
             .actManager(actManager)
             .actPhone(actPhone)

@@ -17,6 +17,8 @@ public class ActivityFindAllResponse {
     private final LocalDateTime noticeEndDate;
     private final LocalDateTime actStartDate;
     private final LocalDateTime actEndDate;
+    private final int actStartTime;
+    private final int actEndTime;
     private final int recruitTotalNum;
 
     public static ActivityFindAllResponse from(Activity activity) {
@@ -27,6 +29,8 @@ public class ActivityFindAllResponse {
             .noticeEndDate(activity.getNoticeEndDate())
             .actStartDate(activity.getActStartDate())
             .actEndDate(activity.getActEndDate())
+            .actStartTime(activity.getActStartTime())
+            .actEndTime(activity.getActEndTime())
             .recruitTotalNum(activity.getRecruitTotalNum())
             .build();
     }

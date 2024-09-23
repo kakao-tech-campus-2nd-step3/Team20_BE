@@ -49,6 +49,12 @@ public class ActivityJpaEntity extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime actEndDate;
 
+    @Column(name = "act_start_time")
+    private int actStartTime;
+
+    @Column(name = "act_end_time")
+    private int actEndTime;
+
     @Column(name = "recruit_total_num")
     private int recruitTotalNum;
 
@@ -85,11 +91,12 @@ public class ActivityJpaEntity extends BaseEntity {
             .noticeEndDate(activity.getNoticeEndDate())
             .actStartDate(activity.getActStartDate())
             .actEndDate(activity.getActEndDate())
+            .actStartTime(activity.getActStartTime())
+            .actEndTime(activity.getActEndTime())
             .recruitTotalNum(activity.getRecruitTotalNum())
             .adultPossible(activity.isAdultPossible())
             .teenPossible(activity.isTeenPossible())
             .groupPossible(activity.isGroupPossible())
-            .onlinePossible(activity.isOnlinePossible())
             .actWeek(activity.getActWeek())
             .actManager(activity.getActManager())
             .actPhone(activity.getActPhone())
@@ -106,11 +113,12 @@ public class ActivityJpaEntity extends BaseEntity {
             .noticeEndDate(noticeEndDate)
             .actStartDate(actStartDate)
             .actEndDate(actEndDate)
+            .actStartTime(actStartTime)
+            .actEndTime(actEndTime)
             .recruitTotalNum(recruitTotalNum)
             .adultPossible(adultPossible)
             .teenPossible(teenPossible)
             .groupPossible(groupPossible)
-            .onlinePossible(onlinePossible)
             .actWeek(actWeek)
             .actManager(actManager)
             .actPhone(actPhone)

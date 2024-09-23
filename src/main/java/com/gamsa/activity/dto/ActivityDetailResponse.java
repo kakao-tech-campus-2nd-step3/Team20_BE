@@ -19,11 +19,12 @@ public class ActivityDetailResponse {
     private final LocalDateTime noticeEndDate;
     private final LocalDateTime actStartDate;
     private final LocalDateTime actEndDate;
+    private final int actStartTime;
+    private final int actEndTime;
     private final int recruitTotalNum;
     private final boolean adultPossible;
     private final boolean teenPossible;
     private final boolean groupPossible;
-    private final boolean onlinePossible;
     private final int actWeek;
     private final String actManager;
     private final String actPhone;
@@ -38,11 +39,12 @@ public class ActivityDetailResponse {
             .noticeEndDate(activity.getNoticeEndDate())
             .actStartDate(activity.getActStartDate())
             .actEndDate(activity.getActEndDate())
+            .actStartTime(activity.getActStartTime())
+            .actEndTime(activity.getActEndTime())
             .recruitTotalNum(activity.getRecruitTotalNum())
             .adultPossible(activity.isAdultPossible())
             .teenPossible(activity.isTeenPossible())
             .groupPossible(activity.isGroupPossible())
-            .onlinePossible(activity.isOnlinePossible())
             .actWeek(activity.getActWeek())
             .actManager(activity.getActManager())
             .actPhone(activity.getActPhone())
