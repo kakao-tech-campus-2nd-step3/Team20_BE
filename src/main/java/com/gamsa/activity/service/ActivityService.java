@@ -4,10 +4,10 @@ import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindAllResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
-import com.gamsa.activity.exception.ActivityAlreadyExistsException;
+import com.gamsa.activity.exception.ActivityCustomException;
 import com.gamsa.activity.repository.ActivityRepository;
+import com.gamsa.common.constant.ErrorCode;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,14 @@ import org.springframework.stereotype.Service;
 public class ActivityService {
 
     private final ActivityRepository activityRepository;
+
+    public void save(ActivitySaveRequest saveRequest) {
+        activityRepository.findById(saveRequest.getActId())
+            .ifPresent(activity -> {
+                throw new ActivityCustomException(ErrorCode.ACTIVITY_ALREADY_EXISTS);
+            });
+        activityRepository.save(saveRequest.toModel());
+    }
 
     public List<ActivityFindAllResponse> findAll() {
         List<Activity> activities = activityRepository.findAll();
@@ -26,13 +34,7 @@ public class ActivityService {
 
     public ActivityDetailResponse findById(Long activityId) {
         Activity activity = activityRepository.findById(activityId)
-            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 활동입니다."));
+            .orElseThrow(() -> new ActivityCustomException(ErrorCode.ACTIVITY_NOT_EXISTS));
         return ActivityDetailResponse.from(activity);
-    }
-
-    public void save(ActivitySaveRequest saveRequest) {
-        Activity activity = activityRepository.findById(saveRequest.getActId())
-            .orElseThrow(() -> new ActivityAlreadyExistsException("이미 활동이 존재합니다."));
-        activityRepository.save(activity);
     }
 }
