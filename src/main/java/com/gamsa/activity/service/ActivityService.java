@@ -5,6 +5,7 @@ import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindAllResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityAlreadyExistsException;
+import com.gamsa.activity.exception.ExceptionMessage;
 import com.gamsa.activity.repository.ActivityRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,7 +20,9 @@ public class ActivityService {
 
     public void save(ActivitySaveRequest saveRequest) {
         Activity activity = activityRepository.findById(saveRequest.getActId())
-            .orElseThrow(() -> new ActivityAlreadyExistsException("이미 활동이 존재합니다."));
+            .orElseThrow(() -> new ActivityAlreadyExistsException(
+                ExceptionMessage.ACTIVITY_ALREADY_EXISTS.getMsg())
+            );
         activityRepository.save(activity);
     }
 
@@ -32,7 +35,8 @@ public class ActivityService {
 
     public ActivityDetailResponse findById(Long activityId) {
         Activity activity = activityRepository.findById(activityId)
-            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 활동입니다."));
+            .orElseThrow(
+                () -> new NoSuchElementException(ExceptionMessage.ACTIVITY_NOT_EXISTS.getMsg()));
         return ActivityDetailResponse.from(activity);
     }
 }
