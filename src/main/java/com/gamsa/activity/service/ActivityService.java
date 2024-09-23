@@ -4,11 +4,10 @@ import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindAllResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
-import com.gamsa.activity.exception.ActivityAlreadyExistsException;
-import com.gamsa.activity.exception.ExceptionMessage;
+import com.gamsa.activity.exception.ActivityCustomException;
 import com.gamsa.activity.repository.ActivityRepository;
+import com.gamsa.common.constant.ErrorCode;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +20,7 @@ public class ActivityService {
     public void save(ActivitySaveRequest saveRequest) {
         activityRepository.findById(saveRequest.getActId())
             .ifPresent(activity -> {
-                throw new ActivityAlreadyExistsException(
-                    ExceptionMessage.ACTIVITY_ALREADY_EXISTS.getMsg());
+                throw new ActivityCustomException(ErrorCode.ACTIVITY_ALREADY_EXISTS);
             });
         activityRepository.save(saveRequest.toModel());
     }
@@ -36,8 +34,7 @@ public class ActivityService {
 
     public ActivityDetailResponse findById(Long activityId) {
         Activity activity = activityRepository.findById(activityId)
-            .orElseThrow(
-                () -> new NoSuchElementException(ExceptionMessage.ACTIVITY_NOT_EXISTS.getMsg()));
+            .orElseThrow(() -> new ActivityCustomException(ErrorCode.ACTIVITY_NOT_EXISTS));
         return ActivityDetailResponse.from(activity);
     }
 }
