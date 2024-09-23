@@ -4,10 +4,10 @@ import com.gamsa.activity.domain.Activity;
 import com.gamsa.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,26 +19,29 @@ import lombok.Getter;
 public class ActivityJpaEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long actId;
 
-    @Column(name = "act_location")
+    @Column(name = "act_location", length = 255)
     private String actLocation;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1024)
     private String description;
 
     @Column(name = "notice_start_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime noticeStartDate;
 
     @Column(name = "notice_end_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime noticeEndDate;
 
     @Column(name = "act_start_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime actStartDate;
 
     @Column(name = "act_end_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime actEndDate;
 
     @Column(name = "recruit_total_num")
@@ -59,13 +62,13 @@ public class ActivityJpaEntity extends BaseEntity {
     @Column(name = "act_week")
     private int actWeek;
 
-    @Column(name = "act_manager")
+    @Column(name = "act_manager", length = 255)
     private String actManager;
 
-    @Column(name = "act_phone")
+    @Column(name = "act_phone", length = 12)
     private String actPhone;
 
-    @Column(name = "url")
+    @Column(name = "url", length = 255)
     private String url;
 
     public static ActivityJpaEntity from(Activity activity) {
