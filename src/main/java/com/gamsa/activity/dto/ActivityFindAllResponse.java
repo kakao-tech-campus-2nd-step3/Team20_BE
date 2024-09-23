@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class ActivityFindAllResponse {
 
     private final Long actId;
+    private final String actTitle;
     private final String actLocation;
     private final LocalDateTime noticeStartDate;
     private final LocalDateTime noticeEndDate;
@@ -24,6 +25,7 @@ public class ActivityFindAllResponse {
     public static ActivityFindAllResponse from(Activity activity) {
         return ActivityFindAllResponse.builder()
             .actId(activity.getActId())
+            .actTitle(activity.getActTitle())
             .actLocation(activity.getActLocation())
             .noticeStartDate(activity.getNoticeStartDate())
             .noticeEndDate(activity.getNoticeEndDate())

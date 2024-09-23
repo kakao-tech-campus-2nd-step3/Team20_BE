@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class ActivitySaveRequest {
 
     private final Long actId;
+    private final String actTitle;
     private final String actLocation;
     private final String description;
     private final LocalDateTime noticeStartDate;
@@ -32,6 +33,7 @@ public class ActivitySaveRequest {
     public Activity toModel() {
         return Activity.builder()
             .actId(actId)
+            .actTitle(actTitle)
             .actLocation(actLocation)
             .description(description)
             .noticeStartDate(noticeStartDate)

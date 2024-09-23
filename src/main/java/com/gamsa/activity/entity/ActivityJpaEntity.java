@@ -27,6 +27,9 @@ public class ActivityJpaEntity extends BaseEntity {
     @Column(name = "id")
     private Long actId;
 
+    @Column(name = "act_title", length = 255)
+    private String actTitle;
+
     @Column(name = "act_location", length = 255)
     private String actLocation;
 
@@ -85,6 +88,7 @@ public class ActivityJpaEntity extends BaseEntity {
     public static ActivityJpaEntity from(Activity activity) {
         return ActivityJpaEntity.builder()
             .actId(activity.getActId())
+            .actTitle(activity.getActTitle())
             .actLocation(activity.getActLocation())
             .description(activity.getDescription())
             .noticeStartDate(activity.getNoticeStartDate())
@@ -107,6 +111,7 @@ public class ActivityJpaEntity extends BaseEntity {
     public Activity toModel() {
         return Activity.builder()
             .actId(actId)
+            .actTitle(actTitle)
             .actLocation(actLocation)
             .description(description)
             .noticeStartDate(noticeStartDate)

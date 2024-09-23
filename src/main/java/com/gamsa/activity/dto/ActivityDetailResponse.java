@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class ActivityDetailResponse {
 
     private final Long actId;
+    private final String actTitle;
     private final String actLocation;
     private final String description;
     private final LocalDateTime noticeStartDate;
@@ -33,6 +34,7 @@ public class ActivityDetailResponse {
     public static ActivityDetailResponse from(Activity activity) {
         return ActivityDetailResponse.builder()
             .actId(activity.getActId())
+            .actTitle(activity.getActTitle())
             .actLocation(activity.getActLocation())
             .description(activity.getDescription())
             .noticeStartDate(activity.getNoticeStartDate())

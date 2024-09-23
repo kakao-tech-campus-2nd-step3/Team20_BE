@@ -8,6 +8,7 @@ import lombok.Getter;
 public class Activity {
 
     private Long actId;
+    private String actTitle;
     private String actLocation;
     private String description;
     private LocalDateTime noticeStartDate;
@@ -26,13 +27,14 @@ public class Activity {
     private String url;
 
     @Builder
-    public Activity(Long actId, String actLocation, String description,
+    public Activity(Long actId, String actTitle, String actLocation, String description,
         LocalDateTime noticeStartDate, LocalDateTime noticeEndDate,
         LocalDateTime actStartDate, LocalDateTime actEndDate,
         int actStartTime, int actEndTime, int recruitTotalNum, boolean adultPossible,
         boolean teenPossible, boolean groupPossible,
         int actWeek, String actManager, String actPhone, String url) {
         this.actId = actId;
+        this.actTitle = actTitle;
         this.actLocation = actLocation;
         this.description = description;
         this.noticeStartDate = noticeStartDate;
