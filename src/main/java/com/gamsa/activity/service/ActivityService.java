@@ -19,11 +19,12 @@ public class ActivityService {
     private final ActivityRepository activityRepository;
 
     public void save(ActivitySaveRequest saveRequest) {
-        Activity activity = activityRepository.findById(saveRequest.getActId())
-            .orElseThrow(() -> new ActivityAlreadyExistsException(
-                ExceptionMessage.ACTIVITY_ALREADY_EXISTS.getMsg())
-            );
-        activityRepository.save(activity);
+        activityRepository.findById(saveRequest.getActId())
+            .ifPresent(activity -> {
+                throw new ActivityAlreadyExistsException(
+                    ExceptionMessage.ACTIVITY_ALREADY_EXISTS.getMsg());
+            });
+        activityRepository.save(saveRequest.toModel());
     }
 
     public List<ActivityFindAllResponse> findAll() {

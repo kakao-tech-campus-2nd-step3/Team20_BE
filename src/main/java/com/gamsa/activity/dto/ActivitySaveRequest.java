@@ -1,5 +1,6 @@
 package com.gamsa.activity.dto;
 
+import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +25,25 @@ public class ActivitySaveRequest {
     private final String actManager;
     private final String actPhone;
     private final String url;
+
+    public Activity toModel() {
+        return Activity.builder()
+            .actId(actId)
+            .actLocation(actLocation)
+            .description(description)
+            .noticeStartDate(noticeStartDate)
+            .noticeEndDate(noticeEndDate)
+            .actStartDate(actStartDate)
+            .actEndDate(actEndDate)
+            .recruitTotalNum(recruitTotalNum)
+            .adultPossible(adultPossible)
+            .teenPossible(teenPossible)
+            .groupPossible(groupPossible)
+            .onlinePossible(onlinePossible)
+            .actWeek(actWeek)
+            .actManager(actManager)
+            .actPhone(actPhone)
+            .url(url)
+            .build();
+    }
 }
