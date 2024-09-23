@@ -8,40 +8,45 @@ import lombok.Getter;
 public class Activity {
 
     private Long actId;
+    private String actTitle;
     private String actLocation;
     private String description;
     private LocalDateTime noticeStartDate;
     private LocalDateTime noticeEndDate;
     private LocalDateTime actStartDate;
     private LocalDateTime actEndDate;
+    private int actStartTime;
+    private int actEndTime;
     private int recruitTotalNum;
     private boolean adultPossible;
     private boolean teenPossible;
     private boolean groupPossible;
-    private boolean onlinePossible;
     private int actWeek;
     private String actManager;
     private String actPhone;
     private String url;
 
     @Builder
-    public Activity(Long actId, String actLocation, String description,
+    public Activity(Long actId, String actTitle, String actLocation, String description,
         LocalDateTime noticeStartDate, LocalDateTime noticeEndDate,
         LocalDateTime actStartDate, LocalDateTime actEndDate,
-        int recruitTotalNum, boolean adultPossible, boolean teenPossible, boolean groupPossible,
-        boolean onlinePossible, int actWeek, String actManager, String actPhone, String url) {
+        int actStartTime, int actEndTime, int recruitTotalNum, boolean adultPossible,
+        boolean teenPossible, boolean groupPossible,
+        int actWeek, String actManager, String actPhone, String url) {
         this.actId = actId;
+        this.actTitle = actTitle;
         this.actLocation = actLocation;
         this.description = description;
         this.noticeStartDate = noticeStartDate;
         this.noticeEndDate = noticeEndDate;
         this.actStartDate = actStartDate;
         this.actEndDate = actEndDate;
+        this.actStartTime = actStartTime;
+        this.actEndTime = actEndTime;
         this.recruitTotalNum = recruitTotalNum;
         this.adultPossible = adultPossible;
         this.teenPossible = teenPossible;
         this.groupPossible = groupPossible;
-        this.onlinePossible = onlinePossible;
         this.actWeek = actWeek;
         this.actManager = actManager;
         this.actPhone = actPhone;
