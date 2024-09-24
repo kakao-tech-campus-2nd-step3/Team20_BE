@@ -1,6 +1,6 @@
 package com.gamsa.activity.exception;
 
-import com.gamsa.common.constant.ErrorCode;
+import com.gamsa.activity.constant.ActivityErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,5 +8,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ActivityCustomException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final ActivityErrorCode activityErrorCode;
 }

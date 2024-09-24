@@ -3,6 +3,7 @@ package com.gamsa.activity.repository;
 import static com.gamsa.activity.entity.QActivityJpaEntity.activityJpaEntity;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
+import com.gamsa.activity.constant.ActivitySortType;
 import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.entity.ActivityJpaEntity;
 import com.gamsa.common.utils.QueryDslUtil;
@@ -57,9 +58,9 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
             for (Sort.Order order : pageable.getSort()) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                 switch (order.getProperty()) {
-                    case "actId":
+                    case ActivitySortType.ID:
                         OrderSpecifier<?> orderId = QueryDslUtil.getSortedColumn(direction,
-                            activityJpaEntity, "actId");
+                            activityJpaEntity, ActivitySortType.ID);
                         orders.add(orderId);
                         break;
                     default:

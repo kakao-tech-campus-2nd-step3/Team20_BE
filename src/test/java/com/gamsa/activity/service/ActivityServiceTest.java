@@ -2,13 +2,13 @@ package com.gamsa.activity.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindAllResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityCustomException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
 import com.gamsa.activity.stub.StubExistsActivityRepository;
-import com.gamsa.common.constant.ErrorCode;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -60,7 +60,7 @@ class ActivityServiceTest {
         Assertions.assertThrows(ActivityCustomException.class, () -> {
             // when
             activityService.save(saveRequest);
-        }, ErrorCode.ACTIVITY_ALREADY_EXISTS.getMsg());
+        }, ActivityErrorCode.ACTIVITY_ALREADY_EXISTS.getMsg());
     }
 
     @Test
@@ -96,6 +96,6 @@ class ActivityServiceTest {
         Assertions.assertThrows(ActivityCustomException.class, () -> {
             // when
             activityService.findById(1L);
-        }, ErrorCode.ACTIVITY_NOT_EXISTS.getMsg());
+        }, ActivityErrorCode.ACTIVITY_NOT_EXISTS.getMsg());
     }
 }

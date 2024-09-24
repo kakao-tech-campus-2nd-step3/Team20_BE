@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     private ResponseEntity<?> ActivityCustomExceptionHandler(ActivityCustomException e) {
         log.error(String.valueOf(e.getStackTrace()[0]));
         return ResponseEntity
-            .status(e.getErrorCode().getStatus())
-            .body(e.getErrorCode().getMsg());
+            .status(e.getActivityErrorCode().getStatus())
+            .body(e.getActivityErrorCode().getMsg());
     }
 }

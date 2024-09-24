@@ -1,11 +1,11 @@
-package com.gamsa.common.constant;
+package com.gamsa.activity.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ErrorCode {
+public enum ActivityErrorCode {
 
     // 404 Not Found : 존재하지 않는 리소스 접근
     ACTIVITY_NOT_EXISTS(404, "존재하지 않는 활동입니다."),
