@@ -7,8 +7,9 @@ import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityCustomException;
 import com.gamsa.activity.repository.ActivityRepository;
 import com.gamsa.common.constant.ErrorCode;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -25,11 +26,9 @@ public class ActivityService {
         activityRepository.save(saveRequest.toModel());
     }
 
-    public List<ActivityFindAllResponse> findAll() {
-        List<Activity> activities = activityRepository.findAll();
-        return activities.stream()
-            .map(ActivityFindAllResponse::from)
-            .toList();
+    public Slice<ActivityFindAllResponse> findAll(Pageable pageable) {
+        Slice<Activity> activities = activityRepository.findSlice(pageable);
+        return activities.map(ActivityFindAllResponse::from);
     }
 
     public ActivityDetailResponse findById(Long activityId) {
