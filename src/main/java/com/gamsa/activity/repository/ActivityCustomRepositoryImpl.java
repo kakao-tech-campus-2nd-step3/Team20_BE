@@ -4,7 +4,6 @@ import static com.gamsa.activity.entity.QActivityJpaEntity.activityJpaEntity;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 import com.gamsa.activity.constant.ActivitySortType;
-import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.entity.ActivityJpaEntity;
 import com.gamsa.common.utils.QueryDslUtil;
 import com.querydsl.core.types.Order;
@@ -24,7 +23,7 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<Activity> findSlice(Pageable pageable) {
+    public Slice<ActivityJpaEntity> findSlice(Pageable pageable) {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable);
 
         List<ActivityJpaEntity> results = jpaQueryFactory
@@ -34,8 +33,7 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
             .limit(pageable.getPageSize() + 1)
             .fetch();
 
-        return checkLastPage(pageable, results)
-            .map(ActivityJpaEntity::toModel);
+        return checkLastPage(pageable, results);
     }
 
     // 무한스크롤 처리

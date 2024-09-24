@@ -2,7 +2,6 @@ package com.gamsa.activity.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.entity.ActivityJpaEntity;
 import com.gamsa.common.config.TestConfig;
 import java.time.LocalDateTime;
@@ -78,7 +77,7 @@ class ActivityJpaRepositoryTest {
         // given
         activityJpaRepository.save(jpaEntity);
         // when
-        Slice<Activity> result = activityJpaRepository.findSlice(PageRequest.of(0, 10));
+        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(PageRequest.of(0, 10));
         // then
         assertThat(result.getContent().size()).isEqualTo(1);
     }
@@ -101,7 +100,7 @@ class ActivityJpaRepositoryTest {
         Pageable pageable = PageRequest.of(0, 2, Direction.DESC, "actId");
 
         // when
-        Slice<Activity> result = activityJpaRepository.findSlice(pageable);
+        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(pageable);
 
         // then
         assertThat(result.getSize()).isEqualTo(2);

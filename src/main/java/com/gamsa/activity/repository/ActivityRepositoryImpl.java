@@ -21,7 +21,8 @@ public class ActivityRepositoryImpl implements ActivityRepository {
 
     @Override
     public Slice<Activity> findSlice(Pageable pageable) {
-        return activityJpaRepository.findSlice(pageable);
+        return activityJpaRepository.findSlice(pageable)
+            .map(ActivityJpaEntity::toModel);
     }
 
     @Override

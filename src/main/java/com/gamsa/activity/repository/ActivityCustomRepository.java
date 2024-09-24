@@ -1,11 +1,11 @@
 package com.gamsa.activity.repository;
 
-import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.entity.ActivityJpaEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface ActivityCustomRepository {
 
-    Slice<Activity> findSlice(Pageable pageable);
+    Slice<ActivityJpaEntity> findSlice(Pageable pageable);
 
 }
