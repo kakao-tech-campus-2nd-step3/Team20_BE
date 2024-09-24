@@ -10,9 +10,10 @@ import com.gamsa.activity.stub.StubEmptyActivityRepository;
 import com.gamsa.activity.stub.StubExistsActivityRepository;
 import com.gamsa.common.constant.ErrorCode;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 
 class ActivityServiceTest {
 
@@ -68,10 +69,10 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
 
         // when
-        List<ActivityFindAllResponse> result = activityService.findAll();
+        Slice<ActivityFindAllResponse> result = activityService.findAll(PageRequest.of(0, 10));
 
         // then
-        assertThat(result.size()).isZero();
+        assertThat(result.getContent().size()).isZero();
     }
 
     @Test
