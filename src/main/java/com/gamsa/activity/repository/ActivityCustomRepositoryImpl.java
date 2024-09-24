@@ -57,9 +57,9 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
             for (Sort.Order order : pageable.getSort()) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                 switch (order.getProperty()) {
-                    case "id":
+                    case "actId":
                         OrderSpecifier<?> orderId = QueryDslUtil.getSortedColumn(direction,
-                            activityJpaEntity, "id");
+                            activityJpaEntity, "actId");
                         orders.add(orderId);
                         break;
                     default:
