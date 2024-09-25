@@ -33,7 +33,22 @@
 ```
 
 ## 수집 과정
-데이터는 
+행정안전부 봉사활동참여정보 API와 카카오 로컬 API를 활용합니다.
+다음과 같은 4개의 함수로 API를 받아옵니다.
+
+``` Python
+# 기간에 따라 봉사활동 참여 정보 목록을 불러오는 함수입니다.
+def get_volunteer_participation_list(start_date, end_date, num_of_rows=10, page_no=1, sido_code=None, gugun_code=None):
+
+# 봉사 활동 상세 정보를 불러오는 함수입니다.
+def get_volunteer_detail(program_no):
+
+# 키워드로 검색하여 좌표값을 획득하는 함수입니다. 검색되지 않은 경우 다음 함수를 호출합니다.
+def get_coordinates_by_keyword(address):
+
+# 주소로 검색하여 좌표값을 획득하는 함수입니다.
+def get_coordinates_by_adress(address):
+```
 
 
 ## EDA
