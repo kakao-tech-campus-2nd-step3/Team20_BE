@@ -3,7 +3,7 @@ package com.gamsa.activity.service;
 import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.dto.ActivityDetailResponse;
-import com.gamsa.activity.dto.ActivityFindAllResponse;
+import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityCustomException;
 import com.gamsa.activity.repository.ActivityRepository;
@@ -26,9 +26,9 @@ public class ActivityService {
         activityRepository.save(saveRequest.toModel());
     }
 
-    public Slice<ActivityFindAllResponse> findAll(Pageable pageable) {
+    public Slice<ActivityFindSliceResponse> findSlice(Pageable pageable) {
         Slice<Activity> activities = activityRepository.findSlice(pageable);
-        return activities.map(ActivityFindAllResponse::from);
+        return activities.map(ActivityFindSliceResponse::from);
     }
 
     public ActivityDetailResponse findById(Long activityId) {

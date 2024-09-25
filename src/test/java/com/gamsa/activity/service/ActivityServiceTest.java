@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.dto.ActivityDetailResponse;
-import com.gamsa.activity.dto.ActivityFindAllResponse;
+import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityCustomException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
@@ -69,7 +69,7 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
 
         // when
-        Slice<ActivityFindAllResponse> result = activityService.findAll(PageRequest.of(0, 10));
+        Slice<ActivityFindSliceResponse> result = activityService.findSlice(PageRequest.of(0, 10));
 
         // then
         assertThat(result.getContent().size()).isZero();

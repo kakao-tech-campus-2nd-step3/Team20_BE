@@ -1,7 +1,7 @@
 package com.gamsa.activity.controller;
 
 import com.gamsa.activity.dto.ActivityDetailResponse;
-import com.gamsa.activity.dto.ActivityFindAllResponse;
+import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.service.ActivityService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @GetMapping
-    public Slice<ActivityFindAllResponse> findAll(Pageable pageable) {
-        return activityService.findAll(pageable);
+    public Slice<ActivityFindSliceResponse> findSlice(Pageable pageable) {
+        return activityService.findSlice(pageable);
     }
 
     @GetMapping("{activity-id}")
