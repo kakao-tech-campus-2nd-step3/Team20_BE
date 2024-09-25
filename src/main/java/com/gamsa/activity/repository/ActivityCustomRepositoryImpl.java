@@ -1,13 +1,11 @@
 package com.gamsa.activity.repository;
 
 import static com.gamsa.activity.entity.QActivityJpaEntity.activityJpaEntity;
-import static org.springframework.util.ObjectUtils.isEmpty;
 
-import com.gamsa.activity.constant.ActivitySortType;
 import com.gamsa.activity.entity.ActivityJpaEntity;
-import com.gamsa.common.utils.QueryDslUtil;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.domain.Sort;
 
 @RequiredArgsConstructor
 public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
@@ -50,22 +47,17 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
 
     // 정렬 기준에 맞는 OrderSpecifier 생성
     private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
+
         List<OrderSpecifier> orders = new ArrayList<>();
 
-        if (!isEmpty(pageable.getSort())) {
-            for (Sort.Order order : pageable.getSort()) {
+        pageable.getSort().stream()
+            .forEach(order -> {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
-                switch (order.getProperty()) {
-                    case ActivitySortType.ID:
-                        OrderSpecifier<?> orderId = QueryDslUtil.getSortedColumn(direction,
-                            activityJpaEntity, ActivitySortType.ID);
-                        orders.add(orderId);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+                String property = order.getProperty();
+                PathBuilder orderPath = new PathBuilder(ActivityJpaEntity.class,
+                    "activityJpaEntity");
+                orders.add(new OrderSpecifier(direction, orderPath.get(property)));
+            });
         return orders;
     }
 }
