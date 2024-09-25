@@ -6,7 +6,7 @@ import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
-import com.gamsa.activity.exception.ActivityCustomException;
+import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
 import com.gamsa.activity.stub.StubExistsActivityRepository;
 import java.time.LocalDateTime;
@@ -57,7 +57,7 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubExistsActivityRepository());
 
         // then
-        Assertions.assertThrows(ActivityCustomException.class, () -> {
+        Assertions.assertThrows(ActivityException.class, () -> {
             // when
             activityService.save(saveRequest);
         }, ActivityErrorCode.ACTIVITY_ALREADY_EXISTS.getMsg());
@@ -93,7 +93,7 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
 
         // then
-        Assertions.assertThrows(ActivityCustomException.class, () -> {
+        Assertions.assertThrows(ActivityException.class, () -> {
             // when
             activityService.findById(1L);
         }, ActivityErrorCode.ACTIVITY_NOT_EXISTS.getMsg());

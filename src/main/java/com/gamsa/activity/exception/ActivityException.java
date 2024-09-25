@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ActivityCustomException extends RuntimeException {
+public class ActivityException extends RuntimeException {
 
     private final ActivityErrorCode activityErrorCode;
 }

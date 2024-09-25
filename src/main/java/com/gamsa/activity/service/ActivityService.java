@@ -5,7 +5,7 @@ import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
-import com.gamsa.activity.exception.ActivityCustomException;
+import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +21,7 @@ public class ActivityService {
     public void save(ActivitySaveRequest saveRequest) {
         activityRepository.findById(saveRequest.getActId())
             .ifPresent(activity -> {
-                throw new ActivityCustomException(ActivityErrorCode.ACTIVITY_ALREADY_EXISTS);
+                throw new ActivityException(ActivityErrorCode.ACTIVITY_ALREADY_EXISTS);
             });
         activityRepository.save(saveRequest.toModel());
     }
@@ -33,7 +33,7 @@ public class ActivityService {
 
     public ActivityDetailResponse findById(Long activityId) {
         Activity activity = activityRepository.findById(activityId)
-            .orElseThrow(() -> new ActivityCustomException(ActivityErrorCode.ACTIVITY_NOT_EXISTS));
+            .orElseThrow(() -> new ActivityException(ActivityErrorCode.ACTIVITY_NOT_EXISTS));
         return ActivityDetailResponse.from(activity);
     }
 }
