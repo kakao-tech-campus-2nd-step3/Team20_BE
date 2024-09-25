@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class ActivityJpaEntity extends BaseEntity {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "act_id")
     private Long actId;
 
     @Column(name = "act_title", length = 255)

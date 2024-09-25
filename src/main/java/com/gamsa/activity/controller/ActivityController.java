@@ -1,11 +1,12 @@
 package com.gamsa.activity.controller;
 
 import com.gamsa.activity.dto.ActivityDetailResponse;
-import com.gamsa.activity.dto.ActivityFindAllResponse;
+import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.service.ActivityService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,8 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @GetMapping
-    public List<ActivityFindAllResponse> findAll() {
-        return activityService.findAll();
+    public Slice<ActivityFindSliceResponse> findSlice(Pageable pageable) {
+        return activityService.findSlice(pageable);
     }
 
     @GetMapping("{activity-id}")

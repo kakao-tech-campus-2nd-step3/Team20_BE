@@ -4,6 +4,9 @@ import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.repository.ActivityRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 public class StubEmptyActivityRepository implements ActivityRepository {
 
@@ -13,8 +16,8 @@ public class StubEmptyActivityRepository implements ActivityRepository {
     }
 
     @Override
-    public List<Activity> findAll() {
-        return List.of();
+    public Slice<Activity> findSlice(Pageable pageable) {
+        return new SliceImpl<>(List.of());
     }
 
     @Override

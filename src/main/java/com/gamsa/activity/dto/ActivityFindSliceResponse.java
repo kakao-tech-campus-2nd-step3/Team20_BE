@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class ActivityFindAllResponse {
+public class ActivityFindSliceResponse {
 
     private final Long actId;
     private final String actTitle;
@@ -22,8 +22,8 @@ public class ActivityFindAllResponse {
     private final int actEndTime;
     private final int recruitTotalNum;
 
-    public static ActivityFindAllResponse from(Activity activity) {
-        return ActivityFindAllResponse.builder()
+    public static ActivityFindSliceResponse from(Activity activity) {
+        return ActivityFindSliceResponse.builder()
             .actId(activity.getActId())
             .actTitle(activity.getActTitle())
             .actLocation(activity.getActLocation())

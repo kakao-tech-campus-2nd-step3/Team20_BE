@@ -2,17 +2,18 @@ package com.gamsa.activity.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.dto.ActivityDetailResponse;
-import com.gamsa.activity.dto.ActivityFindAllResponse;
+import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
-import com.gamsa.activity.exception.ActivityCustomException;
+import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
 import com.gamsa.activity.stub.StubExistsActivityRepository;
-import com.gamsa.common.constant.ErrorCode;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 
 class ActivityServiceTest {
 
@@ -56,10 +57,10 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubExistsActivityRepository());
 
         // then
-        Assertions.assertThrows(ActivityCustomException.class, () -> {
+        Assertions.assertThrows(ActivityException.class, () -> {
             // when
             activityService.save(saveRequest);
-        }, ErrorCode.ACTIVITY_ALREADY_EXISTS.getMsg());
+        }, ActivityErrorCode.ACTIVITY_ALREADY_EXISTS.getMsg());
     }
 
     @Test
@@ -68,10 +69,10 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
 
         // when
-        List<ActivityFindAllResponse> result = activityService.findAll();
+        Slice<ActivityFindSliceResponse> result = activityService.findSlice(PageRequest.of(0, 10));
 
         // then
-        assertThat(result.size()).isZero();
+        assertThat(result.getContent().size()).isZero();
     }
 
     @Test
@@ -92,9 +93,9 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
 
         // then
-        Assertions.assertThrows(ActivityCustomException.class, () -> {
+        Assertions.assertThrows(ActivityException.class, () -> {
             // when
             activityService.findById(1L);
-        }, ErrorCode.ACTIVITY_NOT_EXISTS.getMsg());
+        }, ActivityErrorCode.ACTIVITY_NOT_EXISTS.getMsg());
     }
 }
