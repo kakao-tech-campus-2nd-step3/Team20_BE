@@ -1,6 +1,7 @@
 package com.gamsa.activity.repository;
 
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.entity.ActivityJpaEntity;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class ActivityRepositoryImpl implements ActivityRepository {
     }
 
     @Override
-    public Slice<Activity> findSlice(Pageable pageable) {
-        return activityJpaRepository.findSlice(pageable)
+    public Slice<Activity> findSlice(ActivityFilterRequest request, Pageable pageable) {
+        return activityJpaRepository.findSlice(request, pageable)
             .map(ActivityJpaEntity::toModel);
     }
 

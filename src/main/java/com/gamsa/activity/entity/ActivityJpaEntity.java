@@ -1,8 +1,11 @@
 package com.gamsa.activity.entity;
 
+import com.gamsa.activity.constant.Category;
+import com.gamsa.activity.constant.CategoryConverter;
 import com.gamsa.activity.domain.Activity;
 import com.gamsa.common.entity.BaseEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -85,6 +88,10 @@ public class ActivityJpaEntity extends BaseEntity {
     @Column(name = "url", length = 255)
     private String url;
 
+    @Convert(converter = CategoryConverter.class)
+    @Column(name = "category", length = 255)
+    private Category category;
+
     public static ActivityJpaEntity from(Activity activity) {
         return ActivityJpaEntity.builder()
             .actId(activity.getActId())
@@ -105,6 +112,7 @@ public class ActivityJpaEntity extends BaseEntity {
             .actManager(activity.getActManager())
             .actPhone(activity.getActPhone())
             .url(activity.getUrl())
+            .category(activity.getCategory())
             .build();
     }
 
@@ -128,6 +136,7 @@ public class ActivityJpaEntity extends BaseEntity {
             .actManager(actManager)
             .actPhone(actPhone)
             .url(url)
+            .category(category)
             .build();
     }
 

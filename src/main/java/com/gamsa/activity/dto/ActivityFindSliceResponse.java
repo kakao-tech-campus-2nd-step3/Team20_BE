@@ -1,5 +1,6 @@
 package com.gamsa.activity.dto;
 
+import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class ActivityFindSliceResponse {
     private final int actStartTime;
     private final int actEndTime;
     private final int recruitTotalNum;
+    private final Category category;
 
     public static ActivityFindSliceResponse from(Activity activity) {
         return ActivityFindSliceResponse.builder()
@@ -34,6 +36,7 @@ public class ActivityFindSliceResponse {
             .actStartTime(activity.getActStartTime())
             .actEndTime(activity.getActEndTime())
             .recruitTotalNum(activity.getRecruitTotalNum())
+            .category(activity.getCategory())
             .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.gamsa.activity.stub;
 
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.repository.ActivityRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,7 +39,7 @@ public class StubExistsActivityRepository implements ActivityRepository {
     }
 
     @Override
-    public Slice<Activity> findSlice(Pageable pageable) {
+    public Slice<Activity> findSlice(ActivityFilterRequest request, Pageable pageable) {
         return new SliceImpl<>(List.of(activity));
     }
 
