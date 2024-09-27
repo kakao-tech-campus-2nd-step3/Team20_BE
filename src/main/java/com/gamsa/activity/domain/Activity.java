@@ -1,10 +1,13 @@
 package com.gamsa.activity.domain;
 
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class Activity {
 
     private Long actId;
@@ -25,31 +28,4 @@ public class Activity {
     private String actManager;
     private String actPhone;
     private String url;
-
-    @Builder
-    public Activity(Long actId, String actTitle, String actLocation, String description,
-        LocalDateTime noticeStartDate, LocalDateTime noticeEndDate,
-        LocalDateTime actStartDate, LocalDateTime actEndDate,
-        int actStartTime, int actEndTime, int recruitTotalNum, boolean adultPossible,
-        boolean teenPossible, boolean groupPossible,
-        int actWeek, String actManager, String actPhone, String url) {
-        this.actId = actId;
-        this.actTitle = actTitle;
-        this.actLocation = actLocation;
-        this.description = description;
-        this.noticeStartDate = noticeStartDate;
-        this.noticeEndDate = noticeEndDate;
-        this.actStartDate = actStartDate;
-        this.actEndDate = actEndDate;
-        this.actStartTime = actStartTime;
-        this.actEndTime = actEndTime;
-        this.recruitTotalNum = recruitTotalNum;
-        this.adultPossible = adultPossible;
-        this.teenPossible = teenPossible;
-        this.groupPossible = groupPossible;
-        this.actWeek = actWeek;
-        this.actManager = actManager;
-        this.actPhone = actPhone;
-        this.url = url;
-    }
 }
