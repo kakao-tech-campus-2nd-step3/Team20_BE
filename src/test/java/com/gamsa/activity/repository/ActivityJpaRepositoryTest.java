@@ -2,6 +2,7 @@ package com.gamsa.activity.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.entity.ActivityJpaEntity;
 import com.gamsa.common.config.TestConfig;
 import java.time.LocalDateTime;
@@ -75,9 +76,11 @@ class ActivityJpaRepositoryTest {
     @Test
     void 모든_활동_리스트_반환() {
         // given
+        ActivityFilterRequest filterRequest = new ActivityFilterRequest(null, false, false);
         activityJpaRepository.save(jpaEntity);
         // when
-        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(PageRequest.of(0, 10));
+        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(filterRequest,
+            PageRequest.of(0, 10));
         // then
         assertThat(result.getContent().size()).isEqualTo(1);
     }
@@ -95,12 +98,13 @@ class ActivityJpaRepositoryTest {
     @Test
     void id로_정렬된_조회() {
         // given
+        ActivityFilterRequest filterRequest = new ActivityFilterRequest(null, false, false);
         activityJpaRepository.save(jpaEntity);  // id = 1L
         activityJpaRepository.save(jpaEntity2); // id = 2L
         Pageable pageable = PageRequest.of(0, 2, Direction.DESC, "actId");
 
         // when
-        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(pageable);
+        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(filterRequest, pageable);
 
         // then
         assertThat(result.getSize()).isEqualTo(2);

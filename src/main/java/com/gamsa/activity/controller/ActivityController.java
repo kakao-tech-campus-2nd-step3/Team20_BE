@@ -1,6 +1,8 @@
 package com.gamsa.activity.controller;
 
+import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.dto.ActivityDetailResponse;
+import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.service.ActivityService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -24,8 +27,15 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @GetMapping
-    public Slice<ActivityFindSliceResponse> findSlice(Pageable pageable) {
-        return activityService.findSlice(pageable);
+    public Slice<ActivityFindSliceResponse> findSlice(
+        @RequestParam(required = false) Category category,
+        @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
+        @RequestParam(defaultValue = "false") boolean deadlineEndOnly,
+        Pageable pageable) {
+
+        ActivityFilterRequest request = new ActivityFilterRequest(category, teenPossibleOnly,
+            deadlineEndOnly);
+        return activityService.findSlice(request, pageable);
     }
 
     @GetMapping("{activity-id}")

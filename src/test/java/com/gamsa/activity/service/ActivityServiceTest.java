@@ -69,7 +69,8 @@ class ActivityServiceTest {
         ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
 
         // when
-        Slice<ActivityFindSliceResponse> result = activityService.findSlice(PageRequest.of(0, 10));
+        Slice<ActivityFindSliceResponse> result = activityService.findSlice(null,
+            PageRequest.of(0, 10));
 
         // then
         assertThat(result.getContent().size()).isZero();

@@ -2,7 +2,9 @@ package com.gamsa.activity.repository;
 
 import static com.gamsa.activity.entity.QActivityJpaEntity.activityJpaEntity;
 
+import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.entity.ActivityJpaEntity;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
@@ -20,11 +22,13 @@ public class ActivityCustomRepositoryImpl implements ActivityCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<ActivityJpaEntity> findSlice(Pageable pageable) {
+    public Slice<ActivityJpaEntity> findSlice(ActivityFilterRequest request, Pageable pageable) {
         List<OrderSpecifier> orders = getAllOrderSpecifiers(pageable);
+        BooleanBuilder filterBuilder = ActivityFilterBuilder.createFilter(request);
 
         List<ActivityJpaEntity> results = jpaQueryFactory
             .selectFrom(activityJpaEntity)
+            .where(filterBuilder)
             .orderBy(orders.toArray(OrderSpecifier[]::new))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
