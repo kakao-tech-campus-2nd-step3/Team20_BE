@@ -30,11 +30,11 @@ public class ActivityController {
     public Slice<ActivityFindSliceResponse> findSlice(
         @RequestParam(required = false) Category category,
         @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
-        @RequestParam(defaultValue = "false") boolean deadlineEndOnly,
+        @RequestParam(defaultValue = "false") boolean beforeDeadlineOnly,
         Pageable pageable) {
 
         ActivityFilterRequest request = new ActivityFilterRequest(category, teenPossibleOnly,
-            deadlineEndOnly);
+            beforeDeadlineOnly);
         return activityService.findSlice(request, pageable);
     }
 

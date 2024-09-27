@@ -14,7 +14,7 @@ public class ActivityFilterBuilder {
 
         eqCategory(filterBuilder, request.getCategory());
         isTeenPossibleOnly(filterBuilder, request.isTeenPossibleOnly());
-        isDeadlineEndOnly(filterBuilder, request.isDeadlineEndOnly());
+        isDeadlineEndOnly(filterBuilder, request.isBeforeDeadlineOnly());
 
         return filterBuilder;
     }
@@ -31,9 +31,9 @@ public class ActivityFilterBuilder {
         }
     }
 
-    public static void isDeadlineEndOnly(BooleanBuilder filterBuilder, boolean deadlineEndOnly) {
-        if (deadlineEndOnly) {
-            filterBuilder.and(activityJpaEntity.noticeEndDate.before(LocalDateTime.now()));
+    public static void isDeadlineEndOnly(BooleanBuilder filterBuilder, boolean beforeDeadlineOnly) {
+        if (beforeDeadlineOnly) {
+            filterBuilder.and(activityJpaEntity.noticeEndDate.after(LocalDateTime.now()));
         }
     }
 }

@@ -16,6 +16,6 @@ public class ActivityFilterRequest {
     // 청소년 가능한 것만
     private final boolean teenPossibleOnly;
 
-    // 마감된 활동만
-    private final boolean deadlineEndOnly;
+    // 마감되지 않은 활동만
+    private final boolean beforeDeadlineOnly;
 }
