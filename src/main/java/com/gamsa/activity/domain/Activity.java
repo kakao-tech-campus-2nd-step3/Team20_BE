@@ -1,5 +1,6 @@
 package com.gamsa.activity.domain;
 
+import com.gamsa.activity.constant.Category;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +29,5 @@ public class Activity {
     private String actManager;
     private String actPhone;
     private String url;
+    private Category category;
 }
