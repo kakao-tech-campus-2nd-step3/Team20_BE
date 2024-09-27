@@ -3,6 +3,7 @@ package com.gamsa.activity.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gamsa.activity.constant.ActivityErrorCode;
+import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
@@ -36,6 +37,7 @@ class ActivityServiceTest {
         .actManager("윤순영")
         .actPhone("032-577-3026")
         .url("https://...")
+        .category(Category.OTHER_ACTIVITIES)
         .build();
 
     @Test
