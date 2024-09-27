@@ -15,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort.Direction;
 
 @DataJpaTest
@@ -119,10 +118,11 @@ class ActivityJpaRepositoryTest {
         // given
         activityJpaRepository.save(jpaEntity);
         // when
-        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(noFilterReq,
-            PageRequest.of(0, 10));
+        List<ActivityJpaEntity> content = activityJpaRepository
+            .findSlice(noFilterReq, PageRequest.of(0, 10))
+            .getContent();
         // then
-        assertThat(result.getContent().size()).isEqualTo(1);
+        assertThat(content.size()).isEqualTo(1);
     }
 
     @Test
@@ -143,12 +143,13 @@ class ActivityJpaRepositoryTest {
         Pageable pageable = PageRequest.of(0, 2, Direction.DESC, "actId");
 
         // when
-        Slice<ActivityJpaEntity> result = activityJpaRepository.findSlice(noFilterReq, pageable);
+        List<ActivityJpaEntity> content = activityJpaRepository.findSlice(noFilterReq, pageable)
+            .getContent();
 
         // then
-        assertThat(result.getSize()).isEqualTo(2);
-        assertThat(result.getContent().getFirst().getActId()).isEqualTo(2L);
-        assertThat(result.getContent().get(1).getActId()).isEqualTo(1L);
+        assertThat(content.size()).isEqualTo(2);
+        assertThat(content.getFirst().getActId()).isEqualTo(2L);
+        assertThat(content.get(1).getActId()).isEqualTo(1L);
     }
 
     @Test
