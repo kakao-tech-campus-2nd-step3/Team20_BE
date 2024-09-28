@@ -16,7 +16,6 @@ public class StubAvatarRepository implements AvatarRepository {
             .nickname("닉네임")
             .ageRange(AgeRange.ADULT)
             .experienced(Experienced.NOVICE)
-            .updateDate(LocalDateTime.now())
             .build();
 
     @Override

@@ -21,10 +21,28 @@ public class AvatarService {
 
     public void save(AvatarSaveRequest saveRequest) {
         Avatar avatar = saveRequest.toModel();
+        avatarRepository.findById(avatar.getAvatarId()).orElseThrow(NoSuchElementException::new);
         avatarRepository.save(avatar);
     }
 
     public void delete(Long id) {
+        avatarRepository.findById(id).orElseThrow(NoSuchElementException::new);
         avatarRepository.deleteById(id);
+    }
+
+    public AvatarFindResponse expUp(Long avatarId, int amount) {
+        Avatar avatar = avatarRepository.findById(avatarId).orElseThrow(NoSuchElementException::new);
+        avatar.expUp(amount);
+        avatarRepository.save(avatar);
+        return AvatarFindResponse.from(avatar);
+    }
+
+    public AvatarFindResponse update(Long avatarId, AvatarSaveRequest saveRequest) {
+        Avatar avatar = avatarRepository.findById(avatarId).orElseThrow(NoSuchElementException::new);
+        avatar.changeAgeRange(saveRequest.getAgeRange());
+        avatar.changeExperience(saveRequest.getExperienced());
+        avatar.changeNickname(saveRequest.getNickname());
+        avatarRepository.save(avatar);
+        return AvatarFindResponse.from(avatar);
     }
 }

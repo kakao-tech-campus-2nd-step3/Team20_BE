@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import;
 import java.time.LocalDateTime;
 
 @DataJpaTest
-@Import(TestConfig.class)
 public class AvatarJpaRepositoryTest {
     @Autowired
     private AvatarJpaRepository avatarJpaRepository;
@@ -26,7 +25,6 @@ public class AvatarJpaRepositoryTest {
             .nickname("닉네임")
             .ageRange(AgeRange.ADULT)
             .experienced(Experienced.NOVICE)
-            .updateDate(LocalDateTime.now())
             .build();
 
     @Test

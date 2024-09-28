@@ -9,7 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface AvatarJpaRepository extends JpaRepository<AvatarJpaEntity, Long> {
-    AvatarJpaEntity save(AvatarJpaEntity jpaEntity);
-    void deleteById(Long id);
-    Optional<AvatarJpaEntity> findById(Long id);
 }

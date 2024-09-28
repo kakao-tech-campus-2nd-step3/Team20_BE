@@ -19,7 +19,7 @@ public class AvatarRepositoryImpl implements AvatarRepository {
 
     @Override
     public Optional<Avatar> findById(Long id) {
-        return avatarJpaRepository.findById(id).map(AvatarJpaEntity::toAvatar);
+        return avatarJpaRepository.findById(id).map(AvatarJpaEntity::toModel);
     }
 
     @Override

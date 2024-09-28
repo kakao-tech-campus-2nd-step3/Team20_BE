@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Builder
 @AllArgsConstructor
@@ -18,5 +16,27 @@ public class Avatar {
     private String nickname;
     private AgeRange ageRange;
     private Experienced experienced;
-    private LocalDateTime updateDate;
+
+    public void expUp(int amount) {
+        this.avatarExp += amount;
+        checkLevel();
+    }
+
+    public void checkLevel() {
+        if(this.avatarExp >= this.avatarLevel * this.avatarLevel * 100) {
+            avatarLevel += 1;
+        }
+    }
+
+    public void changeExperience(Experienced experienced) {
+        this.experienced = experienced;
+    }
+
+    public void changeAgeRange(AgeRange ageRange) {
+        this.ageRange = ageRange;
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

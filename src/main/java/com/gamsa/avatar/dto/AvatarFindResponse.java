@@ -19,7 +19,6 @@ public class AvatarFindResponse {
     private final String nickName;
     private final AgeRange ageRange;
     private final Experienced exprienced;
-    private final LocalDateTime updateDate;
 
     public static AvatarFindResponse from(Avatar avatar) {
         return AvatarFindResponse.builder()
@@ -29,7 +28,6 @@ public class AvatarFindResponse {
                 .nickName(avatar.getNickname())
                 .ageRange(avatar.getAgeRange())
                 .exprienced(avatar.getExperienced())
-                .updateDate(avatar.getUpdateDate())
                 .build();
     }
 }

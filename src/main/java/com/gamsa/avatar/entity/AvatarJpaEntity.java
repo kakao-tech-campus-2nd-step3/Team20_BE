@@ -9,8 +9,6 @@ import com.gamsa.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Builder
@@ -41,9 +39,6 @@ public class AvatarJpaEntity extends BaseEntity {
     @Column(name = "experienced")
     private Experienced experienced;
 
-    @Column(name = "update_date")
-    private LocalDateTime updateDate;
-
     public static AvatarJpaEntity from(Avatar avatar) {
         return AvatarJpaEntity.builder()
                 .avatarId(avatar.getAvatarId())
@@ -55,7 +50,7 @@ public class AvatarJpaEntity extends BaseEntity {
                 .build();
     }
 
-    public Avatar toAvatar() {
+    public Avatar toModel() {
         return Avatar.builder()
                 .avatarId(avatarId)
                 .avatarExp(avatarExp)
@@ -63,7 +58,6 @@ public class AvatarJpaEntity extends BaseEntity {
                 .nickname(nickname)
                 .ageRange(ageRange)
                 .experienced(experienced)
-                .updateDate(updateDate)
                 .build();
     }
 }

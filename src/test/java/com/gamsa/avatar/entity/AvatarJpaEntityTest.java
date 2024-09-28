@@ -7,8 +7,6 @@ import com.gamsa.avatar.constant.Experienced;
 import com.gamsa.avatar.domain.Avatar;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 public class AvatarJpaEntityTest {
     @Test
     void 도메인에서_JPA엔티티로() {
@@ -20,7 +18,6 @@ public class AvatarJpaEntityTest {
                 .nickname("닉네임")
                 .ageRange(AgeRange.ADULT)
                 .experienced(Experienced.NOVICE)
-                .updateDate(LocalDateTime.now())
                 .build();
 
         //when
@@ -40,11 +37,10 @@ public class AvatarJpaEntityTest {
                 .nickname("닉네임")
                 .ageRange(AgeRange.ADULT)
                 .experienced(Experienced.NOVICE)
-                .updateDate(LocalDateTime.now())
                 .build();
 
         //when
-        Avatar avatar = avatarJpaEntity.toAvatar();
+        Avatar avatar = avatarJpaEntity.toModel();
 
         //then
         assertThat(avatar.getAvatarId()).isEqualTo(avatarJpaEntity.getAvatarId());

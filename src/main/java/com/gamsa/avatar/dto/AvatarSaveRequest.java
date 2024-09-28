@@ -30,7 +30,6 @@ public class AvatarSaveRequest {
                 .avatarLevel(0L)
                 .ageRange(ageRange)
                 .experienced(experienced)
-                .updateDate(LocalDateTime.now())
                 .build();
     }
 }
