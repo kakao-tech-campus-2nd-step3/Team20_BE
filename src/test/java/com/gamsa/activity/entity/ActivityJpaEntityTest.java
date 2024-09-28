@@ -2,6 +2,7 @@ package com.gamsa.activity.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ class ActivityJpaEntityTest {
             .actWeek(0111110)
             .actManager("윤순영")
             .actPhone("032-577-3026")
+            .category(Category.OTHER_ACTIVITIES)
             .url("https://...")
             .build();
 
@@ -61,6 +63,7 @@ class ActivityJpaEntityTest {
             .actManager("윤순영")
             .actPhone("032-577-3026")
             .url("https://...")
+            .category(Category.OTHER_ACTIVITIES)
             .build();
 
         // when

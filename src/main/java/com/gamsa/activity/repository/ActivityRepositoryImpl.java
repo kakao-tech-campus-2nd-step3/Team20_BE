@@ -1,10 +1,12 @@
 package com.gamsa.activity.repository;
 
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.entity.ActivityJpaEntity;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -19,10 +21,9 @@ public class ActivityRepositoryImpl implements ActivityRepository {
     }
 
     @Override
-    public List<Activity> findAll() {
-        return activityJpaRepository.findAll()
-            .stream().map(ActivityJpaEntity::toModel)
-            .toList();
+    public Slice<Activity> findSlice(ActivityFilterRequest request, Pageable pageable) {
+        return activityJpaRepository.findSlice(request, pageable)
+            .map(ActivityJpaEntity::toModel);
     }
 
     @Override

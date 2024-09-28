@@ -1,5 +1,6 @@
 package com.gamsa.activity.dto;
 
+import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -29,6 +30,7 @@ public class ActivitySaveRequest {
     private final String actManager;
     private final String actPhone;
     private final String url;
+    private final Category category;
 
     public Activity toModel() {
         return Activity.builder()
@@ -50,6 +52,7 @@ public class ActivitySaveRequest {
             .actManager(actManager)
             .actPhone(actPhone)
             .url(url)
+            .category(category)
             .build();
     }
 }
