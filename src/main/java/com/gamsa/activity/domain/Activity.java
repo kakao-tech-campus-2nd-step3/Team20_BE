@@ -8,7 +8,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-@AllArgsConstructor
 public class Activity {
 
     private Long actId;
