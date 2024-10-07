@@ -2,6 +2,7 @@ package com.gamsa.activity.dto;
 
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.domain.Institute;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,8 +32,9 @@ public class ActivitySaveRequest {
     private final String actPhone;
     private final String url;
     private final Category category;
+    private final Long instituteId;
 
-    public Activity toModel() {
+    public Activity toModel(Institute institute) {
         return Activity.builder()
             .actId(actId)
             .actTitle(actTitle)
@@ -53,6 +55,7 @@ public class ActivitySaveRequest {
             .actPhone(actPhone)
             .url(url)
             .category(category)
+            .institute(institute)
             .build();
     }
 }
