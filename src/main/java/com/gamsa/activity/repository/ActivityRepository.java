@@ -1,14 +1,16 @@
 package com.gamsa.activity.repository;
 
 import com.gamsa.activity.domain.Activity;
-import java.util.List;
+import com.gamsa.activity.dto.ActivityFilterRequest;
 import java.util.Optional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 public interface ActivityRepository {
 
     void save(Activity activity);
 
-    List<Activity> findAll();
+    Slice<Activity> findSlice(ActivityFilterRequest request, Pageable pageable);
 
     Optional<Activity> findById(Long activityId);
 }

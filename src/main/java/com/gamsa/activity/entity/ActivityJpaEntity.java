@@ -1,45 +1,65 @@
 package com.gamsa.activity.entity;
 
+import com.gamsa.activity.constant.Category;
+import com.gamsa.activity.constant.CategoryConverter;
 import com.gamsa.activity.domain.Activity;
 import com.gamsa.common.entity.BaseEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 @Table(name = "Activity")
 public class ActivityJpaEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "act_id")
     private Long actId;
 
-    @Column(name = "act_location")
+    @Column(name = "act_title", length = 255)
+    private String actTitle;
+
+    @Column(name = "act_location", length = 255)
     private String actLocation;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1024)
     private String description;
 
     @Column(name = "notice_start_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime noticeStartDate;
 
     @Column(name = "notice_end_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime noticeEndDate;
 
     @Column(name = "act_start_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime actStartDate;
 
     @Column(name = "act_end_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime actEndDate;
+
+    @Column(name = "act_start_time")
+    private int actStartTime;
+
+    @Column(name = "act_end_time")
+    private int actEndTime;
 
     @Column(name = "recruit_total_num")
     private int recruitTotalNum;
@@ -59,54 +79,64 @@ public class ActivityJpaEntity extends BaseEntity {
     @Column(name = "act_week")
     private int actWeek;
 
-    @Column(name = "act_manager")
+    @Column(name = "act_manager", length = 255)
     private String actManager;
 
-    @Column(name = "act_phone")
+    @Column(name = "act_phone", length = 12)
     private String actPhone;
 
-    @Column(name = "url")
+    @Column(name = "url", length = 255)
     private String url;
+
+    @Convert(converter = CategoryConverter.class)
+    @Column(name = "category", length = 255)
+    private Category category;
 
     public static ActivityJpaEntity from(Activity activity) {
         return ActivityJpaEntity.builder()
             .actId(activity.getActId())
+            .actTitle(activity.getActTitle())
             .actLocation(activity.getActLocation())
             .description(activity.getDescription())
             .noticeStartDate(activity.getNoticeStartDate())
             .noticeEndDate(activity.getNoticeEndDate())
             .actStartDate(activity.getActStartDate())
             .actEndDate(activity.getActEndDate())
+            .actStartTime(activity.getActStartTime())
+            .actEndTime(activity.getActEndTime())
             .recruitTotalNum(activity.getRecruitTotalNum())
             .adultPossible(activity.isAdultPossible())
             .teenPossible(activity.isTeenPossible())
             .groupPossible(activity.isGroupPossible())
-            .onlinePossible(activity.isOnlinePossible())
             .actWeek(activity.getActWeek())
             .actManager(activity.getActManager())
             .actPhone(activity.getActPhone())
             .url(activity.getUrl())
+            .category(activity.getCategory())
             .build();
     }
 
     public Activity toModel() {
         return Activity.builder()
             .actId(actId)
+            .actTitle(actTitle)
             .actLocation(actLocation)
             .description(description)
             .noticeStartDate(noticeStartDate)
             .noticeEndDate(noticeEndDate)
             .actStartDate(actStartDate)
             .actEndDate(actEndDate)
+            .actStartTime(actStartTime)
+            .actEndTime(actEndTime)
             .recruitTotalNum(recruitTotalNum)
             .adultPossible(adultPossible)
             .teenPossible(teenPossible)
             .groupPossible(groupPossible)
-            .onlinePossible(onlinePossible)
             .actWeek(actWeek)
             .actManager(actManager)
             .actPhone(actPhone)
             .url(url)
+            .category(category)
             .build();
     }
 
