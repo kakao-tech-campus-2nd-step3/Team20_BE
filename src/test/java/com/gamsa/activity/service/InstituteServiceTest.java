@@ -8,6 +8,7 @@ import com.gamsa.activity.dto.InstituteSaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyInstituteRepository;
 import com.gamsa.activity.stub.StubExistsInstituteRepository;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +17,8 @@ class InstituteServiceTest {
     private final InstituteSaveRequest saveRequest = InstituteSaveRequest.builder()
         .name("도서관")
         .location("서울시")
-        .latitude(123456789L)
-        .longitude(987654321L)
+        .latitude(new BigDecimal("123456789.12341234"))
+        .longitude(new BigDecimal("987654321.43214321"))
         .phone("010xxxxxxxx")
         .build();
 

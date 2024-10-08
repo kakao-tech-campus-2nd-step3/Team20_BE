@@ -2,6 +2,7 @@ package com.gamsa.activity.stub;
 
 import com.gamsa.activity.domain.Institute;
 import com.gamsa.activity.repository.InstituteRepository;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public class StubExistsInstituteRepository implements InstituteRepository {
@@ -10,8 +11,8 @@ public class StubExistsInstituteRepository implements InstituteRepository {
         .instituteId(1L)
         .name("도서관")
         .location("서울시")
-        .latitude(123456789L)
-        .longitude(987654321L)
+        .latitude(new BigDecimal("123456789.12341234"))
+        .longitude(new BigDecimal("987654321.43214321"))
         .phone("010xxxxxxxx")
         .build();
 

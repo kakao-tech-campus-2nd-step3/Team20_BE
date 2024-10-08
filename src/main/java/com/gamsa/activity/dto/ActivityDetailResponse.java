@@ -32,7 +32,7 @@ public class ActivityDetailResponse {
     private final String actPhone;
     private final String url;
     private final Category category;
-    private final InstituteInfoResponse institute;
+    private final InstituteDetailResponse institute;
 
     public static ActivityDetailResponse from(Activity activity) {
         return ActivityDetailResponse.builder()
@@ -55,7 +55,7 @@ public class ActivityDetailResponse {
             .actPhone(activity.getActPhone())
             .url(activity.getUrl())
             .category(activity.getCategory())
-            .institute(InstituteInfoResponse.from(activity.getInstitute()))
+            .institute(InstituteDetailResponse.from(activity.getInstitute()))
             .build();
     }
 }

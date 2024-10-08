@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gamsa.activity.entity.InstituteJpaEntity;
 import com.gamsa.common.config.TestConfig;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ class InstituteJpaRepositoryTest {
         .instituteId(1L)
         .name("도서관")
         .location("서울시")
-        .latitude(123456789L)
-        .longitude(987654321L)
+        .latitude(new BigDecimal("123456789.12341234"))
+        .longitude(new BigDecimal("987654321.43214321"))
         .phone("010xxxxxxxx")
         .build();
 

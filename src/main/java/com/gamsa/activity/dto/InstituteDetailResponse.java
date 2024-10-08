@@ -1,6 +1,7 @@
 package com.gamsa.activity.dto;
 
 import com.gamsa.activity.domain.Institute;
+import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,18 +9,18 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class InstituteInfoResponse {
+public class InstituteDetailResponse {
 
     private final Long instituteId;
     private final String name;
     private final String location;
-    private final long latitude;
-    private final long longitude;
+    private final BigDecimal latitude;
+    private final BigDecimal longitude;
     // Todo 시군구 코드
     private final String phone;
 
-    public static InstituteInfoResponse from(Institute institute) {
-        return InstituteInfoResponse.builder()
+    public static InstituteDetailResponse from(Institute institute) {
+        return InstituteDetailResponse.builder()
             .instituteId(institute.getInstituteId())
             .name(institute.getName())
             .location(institute.getLocation())

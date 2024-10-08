@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,10 +35,10 @@ public class InstituteJpaEntity extends BaseEntity {
     private String location;
 
     @Column(name = "latitude")
-    private long latitude;
+    private BigDecimal latitude;
 
     @Column(name = "longitude")
-    private long longitude;
+    private BigDecimal longitude;
 
     // Todo 시군구 코드
 

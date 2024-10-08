@@ -1,6 +1,7 @@
 package com.gamsa.activity.dto;
 
 import com.gamsa.activity.domain.Institute;
+import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,8 +11,8 @@ public class InstituteSaveRequest {
 
     private String name;
     private String location;
-    private long latitude;
-    private long longitude;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     // Todo 시군구 코드
     private String phone;
 

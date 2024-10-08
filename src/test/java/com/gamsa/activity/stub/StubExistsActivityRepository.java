@@ -4,6 +4,7 @@ import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.domain.Institute;
 import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.repository.ActivityRepository;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +18,8 @@ public class StubExistsActivityRepository implements ActivityRepository {
         .instituteId(1L)
         .name("도서관")
         .location("서울시")
-        .latitude(123456789L)
-        .longitude(987654321L)
+        .latitude(new BigDecimal("123456789.12341234"))
+        .longitude(new BigDecimal("987654321.43214321"))
         .phone("010xxxxxxxx")
         .build();
 
