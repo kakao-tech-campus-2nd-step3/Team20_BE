@@ -8,7 +8,7 @@ import lombok.Getter;
 public class District {
 
     private int sidoCode;
-    private int gunguCode;
+    private int sidoGunguCode;
     private String sidoName;
     private String gunguName;
     private boolean sido;

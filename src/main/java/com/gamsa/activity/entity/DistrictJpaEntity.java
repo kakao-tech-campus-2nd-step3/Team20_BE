@@ -27,25 +27,25 @@ public class DistrictJpaEntity extends BaseEntity {
     @Column(name = "district_id")
     private Integer districtId;
 
-    @Column(name = "sido_code")
+    @Column(name = "sido_code", nullable = false)
     private int sidoCode;
 
-    @Column(name = "gungu_code")
-    private int gunguCode;
+    @Column(name = "sido_gungu_code", nullable = false, unique = true)
+    private int sidoGunguCode;
 
-    @Column(name = "sido_name", length = 15)
+    @Column(name = "sido_name", length = 15, nullable = false)
     private String sidoName;
 
     @Column(name = "gungu_name", length = 15)
     private String gunguName;
 
-    @Column(name = "sido")
+    @Column(name = "sido", nullable = false)
     private boolean sido;
 
     public static DistrictJpaEntity from(District district) {
         return DistrictJpaEntity.builder()
             .sidoCode(district.getSidoCode())
-            .gunguCode(district.getGunguCode())
+            .sidoGunguCode(district.getSidoGunguCode())
             .sidoName(district.getSidoName())
             .gunguName(district.getGunguName())
             .sido(district.isSido())
@@ -55,7 +55,7 @@ public class DistrictJpaEntity extends BaseEntity {
     public District toModel() {
         return District.builder()
             .sidoCode(getSidoCode())
-            .gunguCode(getGunguCode())
+            .sidoGunguCode(getSidoGunguCode())
             .sidoName(getSidoName())
             .gunguName(getGunguName())
             .sido(isSido())

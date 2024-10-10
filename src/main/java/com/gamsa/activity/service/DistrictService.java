@@ -16,7 +16,7 @@ public class DistrictService {
     private final DistrictRepository districtRepository;
 
     public void save(DistrictSaveRequest saveRequest) {
-        districtRepository.findByGunguCode(saveRequest.getGunguCode())
+        districtRepository.findByGunguCode(saveRequest.getSidoGunguCode())
             .ifPresent(district -> {
                 throw new ActivityException(ActivityErrorCode.DISTRICT_ALREADY_EXISTS);
             });

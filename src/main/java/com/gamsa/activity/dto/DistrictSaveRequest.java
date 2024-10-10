@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class DistrictSaveRequest {
 
     private final int sidoCode;
-    private final int gunguCode;
+    private final int sidoGunguCode;
     private final String sidoName;
     private final String gunguName;
     private final boolean sido;
@@ -19,7 +19,7 @@ public class DistrictSaveRequest {
     public District toModel() {
         return District.builder()
             .sidoCode(sidoCode)
-            .gunguCode(gunguCode)
+            .sidoGunguCode(sidoGunguCode)
             .sidoName(sidoName)
             .gunguName(gunguName)
             .sido(sido)
