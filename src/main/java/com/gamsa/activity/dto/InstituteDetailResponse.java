@@ -16,7 +16,6 @@ public class InstituteDetailResponse {
     private final String location;
     private final BigDecimal latitude;
     private final BigDecimal longitude;
-    // Todo 시군구 코드
     private final String phone;
 
     public static InstituteDetailResponse from(Institute institute) {

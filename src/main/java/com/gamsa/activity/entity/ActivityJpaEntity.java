@@ -99,6 +99,10 @@ public class ActivityJpaEntity extends BaseEntity {
     @JoinColumn(name = "institute_id")
     private InstituteJpaEntity institute;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sido_gungu_code", referencedColumnName = "sido_gungu_code")
+    private DistrictJpaEntity sidoGungu;
+
     public static ActivityJpaEntity from(Activity activity) {
         return ActivityJpaEntity.builder()
             .actId(activity.getActId())
@@ -121,6 +125,7 @@ public class ActivityJpaEntity extends BaseEntity {
             .url(activity.getUrl())
             .category(activity.getCategory())
             .institute(InstituteJpaEntity.from(activity.getInstitute()))
+            .sidoGungu(DistrictJpaEntity.from(activity.getSidoGungu()))
             .build();
     }
 
@@ -146,6 +151,7 @@ public class ActivityJpaEntity extends BaseEntity {
             .url(url)
             .category(category)
             .institute(institute.toModel())
+            .sidoGungu(sidoGungu.toModel())
             .build();
     }
 

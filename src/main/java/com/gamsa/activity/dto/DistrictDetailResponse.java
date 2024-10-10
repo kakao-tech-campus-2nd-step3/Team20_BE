@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class DistrictSaveRequest {
+public class DistrictDetailResponse {
 
     private final int sidoGunguCode;
     private final int sidoCode;
@@ -16,13 +16,13 @@ public class DistrictSaveRequest {
     private final String gunguName;
     private final boolean sido;
 
-    public District toModel() {
-        return District.builder()
-            .sidoGunguCode(sidoGunguCode)
-            .sidoCode(sidoCode)
-            .sidoName(sidoName)
-            .gunguName(gunguName)
-            .sido(sido)
+    public static DistrictDetailResponse from(District district) {
+        return DistrictDetailResponse.builder()
+            .sidoGunguCode(district.getSidoGunguCode())
+            .sidoCode(district.getSidoCode())
+            .sidoName(district.getSidoName())
+            .gunguName(district.getGunguName())
+            .sido(district.isSido())
             .build();
     }
 }

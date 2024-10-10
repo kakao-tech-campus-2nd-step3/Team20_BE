@@ -7,8 +7,8 @@ import lombok.Getter;
 @Builder
 public class District {
 
-    private int sidoCode;
     private int sidoGunguCode;
+    private int sidoCode;
     private String sidoName;
     private String gunguName;
     private boolean sido;

@@ -19,8 +19,8 @@ public class DistrictRepositoryImpl implements DistrictRepository {
     }
 
     @Override
-    public Optional<District> findByGunguCode(int gunguCode) {
-        return districtJpaRepository.findByGunguCode(gunguCode)
+    public Optional<District> findBySidoGunguCode(int gunguCode) {
+        return districtJpaRepository.findBySidoGunguCode(gunguCode)
             .map(DistrictJpaEntity::toModel);
     }
 

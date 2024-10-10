@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DistrictJpaRepository extends JpaRepository<DistrictJpaEntity, Integer> {
 
-    Optional<DistrictJpaEntity> findByGunguCode(int gunguCode);
+    Optional<DistrictJpaEntity> findBySidoGunguCode(int gunguCode);
 
     List<DistrictJpaEntity> findAllBySido(boolean sido);
 }

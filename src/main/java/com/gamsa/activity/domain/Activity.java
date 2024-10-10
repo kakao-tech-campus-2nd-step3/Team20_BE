@@ -29,4 +29,5 @@ public class Activity {
     private String url;
     private Category category;
     private Institute institute;
+    private District sidoGungu;
 }

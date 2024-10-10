@@ -10,6 +10,7 @@ import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
 import com.gamsa.activity.stub.StubExistsActivityRepository;
+import com.gamsa.activity.stub.StubExistsDistrictRepository;
 import com.gamsa.activity.stub.StubExistsInstituteRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -41,6 +42,7 @@ class ActivityServiceTest {
         .url("https://...")
         .category(Category.OTHER_ACTIVITIES)
         .instituteId(1L)
+        .sidoGunguCode(1)
         .build();
 
     @Test
@@ -48,7 +50,8 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
             new StubEmptyActivityRepository(),
-            new StubExistsInstituteRepository()
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
         );
 
         // then
@@ -64,7 +67,8 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
             new StubExistsActivityRepository(),
-            new StubExistsInstituteRepository()
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
         );
 
         // then
@@ -79,7 +83,8 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
             new StubEmptyActivityRepository(),
-            new StubExistsInstituteRepository()
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
         );
 
         // when
@@ -95,7 +100,8 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
             new StubExistsActivityRepository(),
-            new StubExistsInstituteRepository()
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
         );
 
         // when
@@ -110,7 +116,8 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
             new StubEmptyActivityRepository(),
-            new StubExistsInstituteRepository()
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
         );
 
         // then

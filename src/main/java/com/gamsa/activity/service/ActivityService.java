@@ -2,6 +2,7 @@ package com.gamsa.activity.service;
 
 import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.domain.District;
 import com.gamsa.activity.domain.Institute;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFilterRequest;
@@ -9,6 +10,7 @@ import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.repository.ActivityRepository;
+import com.gamsa.activity.repository.DistrictRepository;
 import com.gamsa.activity.repository.InstituteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final InstituteRepository instituteRepository;
+    private final DistrictRepository districtRepository;
 
     public void save(ActivitySaveRequest saveRequest) {
         // 중복 여부 확인
@@ -32,7 +35,11 @@ public class ActivityService {
         Institute institute = instituteRepository.findById(saveRequest.getInstituteId())
             .orElseThrow(() -> new ActivityException(ActivityErrorCode.INSTITUTE_NOT_EXISTS));
 
-        activityRepository.save(saveRequest.toModel(institute));
+        // 시도, 군구 존재 확인
+        District sidoGungu = districtRepository.findBySidoGunguCode(saveRequest.getSidoGunguCode())
+            .orElseThrow(() -> new ActivityException(ActivityErrorCode.DISTRICT_NOT_EXISTS));
+
+        activityRepository.save(saveRequest.toModel(institute, sidoGungu));
     }
 
     public Slice<ActivityFindSliceResponse> findSlice(ActivityFilterRequest request,

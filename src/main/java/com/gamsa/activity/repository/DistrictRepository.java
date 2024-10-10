@@ -8,7 +8,7 @@ public interface DistrictRepository {
 
     void save(District district);
 
-    Optional<District> findByGunguCode(int gunguCode);
+    Optional<District> findBySidoGunguCode(int gunguCode);
 
     List<District> findAllBysido(boolean sido);
 }
