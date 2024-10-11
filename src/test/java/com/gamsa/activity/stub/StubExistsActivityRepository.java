@@ -1,8 +1,11 @@
 package com.gamsa.activity.stub;
 
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.domain.District;
+import com.gamsa.activity.domain.Institute;
 import com.gamsa.activity.dto.ActivityFilterRequest;
 import com.gamsa.activity.repository.ActivityRepository;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +14,23 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
 public class StubExistsActivityRepository implements ActivityRepository {
+
+    private final District district = District.builder()
+        .sidoCode(1234)
+        .sidoGunguCode(8888)
+        .sidoName("서울특별시")
+        .gunguName("강남구")
+        .sido(false)
+        .build();
+
+    private final Institute institute = Institute.builder()
+        .instituteId(1L)
+        .name("도서관")
+        .location("서울시")
+        .latitude(new BigDecimal("123456789.12341234"))
+        .longitude(new BigDecimal("987654321.43214321"))
+        .phone("010xxxxxxxx")
+        .build();
 
     private final Activity activity = Activity.builder()
         .actId(1L)
@@ -31,6 +51,8 @@ public class StubExistsActivityRepository implements ActivityRepository {
         .actManager("윤순영")
         .actPhone("032-577-3026")
         .url("https://...")
+        .institute(institute)
+        .sidoGungu(district)
         .build();
 
     @Override
