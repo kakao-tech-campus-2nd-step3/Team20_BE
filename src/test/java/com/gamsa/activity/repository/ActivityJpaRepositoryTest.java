@@ -92,16 +92,16 @@ class ActivityJpaRepositoryTest {
 
     // 필터링
     private final ActivityFilterRequest noFilterReq = new ActivityFilterRequest(
-        null, false, false);
+        null, null, null, false, false);
 
     private final ActivityFilterRequest otherCategoryFilterReq = new ActivityFilterRequest(
-        Category.OTHER_ACTIVITIES, false, false);
+        Category.OTHER_ACTIVITIES, null, null, false, false);
 
     private final ActivityFilterRequest teenPossibleFilterReq = new ActivityFilterRequest(
-        null, true, false);
+        null, null, null, true, false);
 
     private final ActivityFilterRequest beforeDeadlineFilterReq = new ActivityFilterRequest(
-        null, false, true);
+        null, null, null, false, true);
 
     @Test
     void 새_활동_저장() {
