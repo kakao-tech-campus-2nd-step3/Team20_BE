@@ -4,9 +4,12 @@ import com.gamsa.activity.domain.Institute;
 import com.gamsa.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
@@ -40,7 +43,9 @@ public class InstituteJpaEntity extends BaseEntity {
     @Column(name = "longitude")
     private BigDecimal longitude;
 
-    // Todo 시군구 코드
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sido_gungu_code", referencedColumnName = "sido_gungu_code")
+    private DistrictJpaEntity sidoGungu;
 
     @Column(name = "phone", length = 12)
     private String phone;
@@ -52,6 +57,7 @@ public class InstituteJpaEntity extends BaseEntity {
             .location(institute.getLocation())
             .latitude(institute.getLatitude())
             .longitude(institute.getLongitude())
+            .sidoGungu(DistrictJpaEntity.from(institute.getSidoGungu()))
             .phone(institute.getPhone())
             .build();
     }
@@ -63,6 +69,7 @@ public class InstituteJpaEntity extends BaseEntity {
             .location(location)
             .latitude(latitude)
             .longitude(longitude)
+            .sidoGungu(sidoGungu.toModel())
             .phone(phone)
             .build();
     }

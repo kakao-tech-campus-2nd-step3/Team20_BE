@@ -7,6 +7,7 @@ import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.dto.InstituteSaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyInstituteRepository;
+import com.gamsa.activity.stub.StubExistsDistrictRepository;
 import com.gamsa.activity.stub.StubExistsInstituteRepository;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +28,10 @@ class InstituteServiceTest {
     @DisplayName("봉사기관을 생성한다.")
     void save() {
         // given
-        InstituteService service = new InstituteService(new StubEmptyInstituteRepository());
+        InstituteService service = new InstituteService(
+            new StubEmptyInstituteRepository(),
+            new StubExistsDistrictRepository()
+        );
         // then
         assertDoesNotThrow(() -> {
             // when
@@ -39,7 +43,10 @@ class InstituteServiceTest {
     @DisplayName("봉시기관 동일 이름 충돌로 실패한다.")
     void saveFail() {
         // given
-        InstituteService service = new InstituteService(new StubExistsInstituteRepository());
+        InstituteService service = new InstituteService(
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
+        );
         // then
         assertThrows(ActivityException.class, () -> {
             // when

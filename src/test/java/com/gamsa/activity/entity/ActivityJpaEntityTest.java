@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.domain.District;
 import com.gamsa.activity.domain.Institute;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,12 +15,21 @@ class ActivityJpaEntityTest {
     @Test
     void 도메인모델에서_JPA엔티티로_변환() {
         // given
+        District district = District.builder()
+            .sidoCode(1234)
+            .sidoGunguCode(8888)
+            .sidoName("서울특별시")
+            .gunguName("강남구")
+            .sido(false)
+            .build();
+
         Institute institute = Institute.builder()
             .instituteId(1L)
             .name("도서관")
             .location("서울시")
             .latitude(new BigDecimal("123456789.12341234"))
             .longitude(new BigDecimal("987654321.43214321"))
+            .sidoGungu(district)
             .phone("010xxxxxxxx")
             .build();
 
@@ -44,6 +54,7 @@ class ActivityJpaEntityTest {
             .url("https://...")
             .category(Category.OTHER_ACTIVITIES)
             .institute(institute)
+            .sidoGungu(district)
             .build();
 
         // when
@@ -56,12 +67,21 @@ class ActivityJpaEntityTest {
     @Test
     void JPA엔티에서_도메인모델로_변환() {
         // given
+        DistrictJpaEntity districtJpaEntity = DistrictJpaEntity.builder()
+            .sidoCode(1234)
+            .sidoGunguCode(8888)
+            .sidoName("서울특별시")
+            .gunguName("강남구")
+            .sido(false)
+            .build();
+
         InstituteJpaEntity institute = InstituteJpaEntity.builder()
             .instituteId(1L)
             .name("도서관")
             .location("서울시")
             .latitude(new BigDecimal("123456789.12341234"))
             .longitude(new BigDecimal("987654321.43214321"))
+            .sidoGungu(districtJpaEntity)
             .phone("010xxxxxxxx")
             .build();
 
@@ -86,6 +106,7 @@ class ActivityJpaEntityTest {
             .url("https://...")
             .category(Category.OTHER_ACTIVITIES)
             .institute(institute)
+            .sidoGungu(districtJpaEntity)
             .build();
 
         // when

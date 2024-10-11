@@ -29,12 +29,20 @@ public class ActivityController {
     @GetMapping
     public Slice<ActivityFindSliceResponse> findSlice(
         @RequestParam(required = false) Category category,
+        @RequestParam(required = false) Integer sidoGunguCode,
+        @RequestParam(required = false) Integer sidoCode,
         @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
         @RequestParam(defaultValue = "false") boolean beforeDeadlineOnly,
         Pageable pageable) {
 
-        ActivityFilterRequest request = new ActivityFilterRequest(category, teenPossibleOnly,
-            beforeDeadlineOnly);
+        ActivityFilterRequest request = ActivityFilterRequest.builder()
+            .category(category)
+            .sidoGunguCode(sidoGunguCode)
+            .sidoCode(sidoCode)
+            .teenPossibleOnly(teenPossibleOnly)
+            .beforeDeadlineOnly(beforeDeadlineOnly)
+            .build();
+
         return activityService.findSlice(request, pageable);
     }
 

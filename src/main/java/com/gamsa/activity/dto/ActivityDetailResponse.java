@@ -33,6 +33,7 @@ public class ActivityDetailResponse {
     private final String url;
     private final Category category;
     private final InstituteDetailResponse institute;
+    private final DistrictDetailResponse sidoGungu;
 
     public static ActivityDetailResponse from(Activity activity) {
         return ActivityDetailResponse.builder()
@@ -56,6 +57,7 @@ public class ActivityDetailResponse {
             .url(activity.getUrl())
             .category(activity.getCategory())
             .institute(InstituteDetailResponse.from(activity.getInstitute()))
+            .sidoGungu(DistrictDetailResponse.from(activity.getSidoGungu()))
             .build();
     }
 }

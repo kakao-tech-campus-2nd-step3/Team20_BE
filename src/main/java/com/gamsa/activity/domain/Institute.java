@@ -13,6 +13,6 @@ public class Institute {
     private String location;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    // Todo 시군구 코드
+    private District sidoGungu;
     private String phone;
 }
