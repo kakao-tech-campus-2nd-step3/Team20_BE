@@ -2,6 +2,7 @@ package com.gamsa.activity.domain;
 
 import com.gamsa.activity.constant.Category;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
