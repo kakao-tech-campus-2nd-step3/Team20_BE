@@ -10,8 +10,11 @@ import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
 import com.gamsa.activity.stub.StubExistsActivityRepository;
+import com.gamsa.activity.stub.StubExistsDistrictRepository;
+import com.gamsa.activity.stub.StubExistsInstituteRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -38,12 +41,18 @@ class ActivityServiceTest {
         .actPhone("032-577-3026")
         .url("https://...")
         .category(Category.OTHER_ACTIVITIES)
+        .instituteId(1L)
+        .sidoGunguCode(1)
         .build();
 
     @Test
     void 활동객체를_저장하고_성공한다() {
         // given
-        ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
+        ActivityService activityService = new ActivityService(
+            new StubEmptyActivityRepository(),
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
+        );
 
         // then
         Assertions.assertDoesNotThrow(() -> {
@@ -56,7 +65,11 @@ class ActivityServiceTest {
     @Test
     void 이미_존재하는_ID의_활동객체를_생성하고_실패한다() {
         // given
-        ActivityService activityService = new ActivityService(new StubExistsActivityRepository());
+        ActivityService activityService = new ActivityService(
+            new StubExistsActivityRepository(),
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
+        );
 
         // then
         Assertions.assertThrows(ActivityException.class, () -> {
@@ -68,7 +81,11 @@ class ActivityServiceTest {
     @Test
     void 활동객체_리스트를_반환한다() {
         // given
-        ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
+        ActivityService activityService = new ActivityService(
+            new StubEmptyActivityRepository(),
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
+        );
 
         // when
         Slice<ActivityFindSliceResponse> result = activityService.findSlice(null,
@@ -81,7 +98,11 @@ class ActivityServiceTest {
     @Test
     void ID로_활동조회에_성공한다() {
         // given
-        ActivityService activityService = new ActivityService(new StubExistsActivityRepository());
+        ActivityService activityService = new ActivityService(
+            new StubExistsActivityRepository(),
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
+        );
 
         // when
         ActivityDetailResponse result = activityService.findById(1L);
@@ -93,12 +114,22 @@ class ActivityServiceTest {
     @Test
     void ID로_활동조회에_실패한다() {
         // given
-        ActivityService activityService = new ActivityService(new StubEmptyActivityRepository());
+        ActivityService activityService = new ActivityService(
+            new StubEmptyActivityRepository(),
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository()
+        );
 
         // then
         Assertions.assertThrows(ActivityException.class, () -> {
             // when
             activityService.findById(1L);
         }, ActivityErrorCode.ACTIVITY_NOT_EXISTS.getMsg());
+    }
+
+    @Test
+    @DisplayName("활동 ID로 봉사 기관 정보를 조회한다.")
+    void findInstituteByActivityId() {
+
     }
 }

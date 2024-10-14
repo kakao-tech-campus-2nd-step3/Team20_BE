@@ -7,7 +7,10 @@ import com.gamsa.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -92,6 +95,14 @@ public class ActivityJpaEntity extends BaseEntity {
     @Column(name = "category", length = 255)
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "institute_id")
+    private InstituteJpaEntity institute;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sido_gungu_code", referencedColumnName = "sido_gungu_code")
+    private DistrictJpaEntity sidoGungu;
+
     public static ActivityJpaEntity from(Activity activity) {
         return ActivityJpaEntity.builder()
             .actId(activity.getActId())
@@ -113,6 +124,8 @@ public class ActivityJpaEntity extends BaseEntity {
             .actPhone(activity.getActPhone())
             .url(activity.getUrl())
             .category(activity.getCategory())
+            .institute(InstituteJpaEntity.from(activity.getInstitute()))
+            .sidoGungu(DistrictJpaEntity.from(activity.getSidoGungu()))
             .build();
     }
 
@@ -137,6 +150,8 @@ public class ActivityJpaEntity extends BaseEntity {
             .actPhone(actPhone)
             .url(url)
             .category(category)
+            .institute(institute.toModel())
+            .sidoGungu(sidoGungu.toModel())
             .build();
     }
 

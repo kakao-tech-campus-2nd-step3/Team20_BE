@@ -8,7 +8,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-@AllArgsConstructor
 public class Activity {
 
     private Long actId;
@@ -30,4 +29,6 @@ public class Activity {
     private String actPhone;
     private String url;
     private Category category;
+    private Institute institute;
+    private District sidoGungu;
 }
