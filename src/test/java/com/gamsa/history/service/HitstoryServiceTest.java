@@ -35,8 +35,6 @@ public class HitstoryServiceTest {
         //when & then
         Pageable pageable = PageRequest.of(0, 10);
         assertThat(historyService.findSliceByAvatarId(1L, pageable)).isNotNull();
-
-
     }
 
     @Test

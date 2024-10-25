@@ -2,6 +2,8 @@ package com.gamsa.history.repository;
 
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
+import com.gamsa.activity.domain.District;
+import com.gamsa.activity.domain.Institute;
 import com.gamsa.activity.entity.ActivityJpaEntity;
 import com.gamsa.avatar.constant.AgeRange;
 import com.gamsa.avatar.constant.Experienced;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +28,25 @@ public class HistoryJpaRepositoryTest {
     @Autowired
     private HistoryJpaRepository historyJpaRepository;
 
-    private final Activity activity = Activity.builder()
+    District district = District.builder()
+            .sidoCode(1234)
+            .sidoGunguCode(8888)
+            .sidoName("서울특별시")
+            .gunguName("강남구")
+            .sido(false)
+            .build();
+
+    Institute institute = Institute.builder()
+            .instituteId(1L)
+            .name("도서관")
+            .location("서울시")
+            .latitude(new BigDecimal("123456789.12341234"))
+            .longitude(new BigDecimal("987654321.43214321"))
+            .sidoGungu(district)
+            .phone("010xxxxxxxx")
+            .build();
+
+    Activity activity = Activity.builder()
             .actId(1L)
             .actTitle("어린이놀이안전관리 및 놀잇감 청결유지 및 정리")
             .actLocation("아이사랑꿈터 서구 5호점")
@@ -43,8 +64,10 @@ public class HistoryJpaRepositoryTest {
             .actWeek(0111110)
             .actManager("윤순영")
             .actPhone("032-577-3026")
-            .category(Category.OTHER_ACTIVITIES)
             .url("https://...")
+            .category(Category.OTHER_ACTIVITIES)
+            .institute(institute)
+            .sidoGungu(district)
             .build();
 
     private final Avatar avatar = Avatar.builder()
