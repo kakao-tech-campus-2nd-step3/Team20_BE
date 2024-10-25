@@ -13,6 +13,8 @@ public class ActivityFilterBuilder {
         BooleanBuilder filterBuilder = new BooleanBuilder();
 
         eqCategory(filterBuilder, request.getCategory());
+        eqSidoGunguCode(filterBuilder, request.getSidoGunguCode());
+        eqSidoCode(filterBuilder, request.getSidoCode());
         isTeenPossibleOnly(filterBuilder, request.isTeenPossibleOnly());
         isDeadlineEndOnly(filterBuilder, request.isBeforeDeadlineOnly());
 
@@ -22,6 +24,18 @@ public class ActivityFilterBuilder {
     public static void eqCategory(BooleanBuilder filterBuilder, Category category) {
         if (category != null) {
             filterBuilder.and(activityJpaEntity.category.eq(category));
+        }
+    }
+
+    public static void eqSidoGunguCode(BooleanBuilder filterBuilder, Integer sidoGunguCode) {
+        if (sidoGunguCode != null) {
+            filterBuilder.and(activityJpaEntity.sidoGungu.sidoGunguCode.eq(sidoGunguCode));
+        }
+    }
+
+    public static void eqSidoCode(BooleanBuilder filterBuilder, Integer sidoCode) {
+        if (sidoCode != null) {
+            filterBuilder.and(activityJpaEntity.sidoGungu.sidoCode.eq(sidoCode));
         }
     }
 
