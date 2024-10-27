@@ -4,8 +4,10 @@ import com.gamsa.history.dto.HistoryFindSliceResponse;
 import com.gamsa.history.dto.HistorySaveRequest;
 import com.gamsa.history.service.HistoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class HistoryController {
     private HistoryService historyService;
 
+    private static final int MAX_SIZE = Integer.MAX_VALUE;
+
     @PostMapping
     public ResponseEntity<String> addHistory(@RequestBody HistorySaveRequest saveRequest) {
         historyService.save(saveRequest);
@@ -23,7 +27,17 @@ public class HistoryController {
     }
 
     @GetMapping("{avatar-id}")
-    public Slice<HistoryFindSliceResponse> findSliceByUserId(@PathVariable("avatar-id") long avatarId, Pageable pageable) {
+    public Slice<HistoryFindSliceResponse> findSliceByUserId(@PathVariable("avatar-id") long avatarId,
+                                                             @RequestParam(value = "page", required = false) Integer page,
+                                                             @RequestParam(value = "size", required = false) Integer size) {
+        Pageable pageable;
+
+        if (page == null || size == null) {
+            pageable = PageRequest.of(0, MAX_SIZE, Sort.unsorted());
+        } else {
+            pageable = PageRequest.of(page, size, Sort.unsorted());
+        }
+
         return historyService.findSliceByAvatarId(avatarId, pageable);
     }
 
