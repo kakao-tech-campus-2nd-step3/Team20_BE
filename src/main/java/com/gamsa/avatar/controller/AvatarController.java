@@ -23,18 +23,18 @@ public class AvatarController {
     }
 
     @GetMapping("{avatar-id}")
-    public AvatarFindResponse getAvatar(@PathVariable Long avatarId) {
+    public AvatarFindResponse getAvatar(@PathVariable("avatar-id") Long avatarId) {
         return avatarService.findById(avatarId);
     }
 
     @PutMapping("{avatar-id}")
-    public ResponseEntity<String> updateAvatar(@PathVariable Long avatarId, @RequestBody AvatarSaveRequest saveRequest) {
+    public ResponseEntity<String> updateAvatar(@PathVariable("avatar-id") Long avatarId, @RequestBody AvatarSaveRequest saveRequest) {
         avatarService.update(avatarId, saveRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("{avatar-Id}")
-    public ResponseEntity<String> deleteAvatar(@PathVariable Long avatarId) {
+    public ResponseEntity<String> deleteAvatar(@PathVariable("avatar-id") Long avatarId) {
         avatarService.delete(avatarId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
