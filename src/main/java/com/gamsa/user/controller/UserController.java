@@ -19,11 +19,7 @@ public class UserController {
     @GetMapping("/login/kakao")
     public ResponseEntity<String> kakaoLogin(@RequestBody Map<String, String> kakaoToken) {
 
-        System.out.println(kakaoToken.get("token"));
-
         String accessToken = userService.userKakaoLogin(kakaoToken.get("token"));
-        System.out.println(accessToken);
-
         return ResponseEntity.ok()
             .header("token", accessToken)
             .build();
