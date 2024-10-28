@@ -3,6 +3,7 @@ package com.gamsa.avatar.dto;
 import com.gamsa.avatar.constant.AgeRange;
 import com.gamsa.avatar.constant.Experienced;
 import com.gamsa.avatar.domain.Avatar;
+import com.gamsa.user.entity.UserJpaEntity;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -23,13 +24,14 @@ public class AvatarSaveRequest {
     @NotNull(message = "봉사 활동 경험을 선택해야 합니다.")
     private final Experienced experienced;
 
-    public Avatar toModel() {
+    public Avatar toModel(UserJpaEntity user) {
         return Avatar.builder()
-                .nickname(nickname)
-                .avatarExp(0L)
-                .avatarLevel(0L)
-                .ageRange(ageRange)
-                .experienced(experienced)
-                .build();
+            .user(user)
+            .nickname(nickname)
+            .avatarExp(0L)
+            .avatarLevel(0L)
+            .ageRange(ageRange)
+            .experienced(experienced)
+            .build();
     }
 }
