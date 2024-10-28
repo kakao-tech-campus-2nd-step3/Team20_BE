@@ -1,7 +1,10 @@
 package com.gamsa.user.service;
 
+import com.gamsa.avatar.domain.Avatar;
+import com.gamsa.avatar.repository.AvatarRepository;
 import com.gamsa.common.jwt.JwtUtil;
 import com.gamsa.user.domain.KakaoLogin;
+import com.gamsa.user.dto.KakaoLoginResponse;
 import com.gamsa.user.dto.KakaoUserInfoResponse;
 import com.gamsa.user.entity.UserJpaEntity;
 import com.gamsa.user.repository.KakaoAccessTokenRepository;
@@ -20,19 +23,28 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final KakaoLogin kakaoLogin;
     private final UserRepository userRepository;
+    private final AvatarRepository avatarRepository;
     private final KakaoAccessTokenRepository kakaoAccessTokenRepository;
 
-    public String userKakaoLogin(String kakaoToken) {
+    public KakaoLoginResponse userKakaoLogin(String kakaoToken) {
         KakaoUserInfoResponse userInfo = kakaoLogin.getUserInfo(kakaoToken);
         Optional<UserJpaEntity> user = userRepository.findById(userInfo.getId());
 
         if (user.isEmpty()) {
             userRepository.save(generateNewUser(userInfo));
-            // Todo 아바타 생성
         }
         kakaoAccessTokenRepository.save(userInfo.getId(), kakaoToken);
 
-        return jwtUtil.createJwt(userInfo.getId(), TOKEN_EXPIRED_TIME);
+        boolean avatarExists = false;
+        Optional<Avatar> avatar = avatarRepository.findByUserId(userInfo.getId());
+        if (avatar.isPresent()) {
+            avatarExists = true;
+        }
+
+        return KakaoLoginResponse.builder()
+            .token(jwtUtil.createJwt(userInfo.getId(), TOKEN_EXPIRED_TIME))
+            .avatarExists(avatarExists)
+            .build();
     }
 
     private UserJpaEntity generateNewUser(KakaoUserInfoResponse userInfo) {

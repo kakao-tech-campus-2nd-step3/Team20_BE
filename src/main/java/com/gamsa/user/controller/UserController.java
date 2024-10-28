@@ -1,5 +1,6 @@
 package com.gamsa.user.controller;
 
+import com.gamsa.user.dto.KakaoLoginResponse;
 import com.gamsa.user.service.UserService;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login/kakao")
-    public ResponseEntity<String> kakaoLogin(@RequestBody Map<String, String> kakaoToken) {
+    public ResponseEntity<Map<String, Boolean>> kakaoLogin(
+        @RequestBody Map<String, String> kakaoToken) {
 
-        String accessToken = userService.userKakaoLogin(kakaoToken.get("token"));
+        KakaoLoginResponse response = userService.userKakaoLogin(kakaoToken.get("token"));
+
         return ResponseEntity.ok()
-            .header("token", accessToken)
-            .build();
+            .header("token", response.getToken())
+            .body(Map.of("avatarExists", response.isAvatarExists()));
     }
 }
