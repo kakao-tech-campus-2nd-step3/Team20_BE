@@ -19,7 +19,7 @@ public class HistoryController {
     private HistoryService historyService;
 
     private static final int MAX_SIZE = Integer.MAX_VALUE;
-  
+
     @PostMapping
     public ResponseEntity<String> addHistory(@RequestBody HistorySaveRequest saveRequest) {
         historyService.save(saveRequest);
