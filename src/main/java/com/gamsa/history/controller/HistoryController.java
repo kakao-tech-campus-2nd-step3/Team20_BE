@@ -1,5 +1,6 @@
 package com.gamsa.history.controller;
 
+import com.gamsa.common.utils.ExtractUserIdFromJwt;
 import com.gamsa.history.dto.HistoryFindSliceResponse;
 import com.gamsa.history.dto.HistorySaveRequest;
 import com.gamsa.history.service.HistoryService;
@@ -33,7 +34,7 @@ public class HistoryController {
     public ResponseEntity<String> addHistory(@RequestBody HistorySaveRequest saveRequest,
         HttpServletRequest request) {
 
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = ExtractUserIdFromJwt.extract(request);
         historyService.save(saveRequest, userId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -44,7 +45,7 @@ public class HistoryController {
         @RequestParam(value = "size", required = false) Integer size,
         HttpServletRequest request) {
 
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = ExtractUserIdFromJwt.extract(request);
 
         Pageable pageable;
 

@@ -4,6 +4,7 @@ package com.gamsa.avatar.controller;
 import com.gamsa.avatar.dto.AvatarFindResponse;
 import com.gamsa.avatar.dto.AvatarSaveRequest;
 import com.gamsa.avatar.service.AvatarService;
+import com.gamsa.common.utils.ExtractUserIdFromJwt;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class AvatarController {
     public ResponseEntity<String> saveAvatar(@RequestBody AvatarSaveRequest saveRequest,
         HttpServletRequest request) {
 
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = ExtractUserIdFromJwt.extract(request);
         avatarService.save(saveRequest, userId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -35,21 +36,21 @@ public class AvatarController {
     @GetMapping
     public AvatarFindResponse getAvatar(HttpServletRequest request) {
 
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = ExtractUserIdFromJwt.extract(request);
         return avatarService.findByUserId(userId);
     }
 
     @PutMapping
     public ResponseEntity<String> updateAvatar(@RequestBody AvatarSaveRequest saveRequest,
         HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = ExtractUserIdFromJwt.extract(request);
         avatarService.update(saveRequest, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteAvatar(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = ExtractUserIdFromJwt.extract(request);
         avatarService.delete(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
