@@ -15,7 +15,6 @@ public class HitstoryServiceTest {
 
     HistorySaveRequest historySaveRequest = HistorySaveRequest.builder()
             .actId(1L)
-            .avatarId(1L)
             .build();
 
     @Test
@@ -25,7 +24,7 @@ public class HitstoryServiceTest {
             new StubExistsAvatarRepository(), new StubExistsActivityRepository());
 
         //when & then
-        assertDoesNotThrow(() -> historyService.save(historySaveRequest));
+        assertDoesNotThrow(() -> historyService.save(historySaveRequest, 1L));
     }
 
     @Test

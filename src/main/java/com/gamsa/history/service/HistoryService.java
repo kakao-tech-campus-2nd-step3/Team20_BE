@@ -22,9 +22,12 @@ public class HistoryService {
     private final AvatarRepository avatarRepository;
     private final ActivityRepository activityRepository;
 
-    public void save(HistorySaveRequest saveRequest) {
-        Avatar avatar = avatarRepository.findById(saveRequest.getAvatarId()).orElseThrow(NoSuchElementException::new);
-        Activity activity = activityRepository.findById(saveRequest.getActId()).orElseThrow(NoSuchElementException::new);
+    public void save(HistorySaveRequest saveRequest, Long userId) {
+
+        Avatar avatar = avatarRepository.findByUserId(userId)
+            .orElseThrow(NoSuchElementException::new);
+        Activity activity = activityRepository.findById(saveRequest.getActId())
+            .orElseThrow(NoSuchElementException::new);
         History history = saveRequest.toModel(avatar, activity);
         historyRepository.save(history);
     }

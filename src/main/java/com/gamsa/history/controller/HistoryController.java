@@ -30,8 +30,11 @@ public class HistoryController {
     private static final int MAX_SIZE = Integer.MAX_VALUE - 1;
 
     @PostMapping
-    public ResponseEntity<String> addHistory(@RequestBody HistorySaveRequest saveRequest) {
-        historyService.save(saveRequest);
+    public ResponseEntity<String> addHistory(@RequestBody HistorySaveRequest saveRequest,
+        HttpServletRequest request) {
+
+        Long userId = (Long) request.getAttribute("userId");
+        historyService.save(saveRequest, userId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
