@@ -4,9 +4,9 @@ import com.gamsa.avatar.domain.Avatar;
 import com.gamsa.avatar.repository.AvatarRepository;
 import com.gamsa.common.jwt.JwtUtil;
 import com.gamsa.user.domain.KakaoLogin;
+import com.gamsa.user.domain.User;
 import com.gamsa.user.dto.KakaoLoginResponse;
 import com.gamsa.user.dto.KakaoUserInfoResponse;
-import com.gamsa.user.entity.UserJpaEntity;
 import com.gamsa.user.repository.KakaoAccessTokenRepository;
 import com.gamsa.user.repository.UserRepository;
 import java.util.Optional;
@@ -28,7 +28,7 @@ public class UserService {
 
     public KakaoLoginResponse userKakaoLogin(String kakaoToken) {
         KakaoUserInfoResponse userInfo = kakaoLogin.getUserInfo(kakaoToken);
-        Optional<UserJpaEntity> user = userRepository.findById(userInfo.getId());
+        Optional<User> user = userRepository.findById(userInfo.getId());
 
         if (user.isEmpty()) {
             userRepository.save(generateNewUser(userInfo));
@@ -47,8 +47,8 @@ public class UserService {
             .build();
     }
 
-    private UserJpaEntity generateNewUser(KakaoUserInfoResponse userInfo) {
-        return UserJpaEntity.builder()
+    private User generateNewUser(KakaoUserInfoResponse userInfo) {
+        return User.builder()
             .id(userInfo.getId())
             .nickname(userInfo.getNickname())
             .build();

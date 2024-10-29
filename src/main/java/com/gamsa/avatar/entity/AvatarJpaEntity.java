@@ -59,7 +59,7 @@ public class AvatarJpaEntity extends BaseEntity {
     public static AvatarJpaEntity from(Avatar avatar) {
         return AvatarJpaEntity.builder()
             .avatarId(avatar.getAvatarId())
-            .user(avatar.getUser())
+            .user(UserJpaEntity.from(avatar.getUser()))
             .avatarExp(avatar.getAvatarExp())
             .avatarLevel(avatar.getAvatarLevel())
             .nickname(avatar.getNickname())
@@ -71,7 +71,7 @@ public class AvatarJpaEntity extends BaseEntity {
     public Avatar toModel() {
         return Avatar.builder()
             .avatarId(avatarId)
-            .user(user)
+            .user(user.toModel())
             .avatarExp(avatarExp)
             .avatarLevel(avatarLevel)
             .nickname(nickname)

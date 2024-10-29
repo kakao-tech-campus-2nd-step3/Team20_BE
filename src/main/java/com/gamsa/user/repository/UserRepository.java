@@ -1,8 +1,12 @@
 package com.gamsa.user.repository;
 
-import com.gamsa.user.entity.UserJpaEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.gamsa.user.domain.User;
+import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserJpaEntity, Long> {
+public interface UserRepository {
+
+    void save(User user);
+
+    Optional<User> findById(Long userId);
 
 }

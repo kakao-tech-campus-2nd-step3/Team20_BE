@@ -1,5 +1,6 @@
 package com.gamsa.user.entity;
 
+import com.gamsa.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -24,4 +25,18 @@ public class UserJpaEntity {
 
     @Column(name = "nickname", nullable = false)
     private String nickname;
+
+    public static UserJpaEntity from(User user) {
+        return UserJpaEntity.builder()
+            .id(user.getId())
+            .nickname(user.getNickname())
+            .build();
+    }
+
+    public User toModel() {
+        return User.builder()
+            .id(id)
+            .nickname(nickname)
+            .build();
+    }
 }

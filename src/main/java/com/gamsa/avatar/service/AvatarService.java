@@ -4,7 +4,7 @@ import com.gamsa.avatar.domain.Avatar;
 import com.gamsa.avatar.dto.AvatarFindResponse;
 import com.gamsa.avatar.dto.AvatarSaveRequest;
 import com.gamsa.avatar.repository.AvatarRepository;
-import com.gamsa.user.entity.UserJpaEntity;
+import com.gamsa.user.domain.User;
 import com.gamsa.user.repository.UserRepository;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class AvatarService {
     }
 
     public void save(AvatarSaveRequest saveRequest, Long userId) {
-        UserJpaEntity user = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저."));
 
         Avatar newAvatar = saveRequest.toModel(user);
