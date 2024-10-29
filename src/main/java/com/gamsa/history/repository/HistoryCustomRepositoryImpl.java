@@ -1,19 +1,18 @@
 package com.gamsa.history.repository;
 
+import static com.gamsa.history.entity.QHistoryJpaEntity.historyJpaEntity;
+
 import com.gamsa.history.entity.HistoryJpaEntity;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.gamsa.history.entity.QHistoryJpaEntity.historyJpaEntity;
 
 @RequiredArgsConstructor
 public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
@@ -28,7 +27,7 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
                 .where(historyJpaEntity.avatar.avatarId.eq(avatarId))
                 .orderBy(orders.toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
-                .limit(pageable.getOffset() + 1)
+            .limit(pageable.getPageSize() + 1)
                 .fetch();
 
         return checkLastPage(pageable, results);
@@ -50,7 +49,8 @@ public class HistoryCustomRepositoryImpl implements HistoryCustomRepository {
                 .forEach(order -> {
                             Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                             String property = order.getProperty();
-                            PathBuilder orderPath = new PathBuilder(HistoryJpaEntity.class, "activityJpaEntity");
+                    PathBuilder orderPath = new PathBuilder(HistoryJpaEntity.class,
+                        "historyJpaEntity");
                             orders.add(new OrderSpecifier(direction, orderPath.get(property)));
                         }
                 );

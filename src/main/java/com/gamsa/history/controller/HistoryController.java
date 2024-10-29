@@ -3,6 +3,7 @@ package com.gamsa.history.controller;
 import com.gamsa.history.dto.HistoryFindSliceResponse;
 import com.gamsa.history.dto.HistorySaveRequest;
 import com.gamsa.history.service.HistoryService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/histories")
 public class HistoryController {
-    private HistoryService historyService;
 
-    private static final int MAX_SIZE = Integer.MAX_VALUE;
+    private final HistoryService historyService;
+
+    private static final int MAX_SIZE = Integer.MAX_VALUE - 1;
 
     @PostMapping
     public ResponseEntity<String> addHistory(@RequestBody HistorySaveRequest saveRequest) {
@@ -33,10 +35,14 @@ public class HistoryController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("{avatar-id}")
-    public Slice<HistoryFindSliceResponse> findSliceByUserId(@PathVariable("avatar-id") long avatarId,
-                                                             @RequestParam(value = "page", required = false) Integer page,
-                                                             @RequestParam(value = "size", required = false) Integer size) {
+    @GetMapping
+    public Slice<HistoryFindSliceResponse> findSliceByUserId(
+        @RequestParam(value = "page", required = false) Integer page,
+        @RequestParam(value = "size", required = false) Integer size,
+        HttpServletRequest request) {
+
+        Long userId = (Long) request.getAttribute("userId");
+
         Pageable pageable;
 
         if (page == null || size == null) {
@@ -44,7 +50,7 @@ public class HistoryController {
         } else {
             pageable = PageRequest.of(page, size, Sort.unsorted());
         }
-        return historyService.findSliceByAvatarId(avatarId, pageable);
+        return historyService.findSliceByAvatarId(userId, pageable);
     }
 
     @DeleteMapping("{history-id}")

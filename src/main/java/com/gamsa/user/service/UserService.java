@@ -10,14 +10,10 @@ import com.gamsa.user.dto.KakaoUserInfoResponse;
 import com.gamsa.user.repository.KakaoAccessTokenRepository;
 import com.gamsa.user.repository.UserRepository;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Builder
-@AllArgsConstructor
 @RequiredArgsConstructor
 @Service
 public class UserService {

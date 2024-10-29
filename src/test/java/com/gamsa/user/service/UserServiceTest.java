@@ -20,13 +20,12 @@ class UserServiceTest {
     @DisplayName("아직 아바타가 없는 유저 카카오 로그인 성공")
     void avatarEmptyUserKakaoLogin() {
         // given
-        final UserService userService = UserService.builder()
-            .jwtUtil(new JwtUtil(dummySecretKey))
-            .kakaoLogin(new DummyKakaoLogin(new KakaoProperties("dummyUrl")))
-            .userRepository(new StubExistsUserRepository())
-            .avatarRepository(new StubEmptyAvatarRepository())      // 아바타 X
-            .kakaoAccessTokenRepository(new DummyKakaoAccessTokenRepository())
-            .build();
+        final UserService userService = new UserService(
+            new JwtUtil(dummySecretKey),
+            new DummyKakaoLogin(new KakaoProperties("dummyUrl")),
+            new StubExistsUserRepository(),
+            new StubEmptyAvatarRepository(),      // 아바타 X
+            new DummyKakaoAccessTokenRepository());
         // when
         KakaoLoginResponse response = userService.userKakaoLogin("dummyToken");
         // then
@@ -38,13 +37,12 @@ class UserServiceTest {
     @DisplayName("아바타가 존재하는 유저 카카오 로그인 성공")
     void avatarExistsUserKakaoLogin() {
         // given
-        final UserService userService = UserService.builder()
-            .jwtUtil(new JwtUtil(dummySecretKey))
-            .kakaoLogin(new DummyKakaoLogin(new KakaoProperties("dummyUrl")))
-            .userRepository(new StubExistsUserRepository())
-            .avatarRepository(new StubExistsAvatarRepository())      // 아바타 O
-            .kakaoAccessTokenRepository(new DummyKakaoAccessTokenRepository())
-            .build();
+        final UserService userService = new UserService(
+            new JwtUtil(dummySecretKey),
+            new DummyKakaoLogin(new KakaoProperties("dummyUrl")),
+            new StubExistsUserRepository(),
+            new StubExistsAvatarRepository(),      // 아바타 O
+            new DummyKakaoAccessTokenRepository());
         // when
         KakaoLoginResponse response = userService.userKakaoLogin("dummyToken");
         // then

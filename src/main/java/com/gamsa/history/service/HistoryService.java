@@ -8,13 +8,12 @@ import com.gamsa.history.domain.History;
 import com.gamsa.history.dto.HistoryFindSliceResponse;
 import com.gamsa.history.dto.HistorySaveRequest;
 import com.gamsa.history.repository.HistoryRepository;
+import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
@@ -30,9 +29,14 @@ public class HistoryService {
         historyRepository.save(history);
     }
 
-    public Slice<HistoryFindSliceResponse> findSliceByAvatarId(long avatarId, Pageable pageable) {
-        Slice<History> histories = historyRepository.findSliceByAvatarId(avatarId, pageable);
+    public Slice<HistoryFindSliceResponse> findSliceByAvatarId(Long userId, Pageable pageable) {
+        Avatar avatar = avatarRepository.findByUserId(userId)
+            .orElseThrow(NoSuchElementException::new);
+
+        Slice<History> histories = historyRepository
+            .findSliceByAvatarId(avatar.getAvatarId(), pageable);
         histories.forEach(this::checkDate);
+
         return histories.map(HistoryFindSliceResponse::from);
     }
 
