@@ -21,7 +21,6 @@ public class AvatarService {
 
     public void save(AvatarSaveRequest saveRequest) {
         Avatar avatar = saveRequest.toModel();
-        avatarRepository.findById(avatar.getAvatarId()).orElseThrow(NoSuchElementException::new);
         avatarRepository.save(avatar);
     }
 

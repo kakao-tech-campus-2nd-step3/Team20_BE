@@ -37,7 +37,6 @@ public class HistoryController {
         } else {
             pageable = PageRequest.of(page, size, Sort.unsorted());
         }
-
         return historyService.findSliceByAvatarId(avatarId, pageable);
     }
 
