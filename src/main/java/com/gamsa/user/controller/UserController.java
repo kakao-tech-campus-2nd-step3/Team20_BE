@@ -6,7 +6,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +19,9 @@ public class UserController {
 
     @GetMapping("/login/kakao")
     public ResponseEntity<Map<String, Boolean>> kakaoLogin(
-        @RequestBody Map<String, String> kakaoToken) {
+        @RequestHeader Map<String, String> headers) {
 
-        KakaoLoginResponse response = userService.userKakaoLogin(kakaoToken.get("token"));
+        KakaoLoginResponse response = userService.userKakaoLogin(headers.get("token"));
 
         return ResponseEntity.ok()
             .header("token", response.getToken())
