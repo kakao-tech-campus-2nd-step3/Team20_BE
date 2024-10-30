@@ -8,6 +8,7 @@ import com.gamsa.user.dto.KakaoProperties;
 import com.gamsa.user.stub.DummyKakaoAccessTokenRepository;
 import com.gamsa.user.stub.DummyKakaoLogin;
 import com.gamsa.user.stub.StubExistsUserRepository;
+import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,10 +28,13 @@ class UserServiceTest {
             new StubEmptyAvatarRepository(),      // 아바타 X
             new DummyKakaoAccessTokenRepository());
         // when
-        KakaoLoginResponse response = userService.userKakaoLogin("dummyToken");
+        Map<String, Object> result = userService.userKakaoLogin("dummyToken");
+
+        String token = (String) result.get("token");
+        KakaoLoginResponse response = (KakaoLoginResponse) result.get("body");
         // then
-        Assertions.assertThat(response.getToken()).isNotNull();
-        Assertions.assertThat(response.isAvatarExists()).isFalse();
+        Assertions.assertThat(token).isNotNull();
+        Assertions.assertThat(response.getAvatar()).isNull();
     }
 
     @Test
@@ -44,9 +48,11 @@ class UserServiceTest {
             new StubExistsAvatarRepository(),      // 아바타 O
             new DummyKakaoAccessTokenRepository());
         // when
-        KakaoLoginResponse response = userService.userKakaoLogin("dummyToken");
+        Map<String, Object> result = userService.userKakaoLogin("dummyToken");
+        String token = (String) result.get("token");
+        KakaoLoginResponse response = (KakaoLoginResponse) result.get("body");
         // then
-        Assertions.assertThat(response.getToken()).isNotNull();
-        Assertions.assertThat(response.isAvatarExists()).isTrue();
+        Assertions.assertThat(token).isNotNull();
+        Assertions.assertThat(response.getAvatar()).isNotNull();
     }
 }
