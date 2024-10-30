@@ -1,14 +1,14 @@
 package com.gamsa.activtydata;
 
 import com.gamsa.activity.constant.Category;
-import com.gamsa.activity.dto.ActivitySaveRequest;
-import com.gamsa.activity.dto.InstituteSaveRequest;
-import com.gamsa.activity.service.InstituteService;
+import com.gamsa.activity.dto.ActivityApiResponse;
+import com.gamsa.activity.dto.InstituteApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -21,62 +21,64 @@ import java.util.List;
 
 @Component
 public class ActivityDataUtils {
-    private final InstituteService instituteService;
-
     @Value("${gamsa.openapi.key}")
-    private String apiKey;
+    private String openapiKey;
 
     @Value("${gamsa.openapi.url}")
-    private String baseUrl;
+    private String openapiUrl;
 
     @Value("${gamsa.vol.url}")
     private String volUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public ActivityDataUtils(InstituteService instituteService) {
-        this.instituteService = instituteService;
-    }
-
-    public List<String> getVolunteerParticipationList(String startDate, String endDate, int numOfRows, int pageNo) {
-        String url = baseUrl + "/getVltrPeriodSrvcList";
-
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
-                .queryParam("ServiceKey", apiKey)
-                .queryParam("progrmBgnde", startDate)
-                .queryParam("progrmEndde", endDate)
-                .queryParam("numOfRows", numOfRows)
-                .queryParam("pageNo", pageNo);
-
-        ResponseEntity<String> response = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
+    public List<String> getVolunteerParticipationList(String startDate, String endDate) {
+        String url = openapiUrl + "/getVltrPeriodSrvcList";
 
         List<String> volunteerList = new ArrayList<>();
-        if (response.getStatusCode().is2xxSuccessful()) {
-            try {
-                // XML 파싱
-                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                var document = builder.parse(new InputSource(new StringReader(response.getBody())));
-                var items = document.getElementsByTagName("item");
 
-                for (int i = 0; i < items.getLength(); i++) {
-                    Node item = items.item(i);
-                    volunteerList.add(getTextContent(item, "progrmRegistNo").toString());
+        int numOfItem = 20;
+        int pageNo = 0;
+
+        while(numOfItem == 20) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
+                    .queryParam("ServiceKey", openapiKey)
+                    .queryParam("progrmBgnde", startDate)
+                    .queryParam("progrmEndde", endDate)
+                    .queryParam("numOfRows", 20)
+                    .queryParam("pageNo", pageNo);
+
+            ResponseEntity<String> response = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                try {
+                    // XML 파싱
+                    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                    var document = builder.parse(new InputSource(new StringReader(response.getBody())));
+                    var items = document.getElementsByTagName("item");
+                    numOfItem = items.getLength();
+
+                    for (int i = 0; i < items.getLength(); i++) {
+                        Node item = items.item(i);
+                        volunteerList.add(getTextContent(item, "progrmRegistNo").toString());
+                    }
+                    pageNo++;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // 예외 처리
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                // 예외 처리
+            } else {
+                System.out.println("Error: " + response.getStatusCode());
             }
-        } else {
-            System.out.println("Error: " + response.getStatusCode());
         }
         return volunteerList;
     }
 
-    private ActivitySaveRequest getVolunteerDetail(String programNo, Long instituteId) {
-        String url = baseUrl + "/getVltrPartcptnItem";
+    public InstituteApiResponse getInstituteApiResponse(String programNo) {
+        String url = openapiUrl + "/getVltrPartcptnItem";
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
-                .queryParam("ServiceKey", apiKey)
+                .queryParam("ServiceKey", openapiKey)
                 .queryParam("progrmRegistNo", programNo);
 
         ResponseEntity<String> response = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
@@ -89,19 +91,42 @@ public class ActivityDataUtils {
                 var item = document.getElementsByTagName("item").item(0);
 
                 if (item != null) {
-                    InstituteSaveRequest instituteSaveRequest = InstituteSaveRequest.builder()
+                    InstituteApiResponse instituteApiReponse = InstituteApiResponse.builder()
                             .name(getTextContent(item, "mnnstNm"))
                             .location(getTextContent(item, "getTextContent"))
-                            .latitude()
-                            .longitude()
-                            .sidoCode(getTextContent(item, "sidoCd"))
-                            .sidoGunguCode(getTextContent(item, "gugunCd"))
+                            .sidoCode(Integer.getInteger(getTextContent(item, "sidoCd")))
+                            .sidoGunguCode(Integer.getInteger(getTextContent(item, "gugunCd")))
                             .phone(getTextContent(item, "telno"))
                             .build();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // 예외 처리
+            }
+        } else {
+            System.out.println("Error: " + response.getStatusCode());
+        }
+        return null;
+    }
 
-                    instituteService.save(instituteSaveRequest);
+    public ActivityApiResponse getVolunteerDetail(String programNo) {
+        String url = openapiUrl + "/getVltrPartcptnItem";
 
-                    ActivitySaveRequest activitySaveRequest = ActivitySaveRequest.builder()
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("ServiceKey", openapiKey)
+                .queryParam("progrmRegistNo", programNo);
+
+        ResponseEntity<String> response = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            try {
+                // XML 파싱
+                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                var document = builder.parse(new InputSource(new StringReader(response.getBody())));
+                var item = document.getElementsByTagName("item").item(0);
+
+                if (item != null) {
+                    ActivityApiResponse activityApiResponse = ActivityApiResponse.builder()
                             .actId(Long.getLong(getTextContent(item, "progrmRegistNo")))
                             .actTitle(getTextContent(item, "progrmSj"))
                             .actLocation(getTextContent(item, "actPlace"))
@@ -120,8 +145,8 @@ public class ActivityDataUtils {
                             .actManager(getTextContent(item, "nanmmbyNmAdmn"))
                             .actPhone(getTextContent(item, "telno"))
                             .url(volUrl + getTextContent(item, "progrmRegistNo"))
+                            .instituteName(getTextContent(item, "mnnstNm"))
                             .category(getCategory(getTextContent(item, "srvcClCode")))
-                            .instituteId(instituteId)
                             .sidoGunguCode(Integer.getInteger(getTextContent(item, "gugunCd")))
                             .build();
                 }
@@ -133,10 +158,6 @@ public class ActivityDataUtils {
             System.out.println("Error: " + response.getStatusCode());
         }
         return null;
-    }
-
-    private Long getInstituteId(InstituteSaveRequest instituteSaveRequest) {
-        instituteService.findByName();
     }
 
     private String getTextContent(Node node, String tagName) {

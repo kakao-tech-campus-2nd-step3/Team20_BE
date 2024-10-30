@@ -5,7 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
-public class KakaoLocalService {
+@Component
+public class KakaoLocalUtils {
 
-    @Value("${kakao.api.key}")
+    @Value("${gamsa.kakao.apikey}")
     private String kakaoApiKey;
 
     private final RestTemplate restTemplate = new RestTemplate();

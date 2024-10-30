@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Service
 @Component
 @RequiredArgsConstructor
-public class DistrictDataService {
+public class DistrictDataUpdateService {
     private final DistrictService districtService;
 
     @Value("{gamsa.csvPath}")
