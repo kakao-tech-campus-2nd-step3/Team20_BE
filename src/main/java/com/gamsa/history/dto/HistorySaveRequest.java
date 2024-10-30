@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 public class HistorySaveRequest {
-    private final long avatarId;
     private final long actId;
 
     public History toModel(Avatar avatar, Activity activity) {
