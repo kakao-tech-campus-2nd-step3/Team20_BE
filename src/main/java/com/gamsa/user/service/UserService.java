@@ -1,6 +1,7 @@
 package com.gamsa.user.service;
 
 import com.gamsa.avatar.domain.Avatar;
+import com.gamsa.avatar.dto.AvatarFindResponse;
 import com.gamsa.avatar.repository.AvatarRepository;
 import com.gamsa.common.jwt.JwtUtil;
 import com.gamsa.user.domain.KakaoLogin;
@@ -9,6 +10,7 @@ import com.gamsa.user.dto.KakaoLoginResponse;
 import com.gamsa.user.dto.KakaoUserInfoResponse;
 import com.gamsa.user.repository.KakaoAccessTokenRepository;
 import com.gamsa.user.repository.UserRepository;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +28,7 @@ public class UserService {
     private final AvatarRepository avatarRepository;
     private final KakaoAccessTokenRepository kakaoAccessTokenRepository;
 
-    public KakaoLoginResponse userKakaoLogin(String kakaoToken) {
+    public Map<String, Object> userKakaoLogin(String kakaoToken) {
         KakaoUserInfoResponse userInfo = kakaoLogin.getUserInfo(kakaoToken);
         Optional<User> user = userRepository.findById(userInfo.getId());
 
@@ -35,16 +37,15 @@ public class UserService {
         }
         kakaoAccessTokenRepository.save(userInfo.getId(), kakaoToken);
 
-        boolean avatarExists = false;
         Optional<Avatar> avatar = avatarRepository.findByUserId(userInfo.getId());
-        if (avatar.isPresent()) {
-            avatarExists = true;
-        }
-
-        return KakaoLoginResponse.builder()
-            .token(jwtUtil.createJwt(userInfo.getId(), TOKEN_EXPIRED_TIME))
-            .avatarExists(avatarExists)
+        KakaoLoginResponse body = KakaoLoginResponse.builder()
+            .avatar(avatar.map(AvatarFindResponse::from).orElse(null))
             .build();
+
+        return Map.of(
+            "token", (Object) jwtUtil.createJwt(userInfo.getId(), TOKEN_EXPIRED_TIME),
+            "body", (Object) body
+        );
     }
 
     private User generateNewUser(KakaoUserInfoResponse userInfo) {

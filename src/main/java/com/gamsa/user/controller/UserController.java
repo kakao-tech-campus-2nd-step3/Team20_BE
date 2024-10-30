@@ -18,13 +18,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login/kakao")
-    public ResponseEntity<Map<String, Boolean>> kakaoLogin(
+    public ResponseEntity<?> kakaoLogin(
         @RequestHeader Map<String, String> headers) {
 
-        KakaoLoginResponse response = userService.userKakaoLogin(headers.get("token"));
+        Map<String, Object> response = userService.userKakaoLogin(headers.get("token"));
 
         return ResponseEntity.ok()
-            .header("token", response.getToken())
-            .body(Map.of("avatarExists", response.isAvatarExists()));
+            .header("token", (String) response.get("token"))
+            .body((KakaoLoginResponse) response.get("body"));
     }
 }
