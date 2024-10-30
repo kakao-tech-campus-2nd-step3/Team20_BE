@@ -2,10 +2,9 @@ package com.gamsa.avatar.repository;
 
 import com.gamsa.avatar.domain.Avatar;
 import com.gamsa.avatar.entity.AvatarJpaEntity;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -20,6 +19,18 @@ public class AvatarRepositoryImpl implements AvatarRepository {
     @Override
     public Optional<Avatar> findById(Long id) {
         return avatarJpaRepository.findById(id).map(AvatarJpaEntity::toModel);
+    }
+
+    @Override
+    public Optional<Avatar> findByUserId(Long userId) {
+        return avatarJpaRepository.findByUserId(userId)
+            .map(AvatarJpaEntity::toModel);
+    }
+
+    @Override
+    public Optional<Avatar> findByNickname(String nickname) {
+        return avatarJpaRepository.findByNickname(nickname)
+            .map(AvatarJpaEntity::toModel);
     }
 
     @Override

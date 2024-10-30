@@ -13,6 +13,9 @@ spring:
     hibernate.ddl-auto: create
     properties.hibernate.format_sql: true
     show-sql: true
+  jwt:
+    secret: kghobnakghwoigabsdlkbghaoigqhegowebnhlkwehgaoiwehtoaweqnbzoiwnyzbvwow
+    expiration-time: 86400000
 
 logging:
   level:

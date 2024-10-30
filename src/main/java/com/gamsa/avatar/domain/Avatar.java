@@ -2,6 +2,7 @@ package com.gamsa.avatar.domain;
 
 import com.gamsa.avatar.constant.AgeRange;
 import com.gamsa.avatar.constant.Experienced;
+import com.gamsa.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Avatar {
     private Long avatarId;
+    private User user;
     private Long avatarExp;
     private Long avatarLevel;
     private String nickname;
