@@ -1,4 +1,4 @@
-package com.gamsa.activtydata;
+package com.gamsa.datasync.service;
 
 import com.gamsa.activity.dto.DistrictSaveRequest;
 import com.gamsa.activity.service.DistrictService;
@@ -34,11 +34,8 @@ public class DistrictDataUpdateService {
 
     private boolean isDataChanged() {
         // 나중에 file 변경에 따른 로직으로 수정
-        if ((districtService.findAllGungu().size() == 0)
-                && (districtService.findAllSido().size() == 0)) {
-            return true;
-        }
-        return false;
+        return (districtService.findAllGungu().isEmpty())
+                && (districtService.findAllSido().isEmpty());
     }
 
     @Transactional

@@ -1,5 +1,7 @@
-package com.gamsa.activtydata;
+package com.gamsa.datasync.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.dto.ActivityApiResponse;
 import com.gamsa.activity.dto.InstituteApiResponse;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -21,14 +24,12 @@ import java.util.List;
 
 @Component
 public class ActivityDataUtils {
-    @Value("${gamsa.openapi.key}")
+    @Value(value = "${gamsa.openapi.key}")
     private String openapiKey;
 
-    @Value("${gamsa.openapi.url}")
-    private String openapiUrl;
+    private String openapiUrl = "http://openapi.1365.go.kr/openapi/service/rest/VolunteerPartcptnService/";
 
-    @Value("${gamsa.vol.url}")
-    private String volUrl;
+    private String volUrl = "https://www.1365.go.kr/vols/1572247904127/partcptn/timeCptn.do?type=show&progrmRegistNo=";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -38,9 +39,9 @@ public class ActivityDataUtils {
         List<String> volunteerList = new ArrayList<>();
 
         int numOfItem = 20;
-        int pageNo = 0;
+        int pageNo = 1;
 
-        while(numOfItem == 20) {
+        while(numOfItem != 0) {
             UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
                     .queryParam("ServiceKey", openapiKey)
                     .queryParam("progrmBgnde", startDate)
@@ -52,23 +53,24 @@ public class ActivityDataUtils {
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 try {
-                    // XML 파싱
-                    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                    var document = builder.parse(new InputSource(new StringReader(response.getBody())));
-                    var items = document.getElementsByTagName("item");
-                    numOfItem = items.getLength();
+                    String jsonContent = response.getBody();
 
-                    for (int i = 0; i < items.getLength(); i++) {
-                        Node item = items.item(i);
-                        volunteerList.add(getTextContent(item, "progrmRegistNo").toString());
+                    // Initialize Jackson ObjectMapper
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    JsonNode rootNode = objectMapper.readTree(jsonContent);
+
+                    // Accessing the items in the JSON
+                    JsonNode itemsNode = rootNode.path("response").path("body").path("items");
+
+                    numOfItem = itemsNode.size();
+                    for (JsonNode item : itemsNode) {
+                        String programNo = item.path("progrmRegistNo").asText();
+                        volunteerList.add(programNo);
                     }
                     pageNo++;
                 } catch (Exception e) {
                     e.printStackTrace();
-                    // 예외 처리
                 }
-            } else {
-                System.out.println("Error: " + response.getStatusCode());
             }
         }
         return volunteerList;
@@ -85,20 +87,25 @@ public class ActivityDataUtils {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             try {
-                // XML 파싱
-                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                var document = builder.parse(new InputSource(new StringReader(response.getBody())));
-                var item = document.getElementsByTagName("item").item(0);
+                String jsonContent = response.getBody();
 
-                if (item != null) {
-                    InstituteApiResponse instituteApiReponse = InstituteApiResponse.builder()
-                            .name(getTextContent(item, "mnnstNm"))
-                            .location(getTextContent(item, "getTextContent"))
-                            .sidoCode(Integer.getInteger(getTextContent(item, "sidoCd")))
-                            .sidoGunguCode(Integer.getInteger(getTextContent(item, "gugunCd")))
-                            .phone(getTextContent(item, "telno"))
-                            .build();
-                }
+                // Initialize Jackson ObjectMapper
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode rootNode = objectMapper.readTree(jsonContent);
+
+                // Accessing the items in the JSON
+                JsonNode item = rootNode.path("response").path("body").path("items").path("item");
+
+                InstituteApiResponse instituteApiResponse = InstituteApiResponse.builder()
+                        .name(item.path("mnnstNm").asText())
+                        .location(item.path("getTextContent").asText())
+                        .sidoCode(Integer.getInteger(item.path("sidoCd").asText()))
+                        .sidoGunguCode(Integer.getInteger((item.path("gugunCd").asText())))
+                        .phone(item.path("telno").asText())
+                        .build();
+
+                return instituteApiResponse;
+
             } catch (Exception e) {
                 e.printStackTrace();
                 // 예외 처리
@@ -120,36 +127,40 @@ public class ActivityDataUtils {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             try {
-                // XML 파싱
-                DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                var document = builder.parse(new InputSource(new StringReader(response.getBody())));
-                var item = document.getElementsByTagName("item").item(0);
+                String jsonContent = response.getBody();
 
-                if (item != null) {
-                    ActivityApiResponse activityApiResponse = ActivityApiResponse.builder()
-                            .actId(Long.getLong(getTextContent(item, "progrmRegistNo")))
-                            .actTitle(getTextContent(item, "progrmSj"))
-                            .actLocation(getTextContent(item, "actPlace"))
-                            .description(getTextContent(item, "progrmCn"))
-                            .noticeStartDate(LocalDateTime.parse(getTextContent(item, "noticeBgnde")))
-                            .noticeEndDate(LocalDateTime.parse(getTextContent(item, "noticeEndde")))
-                            .actStartDate(LocalDateTime.parse(getTextContent(item, "progrmBgnde")))
-                            .actEndDate(LocalDateTime.parse(getTextContent(item, "progrmBgnde")))
-                            .actStartTime(Integer.getInteger(getTextContent(item, "actBeginTm")))
-                            .actEndTime(Integer.getInteger(getTextContent(item, "actEndTm")))
-                            .recruitTotalNum(Integer.getInteger(getTextContent(item, "rcritNmpr")))
-                            .adultPossible(getTextContent(item, "adultPosblAt") == "y" ? true : false)
-                            .teenPossible(getTextContent(item, "yngbgsPosblAt") == "y" ? true : false)
-                            .groupPossible(getTextContent(item, "grpPosblAt") == "y" ? true : false)
-                            .actWeek(Integer.getInteger(getTextContent(item, "actWkdy")))
-                            .actManager(getTextContent(item, "nanmmbyNmAdmn"))
-                            .actPhone(getTextContent(item, "telno"))
-                            .url(volUrl + getTextContent(item, "progrmRegistNo"))
-                            .instituteName(getTextContent(item, "mnnstNm"))
-                            .category(getCategory(getTextContent(item, "srvcClCode")))
-                            .sidoGunguCode(Integer.getInteger(getTextContent(item, "gugunCd")))
+                // Initialize Jackson ObjectMapper
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode rootNode = objectMapper.readTree(jsonContent);
+
+                // Accessing the items in the JSON
+                JsonNode item = rootNode.path("response").path("body").path("items").path("item");
+
+                ActivityApiResponse activityApiResponse = ActivityApiResponse.builder()
+                            .actId(Long.getLong(item.path("progrmRegistNo").asText()))
+                            .actTitle(item.path("progrmSj").asText())
+                            .actLocation(item.path("actPlace").asText())
+                            .description(item.path("progrmCn").asText())
+                            .noticeStartDate(LocalDateTime.parse(item.path("noticeBgnde").asText()))
+                            .noticeEndDate(LocalDateTime.parse(item.path("noticeEndde").asText()))
+                            .actStartDate(LocalDateTime.parse(item.path("progrmBgnde").asText()))
+                            .actEndDate(LocalDateTime.parse(item.path("progrmBgnde").asText()))
+                            .actStartTime(Integer.getInteger(item.path("actBeginTm").asText()))
+                            .actEndTime(Integer.getInteger(item.path("actEndTm").asText()))
+                            .recruitTotalNum(Integer.getInteger(item.path("rcritNmpr").asText()))
+                            .adultPossible(item.path("adultPosblAt").asText() == "y" ? true : false)
+                            .teenPossible(item.path("yngbgsPosblAt").asText() == "y" ? true : false)
+                            .groupPossible(item.path("grpPosblAt").asText() == "y" ? true : false)
+                            .actWeek(Integer.getInteger(item.path("actWkdy").asText()))
+                            .actManager(item.path("nanmmbyNmAdmn").asText())
+                            .actPhone(item.path("telno").asText())
+                            .url(volUrl + item.path("progrmRegistNo").asText())
+                            .instituteName(item.path("mnnstNm").asText())
+                            .category(getCategory(item.path("srvcClCode").asText()))
+                            .sidoGunguCode(Integer.getInteger(item.path("gugunCd").asText()))
                             .build();
-                }
+
+                    return activityApiResponse;
             } catch (Exception e) {
                 e.printStackTrace();
                 // 예외 처리
@@ -158,12 +169,6 @@ public class ActivityDataUtils {
             System.out.println("Error: " + response.getStatusCode());
         }
         return null;
-    }
-
-    private String getTextContent(Node node, String tagName) {
-        var element = (Element) node;
-        var target = element.getElementsByTagName(tagName).item(0);
-        return (target != null) ? target.getTextContent() : null;
     }
 
     private Category getCategory(String text) {

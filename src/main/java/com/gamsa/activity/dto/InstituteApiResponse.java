@@ -2,6 +2,7 @@ package com.gamsa.activity.dto;
 
 import com.gamsa.activity.domain.District;
 import com.gamsa.activity.domain.Institute;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.Map;
 
 @Getter
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class InstituteApiResponse {
 
     private String name;

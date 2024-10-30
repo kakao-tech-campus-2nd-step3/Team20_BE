@@ -1,6 +1,7 @@
 package com.gamsa.activity.dto;
 
 import com.gamsa.activity.domain.District;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class DistrictSaveRequest {
 
     private final int sidoGunguCode;

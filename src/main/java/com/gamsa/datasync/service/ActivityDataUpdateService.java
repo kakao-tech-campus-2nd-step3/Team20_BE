@@ -1,10 +1,12 @@
-package com.gamsa.activtydata;
+package com.gamsa.datasync.service;
 
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.dto.InstituteSaveRequest;
 import com.gamsa.activity.service.ActivityService;
 import com.gamsa.activity.service.DistrictService;
 import com.gamsa.activity.service.InstituteService;
+import com.gamsa.datasync.utils.ActivityDataUtils;
+import com.gamsa.datasync.utils.KakaoLocalUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +25,9 @@ public class ActivityDataUpdateService {
 
     public void update() {
         String today = LocalDate.now().toString();
-        String yesterday = LocalDate.now().minusDays(1).toString();
+        String afterDay = LocalDate.now().plusDays(7).toString();
 
-        List<String> programList = activityDataUtils.getVolunteerParticipationList(today, yesterday);
+        List<String> programList = activityDataUtils.getVolunteerParticipationList(today, afterDay);
 
         List<InstituteSaveRequest> saveRequests = programList.stream()
                 .map(activityDataUtils::getInstituteApiResponse)

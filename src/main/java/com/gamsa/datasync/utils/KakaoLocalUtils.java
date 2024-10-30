@@ -1,4 +1,4 @@
-package com.gamsa.activtydata;
+package com.gamsa.datasync.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -61,7 +61,7 @@ public class KakaoLocalUtils {
                 // 첫 번째 결과의 x, y 좌표 반환
                 var documents = (List<Map<String, Object>>) result.get("documents");
                 if (!documents.isEmpty()) {
-                    Map<String, Object> firstDoc = documents.get(0);
+                    Map<String, Object> firstDoc = documents.getFirst();
                     BigDecimal x = new BigDecimal(firstDoc.get("x").toString());
                     BigDecimal y = new BigDecimal(firstDoc.get("y").toString());
 
