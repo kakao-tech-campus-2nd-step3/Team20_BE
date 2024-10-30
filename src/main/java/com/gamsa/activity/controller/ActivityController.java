@@ -28,7 +28,7 @@ public class ActivityController {
 
     @GetMapping
     public Slice<ActivityFindSliceResponse> findSlice(
-        @RequestParam(required = false) Category category,
+        @RequestParam(required = false) String category,
         @RequestParam(required = false) Integer sidoGunguCode,
         @RequestParam(required = false) Integer sidoCode,
         @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
@@ -36,7 +36,7 @@ public class ActivityController {
         Pageable pageable) {
 
         ActivityFilterRequest request = ActivityFilterRequest.builder()
-            .category(category)
+            .category(Category.fromValuesForSlice(category))
             .sidoGunguCode(sidoGunguCode)
             .sidoCode(sidoCode)
             .teenPossibleOnly(teenPossibleOnly)
