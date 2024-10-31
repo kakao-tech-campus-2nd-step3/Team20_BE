@@ -24,7 +24,12 @@ jobs:
         run: ./gradlew build
 
       - name: archive build directory
-        run: tar -cvfz ./build.tar.gz
+        run: |
+          mkdir deploy
+          cp scripts/*.sh deploy
+          cp appspec.yml deploy
+          cp build/libs/*.jar deploy
+          tar cvfz deploy.tar.gz deploy
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -35,4 +40,4 @@ jobs:
 
       - name: upload to S3
         run: |
-          aws s3 sync ./build.tar.gz s3://gamja-bongsa
+          aws s3 sync deploy.tar.gz s3://gamja-bongsa
