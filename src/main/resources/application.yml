@@ -2,7 +2,7 @@ spring:
   application:
     name: gamja-bongsa
   profiles:
-    active: prod
+    active: dev
 
 kakao:
   user-info-url: https://kapi.kakao.com/v2/user/me
