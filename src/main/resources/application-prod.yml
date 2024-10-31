@@ -1,0 +1,10 @@
+spring:
+  config:
+    import:
+      - application-jwt.yml
+      - application-prod-db.yml
+
+logging:
+  level:
+    org:
+      hibernate: info

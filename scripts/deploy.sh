@@ -6,7 +6,7 @@ APP_NAME=gamsa
 cd $REPOSITORY
 
 echo "> 현재 구동 중인 애플리케이션 pid 확인"
-CURRENT_PID=$(pgrep -f ${APP_NAME}-*.jar)
+CURRENT_PID=$(lsof -i :8080 -t)
 
 echo "> 현재 구동 중인 애플리케이션 pid: $CURRENT_PID"
 if [ -z "$CURRENT_PID" ]; then
@@ -18,7 +18,7 @@ else
 fi
 
 echo "> 새 애플리케이션 배포"
-JAR_NAME=$(ls -tr $REPOSITORY/ | grep jar | tail -n 1)
+JAR_NAME=$(ls -tr $REPOSITORY/ | grep jar | head -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
@@ -26,4 +26,7 @@ echo "> $JAR_NAME에 실행권한 추가"
 chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
-nohup java -jar $REPOSITORY/$JAR_NAME --spring.profiles.active=prod 2>&1 &
+nohup java -jar \
+        -Dspring.config.location=/home/ubuntu/prod/application-prod-db.yml,/home/ubuntu/prod/application-jwt.yml \
+        -Dspring.profiles.active=prod \
+        $REPOSITORY/$JAR_NAME 2>&1 &
