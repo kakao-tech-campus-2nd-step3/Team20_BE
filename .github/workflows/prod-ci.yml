@@ -23,12 +23,21 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
+      - name: archive build directory
+        run: |
+          mkdir deploy
+          cp scripts/*.sh deploy
+          cp appspec.yml deploy
+          cp build/libs/*.jar deploy
+          tar cvfz deploy.tar.gz deploy
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
-        
+
+      - name: upload to S3
         run: |
-          aws s3 sync build s3://gamja-bongsa
+          aws s3 cp deploy.tar.gz s3://gamja-bongsa
