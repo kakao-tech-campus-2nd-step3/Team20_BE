@@ -40,4 +40,4 @@ jobs:
 
       - name: upload to S3
         run: |
-          aws s3 sync deploy.tar.gz s3://gamja-bongsa
+          aws s3 cp deploy.tar.gz s3://gamja-bongsa
