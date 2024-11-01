@@ -27,4 +27,8 @@ public class InstituteService {
 
         instituteRepository.save(saveRequest.toModel(district));
     }
+
+    public Long findByName(String name) {
+        return instituteRepository.findByName(name).orElseThrow(() -> new ActivityException(ActivityErrorCode.INSTITUTE_NOT_EXISTS)).getInstituteId();
+    }
 }

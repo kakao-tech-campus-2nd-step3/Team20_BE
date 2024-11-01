@@ -6,11 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Builder
@@ -27,6 +25,12 @@ public class DistrictJpaEntity extends BaseEntity {
     @Column(name = "sido_code", nullable = false)
     private int sidoCode;
 
+    @Column(name = "latitude")
+    private BigDecimal latitude;
+
+    @Column(name = "longitude")
+    private BigDecimal longitude;
+
     @Column(name = "sido_name", length = 15, nullable = false)
     private String sidoName;
 
@@ -38,21 +42,21 @@ public class DistrictJpaEntity extends BaseEntity {
 
     public static DistrictJpaEntity from(District district) {
         return DistrictJpaEntity.builder()
-            .sidoGunguCode(district.getSidoGunguCode())
-            .sidoCode(district.getSidoCode())
-            .sidoName(district.getSidoName())
-            .gunguName(district.getGunguName())
-            .sido(district.isSido())
-            .build();
+                .sidoGunguCode(district.getSidoGunguCode())
+                .sidoCode(district.getSidoCode())
+                .sidoName(district.getSidoName())
+                .gunguName(district.getGunguName())
+                .sido(district.isSido())
+                .build();
     }
 
     public District toModel() {
         return District.builder()
-            .sidoGunguCode(getSidoGunguCode())
-            .sidoCode(getSidoCode())
-            .sidoName(getSidoName())
-            .gunguName(getGunguName())
-            .sido(isSido())
-            .build();
+                .sidoGunguCode(getSidoGunguCode())
+                .sidoCode(getSidoCode())
+                .sidoName(getSidoName())
+                .gunguName(getGunguName())
+                .sido(isSido())
+                .build();
     }
 }
