@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class ReviewRepositoryImpl implements ReviewRepository {
+public class QuestionRepositoryImpl implements QuestionRepository {
 
     private final QuestionJpaRepository questionJpaRepository;
 

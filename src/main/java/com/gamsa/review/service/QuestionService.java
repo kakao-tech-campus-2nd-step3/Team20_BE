@@ -1,19 +1,19 @@
 package com.gamsa.review.service;
 
 import com.gamsa.review.dto.QuestionResponse;
-import com.gamsa.review.repository.ReviewRepository;
+import com.gamsa.review.repository.QuestionRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ReviewService {
+public class QuestionService {
 
-    private final ReviewRepository reviewRepository;
+    private final QuestionRepository questionRepository;
 
     public List<QuestionResponse> findAllResponse() {
-        return reviewRepository.findAllQuestion().stream()
+        return questionRepository.findAllQuestion().stream()
             .map(QuestionResponse::from)
             .toList();
     }
