@@ -1,12 +1,12 @@
-package com.gamsa.datasync.service;
+package com.gamsa.dataupdate.service;
 
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.dto.InstituteSaveRequest;
 import com.gamsa.activity.service.ActivityService;
 import com.gamsa.activity.service.DistrictService;
 import com.gamsa.activity.service.InstituteService;
-import com.gamsa.datasync.utils.ActivityDataUtils;
-import com.gamsa.datasync.utils.KakaoLocalUtils;
+import com.gamsa.dataupdate.utils.ActivityDataUtils;
+import com.gamsa.dataupdate.utils.KakaoLocalUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +23,13 @@ public class ActivityDataUpdateService {
     DistrictService districtService;
     InstituteService instituteService;
 
-    public void update() {
-        String today = LocalDate.now().toString();
-        String afterDay = LocalDate.now().plusDays(7).toString();
-
-        List<String> programList = activityDataUtils.getVolunteerParticipationList(today, afterDay);
+    public void update(LocalDate startDate, LocalDate endDate) {
+        List<String> programList = activityDataUtils.getVolunteerParticipationList(startDate, endDate);
 
         List<InstituteSaveRequest> saveRequests = programList.stream()
                 .map(activityDataUtils::getInstituteApiResponse)
                 .map(instituteApiResponse -> {
-                    return instituteApiResponse.toSaveRequest(kakaoLocalUtils.getCoordinateByKeyword(instituteApiResponse.getLocation())
+                    return instituteApiResponse.toSaveRequest(kakaoLocalUtils.getCoordinateByAddress(instituteApiResponse.getLocation())
                             .orElse(districtService.findCoordinates(instituteApiResponse.getSidoGunguCode())));
                 })
                 .toList();
@@ -47,6 +44,5 @@ public class ActivityDataUpdateService {
                 .toList();
 
         activitySaveRequests.forEach(activityService::save);
-
     }
 }

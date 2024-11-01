@@ -1,7 +1,9 @@
-package com.gamsa.datasync.service;
+package com.gamsa.dataupdate.service;
 
 import com.gamsa.activity.dto.DistrictSaveRequest;
 import com.gamsa.activity.service.DistrictService;
+import com.gamsa.dataupdate.DataUpdateErrorCode;
+import com.gamsa.dataupdate.DataUpdateException;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.annotation.PostConstruct;
@@ -22,14 +24,12 @@ import java.math.BigDecimal;
 public class DistrictDataUpdateService {
     private final DistrictService districtService;
 
-    @Value("{gamsa.csvPath}")
+    @Value("{data.csvpath}")
     private String csvPath;
 
     @PostConstruct
     public void DistrictInit() {
-        if (!isDataChanged()) {
-            loadDataFromCSV(csvPath);
-        }
+        if (!isDataChanged()) loadDataFromCSV(csvPath);
     }
 
     private boolean isDataChanged() {
@@ -62,9 +62,9 @@ public class DistrictDataUpdateService {
                 districtService.save(districtSaveRequest);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DataUpdateException(DataUpdateErrorCode.INVALID_FILE_SOURCE);
         } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
+            throw new DataUpdateException(DataUpdateErrorCode.INVALID_CSV);
         }
     }
 }
