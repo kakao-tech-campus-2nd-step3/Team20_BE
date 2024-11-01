@@ -6,3 +6,14 @@ spring:
 
 kakao:
   user-info-url: https://kapi.kakao.com/v2/user/me
+  localkey:
+
+data:
+  csvpath: "district_and_coordinate_kr.csv"
+
+openapi:
+  key:
+  url: "http://openapi.1365.go.kr/openapi/service/rest/VolunteerPartcptnService/"
+  volurl: "https://www.1365.go.kr/vols/1572247904127/partcptn/timeCptn.do?type=show&progrmRegistNo="
+  days: 7
+

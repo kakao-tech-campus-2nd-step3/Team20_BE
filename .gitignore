@@ -88,3 +88,9 @@ nb-configuration.xml
 ## Miscellaneous
 ##############################
 *.log
+
+##############################
+## Production
+##############################
+src/main/resources/application-prod-db.yml
+src/main/resources/application-jwt.yml
