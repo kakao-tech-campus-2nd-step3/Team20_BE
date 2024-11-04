@@ -1,11 +1,15 @@
 package com.gamsa.activity.service;
 
 import com.gamsa.activity.constant.ActivityErrorCode;
+import com.gamsa.activity.domain.District;
 import com.gamsa.activity.dto.DistrictFindAllResponse;
 import com.gamsa.activity.dto.DistrictSaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.repository.DistrictRepository;
-import java.util.List;
+
+import java.math.BigDecimal;
+import java.util.*;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +47,14 @@ public class DistrictService {
         return districtRepository.findAllBysido(false).stream()
             .map(DistrictFindAllResponse::from)
             .toList();
+    }
+
+    public Map<String, BigDecimal> findCoordinates(int gunguCode) {
+        District find = districtRepository.findBySidoGunguCode(gunguCode)
+                .orElseThrow(NoSuchElementException::new);
+        Map<String, BigDecimal> coordinates = new HashMap<>();
+        coordinates.put("longitude", find.getLongitude());
+        coordinates.put("latitude", find.getLatitude());
+        return coordinates;
     }
 }

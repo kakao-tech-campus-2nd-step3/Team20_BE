@@ -1,0 +1,26 @@
+name: Prod-CD
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Code Deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name gamsa-codedeploy \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name gamsa-deploy-group \
+          --s3-location bucket=gamja-bongsa,bundleType=tgz,key=deploy.tar.gz

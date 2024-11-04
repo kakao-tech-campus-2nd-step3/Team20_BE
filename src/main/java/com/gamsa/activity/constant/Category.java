@@ -1,5 +1,7 @@
 package com.gamsa.activity.constant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,4 +17,28 @@ public enum Category {
     OTHER_ACTIVITIES("기타 활동");
 
     private final String name;
+
+    @JsonCreator
+    public static Category fromValues(String value) {
+        for (Category category : Category.values()) {
+            if (category.getName().equals(value)) {
+                return category;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + value);
+    }
+
+    public static Category fromValuesForSlice(String value) {
+        for (Category category : Category.values()) {
+            if (category.getName().equals(value)) {
+                return category;
+            }
+        }
+        return null;    // QueryDSL 에서는 null일 경우 필터링에서 제외하므로 null 반환 허용
+    }
+
+    @JsonValue
+    public String toValue() {
+        return this.name;
+    }
 }
