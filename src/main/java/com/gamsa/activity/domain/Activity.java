@@ -1,10 +1,11 @@
 package com.gamsa.activity.domain;
 
 import com.gamsa.activity.constant.Category;
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -24,6 +25,8 @@ public class Activity {
     private boolean adultPossible;
     private boolean teenPossible;
     private boolean groupPossible;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private int actWeek;
     private String actManager;
     private String actPhone;

@@ -3,10 +3,14 @@ package com.gamsa.activity.dto;
 
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
-import java.time.LocalDateTime;
+import com.gamsa.review.dto.QuestionResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -35,29 +39,29 @@ public class ActivityDetailResponse {
     private final InstituteDetailResponse institute;
     private final DistrictDetailResponse sidoGungu;
 
-    public static ActivityDetailResponse from(Activity activity) {
+    public static ActivityDetailResponse from(Activity activity, Map<QuestionResponse, BigDecimal> scores) {
         return ActivityDetailResponse.builder()
-            .actId(activity.getActId())
-            .actTitle(activity.getActTitle())
-            .actLocation(activity.getActLocation())
-            .description(activity.getDescription())
-            .noticeStartDate(activity.getNoticeStartDate())
-            .noticeEndDate(activity.getNoticeEndDate())
-            .actStartDate(activity.getActStartDate())
-            .actEndDate(activity.getActEndDate())
-            .actStartTime(activity.getActStartTime())
-            .actEndTime(activity.getActEndTime())
-            .recruitTotalNum(activity.getRecruitTotalNum())
-            .adultPossible(activity.isAdultPossible())
-            .teenPossible(activity.isTeenPossible())
-            .groupPossible(activity.isGroupPossible())
-            .actWeek(activity.getActWeek())
-            .actManager(activity.getActManager())
-            .actPhone(activity.getActPhone())
-            .url(activity.getUrl())
-            .category(activity.getCategory())
-            .institute(InstituteDetailResponse.from(activity.getInstitute()))
-            .sidoGungu(DistrictDetailResponse.from(activity.getSidoGungu()))
-            .build();
+                .actId(activity.getActId())
+                .actTitle(activity.getActTitle())
+                .actLocation(activity.getActLocation())
+                .description(activity.getDescription())
+                .noticeStartDate(activity.getNoticeStartDate())
+                .noticeEndDate(activity.getNoticeEndDate())
+                .actStartDate(activity.getActStartDate())
+                .actEndDate(activity.getActEndDate())
+                .actStartTime(activity.getActStartTime())
+                .actEndTime(activity.getActEndTime())
+                .recruitTotalNum(activity.getRecruitTotalNum())
+                .adultPossible(activity.isAdultPossible())
+                .teenPossible(activity.isTeenPossible())
+                .groupPossible(activity.isGroupPossible())
+                .actWeek(activity.getActWeek())
+                .actManager(activity.getActManager())
+                .actPhone(activity.getActPhone())
+                .url(activity.getUrl())
+                .category(activity.getCategory())
+                .institute(InstituteDetailResponse.from(activity.getInstitute(), scores))
+                .sidoGungu(DistrictDetailResponse.from(activity.getSidoGungu()))
+                .build();
     }
 }
