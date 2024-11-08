@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Answer {
-
-    private Question question;
+    private Long answerId;
     private int score;
+    private Question question;
 }
