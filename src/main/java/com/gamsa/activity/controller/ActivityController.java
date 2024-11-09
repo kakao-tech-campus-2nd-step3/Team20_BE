@@ -19,20 +19,22 @@ public class ActivityController {
 
     @GetMapping
     public Slice<ActivityFindSliceResponse> findSlice(
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) Integer sidoGunguCode,
-            @RequestParam(required = false) Integer sidoCode,
-            @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
-            @RequestParam(defaultValue = "false") boolean beforeDeadlineOnly,
-            Pageable pageable) {
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) Integer sidoGunguCode,
+        @RequestParam(required = false) Integer sidoCode,
+        @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
+        @RequestParam(defaultValue = "false") boolean beforeDeadlineOnly,
+        @RequestParam(required = false) String keyword,
+        Pageable pageable) {
 
         ActivityFilterRequest request = ActivityFilterRequest.builder()
-                .category(Category.fromValuesForSlice(category))
-                .sidoGunguCode(sidoGunguCode)
-                .sidoCode(sidoCode)
-                .teenPossibleOnly(teenPossibleOnly)
-                .beforeDeadlineOnly(beforeDeadlineOnly)
-                .build();
+            .category(Category.fromValuesForSlice(category))
+            .sidoGunguCode(sidoGunguCode)
+            .sidoCode(sidoCode)
+            .teenPossibleOnly(teenPossibleOnly)
+            .beforeDeadlineOnly(beforeDeadlineOnly)
+            .keyword(keyword)
+            .build();
 
         return activityService.findSlice(request, pageable);
     }
