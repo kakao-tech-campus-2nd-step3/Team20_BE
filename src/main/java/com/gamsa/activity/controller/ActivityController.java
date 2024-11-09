@@ -33,6 +33,7 @@ public class ActivityController {
         @RequestParam(required = false) Integer sidoCode,
         @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
         @RequestParam(defaultValue = "false") boolean beforeDeadlineOnly,
+        @RequestParam(required = false) String keyword,
         Pageable pageable) {
 
         ActivityFilterRequest request = ActivityFilterRequest.builder()
@@ -41,6 +42,7 @@ public class ActivityController {
             .sidoCode(sidoCode)
             .teenPossibleOnly(teenPossibleOnly)
             .beforeDeadlineOnly(beforeDeadlineOnly)
+            .keyword(keyword)
             .build();
 
         return activityService.findSlice(request, pageable);
