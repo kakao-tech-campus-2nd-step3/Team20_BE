@@ -3,7 +3,7 @@ package com.gamsa.dataupdate.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gamsa.activity.constant.Category;
-import com.gamsa.activity.dto.ActivityApiResponse;
+import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.dto.InstituteApiResponse;
 import com.gamsa.dataupdate.DataUpdateErrorCode;
 import com.gamsa.dataupdate.DataUpdateException;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -61,9 +62,10 @@ public class ActivityDataUtils {
                     ObjectMapper objectMapper = new ObjectMapper();
                     JsonNode rootNode = objectMapper.readTree(jsonContent);
 
-                    JsonNode itemsNode = rootNode.path("response").path("body").path("items");
+                    JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
 
                     numOfItem = itemsNode.size();
+
 
                     for (JsonNode item : itemsNode) {
                         String programNo = item.path("progrmRegistNo").asText();
@@ -93,6 +95,9 @@ public class ActivityDataUtils {
 
         ResponseEntity<String> response = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
 
+        System.out.println("Request URI: " + uriBuilder.toUriString());
+        System.out.println("Response URI: " + response.getBody());
+
         if (response.getStatusCode().is2xxSuccessful()) {
             try {
                 String jsonContent = response.getBody();
@@ -103,15 +108,14 @@ public class ActivityDataUtils {
                 JsonNode item = rootNode.path("response").path("body").path("items").path("item");
 
                 System.out.println(item);
-                InstituteApiResponse instituteApiResponse = InstituteApiResponse.builder()
+
+                return InstituteApiResponse.builder()
                         .name(item.path("mnnstNm").asText())
                         .location(item.path("postAdres").asText())
                         .sidoCode(item.path("sidoCd").asInt())
                         .sidoGunguCode(item.path("gugunCd").asInt())
                         .phone(item.path("telno").asText())
                         .build();
-
-                return instituteApiResponse;
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -122,7 +126,7 @@ public class ActivityDataUtils {
         }
     }
 
-    public ActivityApiResponse getVolunteerDetail(String programNo) {
+    public ActivitySaveRequest getVolunteerDetail(String programNo) {
         String url = openapiUrl + "/getVltrPartcptnItem";
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
@@ -140,32 +144,31 @@ public class ActivityDataUtils {
 
                 JsonNode item = rootNode.path("response").path("body").path("items").path("item");
 
-                ActivityApiResponse activityApiResponse = ActivityApiResponse.builder()
-                        .actId((long) item.path("progrmRegistNo").asInt())
+                return ActivitySaveRequest.builder()
+                        .actId(Long.parseLong(programNo))
                         .actTitle(item.path("progrmSj").asText())
                         .actLocation(item.path("actPlace").asText())
                         .description(item.path("progrmCn").asText())
-                        .noticeStartDate(LocalDate.parse(String.valueOf(item.path("noticeBgnde").asInt()), formatter).atStartOfDay())
-                        .noticeEndDate(LocalDate.parse(String.valueOf(item.path("noticeEndde").asInt()), formatter).atStartOfDay())
-                        .actStartDate(LocalDate.parse(String.valueOf(item.path("progrmBgnde").asInt()), formatter).atStartOfDay())
-                        .actEndDate(LocalDate.parse(String.valueOf(item.path("progrmBgnde").asInt()), formatter).atStartOfDay())
+                        .noticeStartDate(LocalDate.parse(item.path("noticeBgnde").asText(), formatter).atStartOfDay())
+                        .noticeEndDate(LocalDate.parse(item.path("noticeEndde").asText(), formatter).atStartOfDay())
+                        .actStartDate(LocalDate.parse(item.path("progrmBgnde").asText(), formatter).atStartOfDay())
+                        .actEndDate(LocalDate.parse(item.path("progrmBgnde").asText(), formatter).atStartOfDay())
                         .actStartTime(item.path("actBeginTm").asInt())
                         .actEndTime(item.path("actEndTm").asInt())
                         .recruitTotalNum(item.path("rcritNmpr").asInt())
-                        .adultPossible(item.path("adultPosblAt").asText() == "Y" ? true : false)
-                        .teenPossible(item.path("yngbgsPosblAt").asText() == "Y" ? true : false)
-                        .groupPossible(item.path("grpPosblAt").asText() == "Y" ? true : false)
-                        .actWeek(item.path("actWkdy").asInt())
+                        .actLocation(item.path("areaAddress1").asText())
+                        .longitude(new BigDecimal(item.path("areaLalo1").asText().split(",")[0]))
+                        .latitude(new BigDecimal(item.path("areaLalo1").asText().split(",")[1]))
+                        .adultPossible(item.path("adultPosblAt").asText("").equals("Y"))
+                        .teenPossible(item.path("yngbgsPosblAt").asText("").equals("Y"))
+                        .groupPossible(item.path("grpPosblAt").asText("").equals("Y")).actWeek(item.path("actWkdy").asInt())
                         .actManager(item.path("nanmmbyNmAdmn").asText())
                         .actPhone(item.path("telno").asText())
                         .url(volUrl + item.path("progrmRegistNo").asText())
-                        .instituteName(item.path("mnnstNm").asText())
                         .category(getCategory(item.path("srvcClCode").asText()))
+                        .instituteName(item.path("mnnstNm").asText())
                         .sidoGunguCode(item.path("gugunCd").asInt())
-
                         .build();
-
-                return activityApiResponse;
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());

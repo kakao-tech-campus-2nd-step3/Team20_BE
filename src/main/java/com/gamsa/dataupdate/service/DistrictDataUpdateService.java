@@ -9,8 +9,10 @@ import com.opencsv.exceptions.CsvValidationException;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,17 +21,19 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 @Service
-@Component
 @RequiredArgsConstructor
 public class DistrictDataUpdateService {
     private final DistrictService districtService;
+    private static final Logger logger = LoggerFactory.getLogger(DistrictDataUpdateService.class);
 
-    @Value("{data.csvpath}")
+    @Value("${data.csvpath}")
     private String csvPath;
 
     @PostConstruct
     public void DistrictInit() {
-        if (!isDataChanged()) loadDataFromCSV(csvPath);
+        logger.info("DistrictInit : path = {}", csvPath);
+
+        loadDataFromCSV(csvPath);
     }
 
     private boolean isDataChanged() {
@@ -41,17 +45,20 @@ public class DistrictDataUpdateService {
     @Transactional
     public void loadDataFromCSV(String csvPath) {
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource(csvPath).getFile());
+            ClassPathResource resource = new ClassPathResource(csvPath);
+            File file = resource.getFile();
             FileReader fileReader = new FileReader(file);
             CSVReader csvReader = new CSVReader(fileReader);
 
+            logger.info("csvReader : {}", csvReader);
+
             csvReader.readNext();
             String[] nextRecord;
+
             while ((nextRecord = csvReader.readNext()) != null) {
                 DistrictSaveRequest districtSaveRequest = DistrictSaveRequest.builder()
-                        .sidoGunguCode(Integer.getInteger(nextRecord[0]))
-                        .sidoCode(Integer.getInteger(nextRecord[1]))
+                        .sidoGunguCode(Integer.parseInt(nextRecord[0]))
+                        .sidoCode(Integer.parseInt(nextRecord[1]))
                         .sidoName(nextRecord[2])
                         .gunguName(nextRecord[3])
                         .latitude(new BigDecimal(nextRecord[4]))
@@ -65,6 +72,8 @@ public class DistrictDataUpdateService {
             throw new DataUpdateException(DataUpdateErrorCode.INVALID_FILE_SOURCE);
         } catch (CsvValidationException e) {
             throw new DataUpdateException(DataUpdateErrorCode.INVALID_CSV);
+        } catch (Exception e) {
+            logger.info("Error :{}", e.getMessage());
         }
     }
 }

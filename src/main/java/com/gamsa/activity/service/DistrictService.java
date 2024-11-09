@@ -1,17 +1,17 @@
 package com.gamsa.activity.service;
 
-import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.domain.District;
 import com.gamsa.activity.dto.DistrictFindAllResponse;
 import com.gamsa.activity.dto.DistrictSaveRequest;
-import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.repository.DistrictRepository;
-
-import java.math.BigDecimal;
-import java.util.*;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
@@ -20,10 +20,6 @@ public class DistrictService {
     private final DistrictRepository districtRepository;
 
     public void save(DistrictSaveRequest saveRequest) {
-        districtRepository.findBySidoGunguCode(saveRequest.getSidoGunguCode())
-            .ifPresent(district -> {
-                throw new ActivityException(ActivityErrorCode.DISTRICT_ALREADY_EXISTS);
-            });
         districtRepository.save(saveRequest.toModel());
     }
 
@@ -34,8 +30,8 @@ public class DistrictService {
      */
     public List<DistrictFindAllResponse> findAllSido() {
         return districtRepository.findAllBysido(true).stream()
-            .map(DistrictFindAllResponse::from)
-            .toList();
+                .map(DistrictFindAllResponse::from)
+                .toList();
     }
 
     /**
@@ -45,16 +41,30 @@ public class DistrictService {
      */
     public List<DistrictFindAllResponse> findAllGungu() {
         return districtRepository.findAllBysido(false).stream()
-            .map(DistrictFindAllResponse::from)
-            .toList();
+                .map(DistrictFindAllResponse::from)
+                .toList();
     }
 
     public Map<String, BigDecimal> findCoordinates(int gunguCode) {
-        District find = districtRepository.findBySidoGunguCode(gunguCode)
-                .orElseThrow(NoSuchElementException::new);
-        Map<String, BigDecimal> coordinates = new HashMap<>();
-        coordinates.put("longitude", find.getLongitude());
-        coordinates.put("latitude", find.getLatitude());
-        return coordinates;
+        if (gunguCode == 0) {
+            Map<String, BigDecimal> defaultCoordinates = new HashMap<>();
+            defaultCoordinates.put("longitude", null); // 기본값으로 null 저장
+            defaultCoordinates.put("latitude", null);
+            return defaultCoordinates;
+        }
+
+        return districtRepository.findBySidoGunguCode(gunguCode)
+                .map(district -> {
+                    Map<String, BigDecimal> coordinates = new HashMap<>();
+                    coordinates.put("longitude", district.getLongitude());
+                    coordinates.put("latitude", district.getLatitude());
+                    return coordinates;
+                })
+                .orElseThrow(() -> new NoSuchElementException("District not found for gunguCode: " + gunguCode));
+    }
+
+    public District findBySidoGunguCode(int gunguCode) {
+        return districtRepository.findBySidoGunguCode(gunguCode)
+                .orElseThrow(() -> new NoSuchElementException("District not found for gunguCode: " + gunguCode));
     }
 }

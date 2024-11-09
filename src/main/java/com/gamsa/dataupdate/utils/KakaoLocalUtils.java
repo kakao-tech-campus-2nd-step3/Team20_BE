@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -24,7 +25,11 @@ public class KakaoLocalUtils {
 
     public Optional<Map<String, BigDecimal>> getCoordinateByAddress(String address) {
         // 요청 URL 생성
-        String url = "https://dapi.kakao.com/v2/local/search/address.json?query=" + address;
+        String url = UriComponentsBuilder.fromHttpUrl("https://dapi.kakao.com/v2/local/search/address.json")
+                .queryParam("query", address)
+                .toUriString();
+        System.out.println("Request URL: " + url);  // 디버깅 로그
+
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "KakaoAK " + kakaoKey);

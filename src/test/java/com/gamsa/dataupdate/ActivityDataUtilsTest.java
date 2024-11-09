@@ -11,7 +11,8 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class ActivityDataUtilsTest {
+public class
+ActivityDataUtilsTest {
 
     @Autowired
     private ActivityDataUtils activityDataUtils;
@@ -26,30 +27,33 @@ public class ActivityDataUtilsTest {
         var list = activityDataUtils.getVolunteerParticipationList(today, endDate);
 
         //then
+        System.out.println(list);
         assertThat(list.size()).isNotZero();
     }
 
     @Test
     void 기관_상세_조회() {
         //given
-        String programNo = "3168803";
+        String programNo = "3150400";
 
         //when
         var result = activityDataUtils.getInstituteApiResponse(programNo);
 
         //then
-        assertThat(result.getName()).isEqualTo("음성효심주간보호센터");
+        System.out.println(result);
+        assertThat(result.getName()).isEqualTo("완주다문화공동체보물섬");
     }
 
     @Test
     void 활동_상세_조회() {
         //given
-        String programNo = "3168803";
+        String programNo = "3150400";
 
         //when
         var result = activityDataUtils.getVolunteerDetail(programNo);
 
         //then
-        assertThat(result.getCategory()).isEqualTo(Category.CULTURE_ENVIRONMENT_AND_INTERNATIONAL_COOPERATION);
+        System.out.println(result);
+        assertThat(result.getCategory()).isEqualTo(Category.LIFE_SUPPORT_AND_HOUSING_IMPROVEMENT);
     }
 }
