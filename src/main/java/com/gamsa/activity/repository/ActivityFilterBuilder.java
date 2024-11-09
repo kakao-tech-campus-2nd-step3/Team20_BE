@@ -17,6 +17,7 @@ public class ActivityFilterBuilder {
         eqSidoCode(filterBuilder, request.getSidoCode());
         isTeenPossibleOnly(filterBuilder, request.isTeenPossibleOnly());
         isDeadlineEndOnly(filterBuilder, request.isBeforeDeadlineOnly());
+        containsKeyword(filterBuilder, request.getKeyword());
 
         return filterBuilder;
     }
@@ -48,6 +49,12 @@ public class ActivityFilterBuilder {
     public static void isDeadlineEndOnly(BooleanBuilder filterBuilder, boolean beforeDeadlineOnly) {
         if (beforeDeadlineOnly) {
             filterBuilder.and(activityJpaEntity.noticeEndDate.after(LocalDateTime.now()));
+        }
+    }
+
+    public static void containsKeyword(BooleanBuilder filterBuilder, String keyword) {
+        if (keyword != null) {
+            filterBuilder.and(activityJpaEntity.actTitle.contains(keyword));
         }
     }
 }
