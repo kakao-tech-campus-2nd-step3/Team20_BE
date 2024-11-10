@@ -1,11 +1,11 @@
 package com.gamsa.dataupdate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.gamsa.dataupdate.utils.KakaoLocalUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class KakaoLocalUtilsTest {
@@ -19,7 +19,8 @@ public class KakaoLocalUtilsTest {
         String address = "경기 광주시 중앙로175번길 14 송정문화센터 2층";
 
         //when
-        var result = kakaoLocalUtils.getCoordinateByAddress(address).orElseThrow();
+        var result = kakaoLocalUtils.getCoordinateByAddress(address)
+            .orElseThrow(IllegalArgumentException::new);
 
         //then
         System.out.println(result);

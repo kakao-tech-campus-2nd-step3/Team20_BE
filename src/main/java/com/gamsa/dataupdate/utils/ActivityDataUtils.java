@@ -7,19 +7,20 @@ import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.dto.InstituteApiResponse;
 import com.gamsa.dataupdate.DataUpdateErrorCode;
 import com.gamsa.dataupdate.DataUpdateException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ActivityDataUtils {
@@ -75,7 +76,7 @@ public class ActivityDataUtils {
                     pageNo++;
 
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    log.error(e.getMessage());
                     throw new DataUpdateException(DataUpdateErrorCode.OPENAPI_ERROR);
                 }
             } else {
@@ -95,8 +96,8 @@ public class ActivityDataUtils {
 
         ResponseEntity<String> response = restTemplate.getForEntity(uriBuilder.toUriString(), String.class);
 
-        System.out.println("Request URI: " + uriBuilder.toUriString());
-        System.out.println("Response URI: " + response.getBody());
+        log.info("Request URI: " + uriBuilder.toUriString());
+        log.info("Response URI: " + response.getBody());
 
         if (response.getStatusCode().is2xxSuccessful()) {
             try {
@@ -107,7 +108,7 @@ public class ActivityDataUtils {
 
                 JsonNode item = rootNode.path("response").path("body").path("items").path("item");
 
-                System.out.println(item);
+                log.info(item.toString());
 
                 return InstituteApiResponse.builder()
                         .name(item.path("mnnstNm").asText())
@@ -118,7 +119,7 @@ public class ActivityDataUtils {
                         .build();
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 throw new DataUpdateException(DataUpdateErrorCode.OPENAPI_ERROR);
             }
         } else {
@@ -171,11 +172,11 @@ public class ActivityDataUtils {
                         .build();
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
                 throw new DataUpdateException(DataUpdateErrorCode.OPENAPI_ERROR);
             }
         } else {
-            System.out.println("Error: " + response.getStatusCode());
+            log.error("Error: " + response.getStatusCode());
             throw new DataUpdateException(DataUpdateErrorCode.OPENAPI_NOT_RESPOND);
         }
     }

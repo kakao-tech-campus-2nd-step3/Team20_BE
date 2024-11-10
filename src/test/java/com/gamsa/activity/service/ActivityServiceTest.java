@@ -1,5 +1,7 @@
 package com.gamsa.activity.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.dto.ActivityDetailResponse;
@@ -7,6 +9,7 @@ import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
+import com.gamsa.activity.stub.StubExistsActivityRepository;
 import com.gamsa.activity.stub.StubExistsDistrictRepository;
 import com.gamsa.activity.stub.StubExistsInstituteRepository;
 import com.gamsa.history.stub.StubHistoryRepository;
@@ -16,15 +19,11 @@ import com.gamsa.review.stub.StubAnswerRepository;
 import com.gamsa.review.stub.StubQuestionRepository;
 import com.gamsa.review.stub.StubReviewRepository;
 import com.gamsa.user.stub.StubExistsUserRepository;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ActivityServiceTest {
 
@@ -83,19 +82,19 @@ class ActivityServiceTest {
     void ID로_활동조회에_성공한다() {
         // given
         ActivityService activityService = new ActivityService(
-                new StubEmptyActivityRepository(),
-                new StubExistsInstituteRepository(),
-                new StubExistsDistrictRepository(),
-                new QuestionService(
-                        new StubQuestionRepository()
-                ),
-                new ReviewService(
-                        new StubExistsUserRepository(),
-                        new StubQuestionRepository(),
-                        new StubReviewRepository(),
-                        new StubAnswerRepository(),
-                        new StubHistoryRepository()
-                )
+            new StubExistsActivityRepository(),
+            new StubExistsInstituteRepository(),
+            new StubExistsDistrictRepository(),
+            new QuestionService(
+                new StubQuestionRepository()
+            ),
+            new ReviewService(
+                new StubExistsUserRepository(),
+                new StubQuestionRepository(),
+                new StubReviewRepository(),
+                new StubAnswerRepository(),
+                new StubHistoryRepository()
+            )
         );
 
         // when
@@ -129,11 +128,5 @@ class ActivityServiceTest {
             // when
             activityService.findById(1L);
         }, ActivityErrorCode.ACTIVITY_NOT_EXISTS.getMsg());
-    }
-
-    @Test
-    @DisplayName("활동 ID로 봉사 기관 정보를 조회한다.")
-    void findInstituteByActivityId() {
-
     }
 }

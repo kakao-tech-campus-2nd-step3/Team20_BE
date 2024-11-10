@@ -1,5 +1,10 @@
 package com.gamsa.dataupdate.utils;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,12 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Component
 public class KakaoLocalUtils {
@@ -26,9 +25,12 @@ public class KakaoLocalUtils {
     public Optional<Map<String, BigDecimal>> getCoordinateByAddress(String address) {
         // 요청 URL 생성
         String url = UriComponentsBuilder.fromHttpUrl("https://dapi.kakao.com/v2/local/search/address.json")
-                .queryParam("query", address)
-                .toUriString();
-        System.out.println("Request URL: " + url);  // 디버깅 로그
+            .queryParam("query", address)
+            .build()
+            .toUriString();
+
+        System.out.println(kakaoKey);
+        System.out.println(url);
 
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -42,6 +44,7 @@ public class KakaoLocalUtils {
         // 응답 처리
         if (response.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> result = response.getBody();
+            System.out.println(result);
             if (result != null && result.containsKey("documents")) {
                 // 첫 번째 결과의 x, y 좌표 반환
                 var documents = (List<Map<String, Object>>) result.get("documents");
