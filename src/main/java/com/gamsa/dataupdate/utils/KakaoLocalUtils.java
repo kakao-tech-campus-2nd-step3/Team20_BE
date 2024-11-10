@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@Slf4j
 @Component
 public class KakaoLocalUtils {
 
@@ -29,9 +31,6 @@ public class KakaoLocalUtils {
             .build()
             .toUriString();
 
-        System.out.println(kakaoKey);
-        System.out.println(url);
-
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "KakaoAK " + kakaoKey);
@@ -44,7 +43,6 @@ public class KakaoLocalUtils {
         // 응답 처리
         if (response.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> result = response.getBody();
-            System.out.println(result);
             if (result != null && result.containsKey("documents")) {
                 // 첫 번째 결과의 x, y 좌표 반환
                 var documents = (List<Map<String, Object>>) result.get("documents");
@@ -61,7 +59,7 @@ public class KakaoLocalUtils {
             }
         }
 
-        System.out.println("API 요청 실패: " + response.getStatusCode());
+        log.error("API 요청 실패: " + response.getStatusCode());
         return Optional.empty();
     }
 }
