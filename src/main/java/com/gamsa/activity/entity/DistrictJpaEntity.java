@@ -46,6 +46,8 @@ public class DistrictJpaEntity extends BaseEntity {
                 .sidoCode(district.getSidoCode())
                 .sidoName(district.getSidoName())
                 .gunguName(district.getGunguName())
+                .latitude(district.getLatitude())
+                .longitude(district.getLongitude())
                 .sido(district.isSido())
                 .build();
     }
@@ -56,6 +58,8 @@ public class DistrictJpaEntity extends BaseEntity {
                 .sidoCode(getSidoCode())
                 .sidoName(getSidoName())
                 .gunguName(getGunguName())
+                .latitude(getLatitude())
+                .longitude(getLongitude())
                 .sido(isSido())
                 .build();
     }

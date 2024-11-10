@@ -34,21 +34,8 @@ public class ActivityService {
     private final QuestionService questionService;
     private final ReviewService reviewService;
 
-    public void save(ActivitySaveRequest saveRequest) {
-        // 중복 여부 확인
-        activityRepository.findById(saveRequest.getActId())
-                .ifPresent(activity -> {
-                    throw new ActivityException(ActivityErrorCode.ACTIVITY_ALREADY_EXISTS);
-                });
-        // 기관 존재 확인
-        Institute institute = instituteRepository.findById(saveRequest.getInstituteId())
-                .orElseThrow(() -> new ActivityException(ActivityErrorCode.INSTITUTE_NOT_EXISTS));
-
-        // 시도, 군구 존재 확인
-        District sidoGungu = districtRepository.findBySidoGunguCode(saveRequest.getSidoGunguCode())
-                .orElseThrow(() -> new ActivityException(ActivityErrorCode.DISTRICT_NOT_EXISTS));
-
-        activityRepository.save(saveRequest.toModel(institute, sidoGungu));
+    public void save(ActivitySaveRequest saveRequest, Institute institute, District district) {
+        activityRepository.save(saveRequest.toModel(institute, district));
     }
 
     public Slice<ActivityFindSliceResponse> findSlice(ActivityFilterRequest request,

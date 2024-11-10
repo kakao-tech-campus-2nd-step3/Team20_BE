@@ -4,22 +4,11 @@ import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.constant.CategoryConverter;
 import com.gamsa.activity.domain.Activity;
 import com.gamsa.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -79,13 +68,19 @@ public class ActivityJpaEntity extends BaseEntity {
     @Column(name = "online_possible")
     private boolean onlinePossible;
 
+    @Column(name = "latitude")
+    private BigDecimal latitude;
+
+    @Column(name = "longitude")
+    private BigDecimal longitude;
+
     @Column(name = "act_week")
     private int actWeek;
 
     @Column(name = "act_manager", length = 255)
     private String actManager;
 
-    @Column(name = "act_phone", length = 12)
+    @Column(name = "act_phone", length = 25)
     private String actPhone;
 
     @Column(name = "url", length = 255)
@@ -105,54 +100,58 @@ public class ActivityJpaEntity extends BaseEntity {
 
     public static ActivityJpaEntity from(Activity activity) {
         return ActivityJpaEntity.builder()
-            .actId(activity.getActId())
-            .actTitle(activity.getActTitle())
-            .actLocation(activity.getActLocation())
-            .description(activity.getDescription())
-            .noticeStartDate(activity.getNoticeStartDate())
-            .noticeEndDate(activity.getNoticeEndDate())
-            .actStartDate(activity.getActStartDate())
-            .actEndDate(activity.getActEndDate())
-            .actStartTime(activity.getActStartTime())
-            .actEndTime(activity.getActEndTime())
-            .recruitTotalNum(activity.getRecruitTotalNum())
-            .adultPossible(activity.isAdultPossible())
-            .teenPossible(activity.isTeenPossible())
-            .groupPossible(activity.isGroupPossible())
-            .actWeek(activity.getActWeek())
-            .actManager(activity.getActManager())
-            .actPhone(activity.getActPhone())
-            .url(activity.getUrl())
-            .category(activity.getCategory())
-            .institute(InstituteJpaEntity.from(activity.getInstitute()))
-            .sidoGungu(DistrictJpaEntity.from(activity.getSidoGungu()))
-            .build();
+                .actId(activity.getActId())
+                .actTitle(activity.getActTitle())
+                .actLocation(activity.getActLocation())
+                .description(activity.getDescription())
+                .noticeStartDate(activity.getNoticeStartDate())
+                .noticeEndDate(activity.getNoticeEndDate())
+                .actStartDate(activity.getActStartDate())
+                .actEndDate(activity.getActEndDate())
+                .actStartTime(activity.getActStartTime())
+                .actEndTime(activity.getActEndTime())
+                .recruitTotalNum(activity.getRecruitTotalNum())
+                .adultPossible(activity.isAdultPossible())
+                .teenPossible(activity.isTeenPossible())
+                .groupPossible(activity.isGroupPossible())
+                .longitude(activity.getLongitude())
+                .latitude(activity.getLatitude())
+                .actWeek(activity.getActWeek())
+                .actManager(activity.getActManager())
+                .actPhone(activity.getActPhone())
+                .url(activity.getUrl())
+                .category(activity.getCategory())
+                .institute(InstituteJpaEntity.from(activity.getInstitute()))
+                .sidoGungu(DistrictJpaEntity.from(activity.getSidoGungu()))
+                .build();
     }
 
     public Activity toModel() {
         return Activity.builder()
-            .actId(actId)
-            .actTitle(actTitle)
-            .actLocation(actLocation)
-            .description(description)
-            .noticeStartDate(noticeStartDate)
-            .noticeEndDate(noticeEndDate)
-            .actStartDate(actStartDate)
-            .actEndDate(actEndDate)
-            .actStartTime(actStartTime)
-            .actEndTime(actEndTime)
-            .recruitTotalNum(recruitTotalNum)
-            .adultPossible(adultPossible)
-            .teenPossible(teenPossible)
-            .groupPossible(groupPossible)
-            .actWeek(actWeek)
-            .actManager(actManager)
-            .actPhone(actPhone)
-            .url(url)
-            .category(category)
-            .institute(institute.toModel())
-            .sidoGungu(sidoGungu.toModel())
-            .build();
+                .actId(actId)
+                .actTitle(actTitle)
+                .actLocation(actLocation)
+                .description(description)
+                .noticeStartDate(noticeStartDate)
+                .noticeEndDate(noticeEndDate)
+                .actStartDate(actStartDate)
+                .actEndDate(actEndDate)
+                .actStartTime(actStartTime)
+                .actEndTime(actEndTime)
+                .recruitTotalNum(recruitTotalNum)
+                .adultPossible(adultPossible)
+                .teenPossible(teenPossible)
+                .groupPossible(groupPossible)
+                .longitude(longitude)
+                .latitude(latitude)
+                .actWeek(actWeek)
+                .actManager(actManager)
+                .actPhone(actPhone)
+                .url(url)
+                .category(category)
+                .institute(institute.toModel())
+                .sidoGungu(sidoGungu.toModel())
+                .build();
     }
 
 }
