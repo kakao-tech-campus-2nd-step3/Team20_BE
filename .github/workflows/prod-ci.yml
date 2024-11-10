@@ -21,8 +21,10 @@ jobs:
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
       - name: Set YML
+        env:
+          DATA_KEY_YML: ${{ secrets.APPLICATION_DATA_YML }}
         run: |
-          echo "${{ secrets.APPLICATION_DATA_YML }}" | base64 --decode > src/main/resources/application-data.yml
+          echo $DATA_KEY_YML | base64 --decode > src/main/resources/application-data.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
