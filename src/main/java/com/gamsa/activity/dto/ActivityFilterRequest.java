@@ -24,4 +24,7 @@ public class ActivityFilterRequest {
 
     // 마감되지 않은 활동만
     private final boolean beforeDeadlineOnly;
+
+    // 키워드 검색
+    private final String keyword;
 }
