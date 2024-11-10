@@ -27,6 +27,7 @@ jobs:
         DATA_KEY_YML: ${{ secrets.APPLICATION_DATA_YML }}
       run: |
         echo $DATA_KEY_YML | base64 --decode > src/main/resources/application-data.yml
+        find src/main/resources
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
