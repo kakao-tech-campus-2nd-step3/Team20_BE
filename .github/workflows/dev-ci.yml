@@ -8,8 +8,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
     - uses: actions/checkout@v4
@@ -27,7 +25,6 @@ jobs:
         echo $DATA_KEY_YML | base64 --decode > src/main/resources/application-data.yml
         find src/main/resources
         wc -c src/main/resources/application-data.yml
-
       env:
         DATA_KEY_YML: ${{ secrets.APPLICATION_DATA_YML }}
 
