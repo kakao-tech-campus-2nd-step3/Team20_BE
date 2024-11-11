@@ -27,6 +27,6 @@ chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
 nohup java -jar \
-        -Dspring.config.location=/home/ubuntu/prod/application-prod-db.yml,/home/ubuntu/prod/application-jwt.yml \
+        -Dspring.config.location=/home/ubuntu/prod/application-prod-db.yml,/home/ubuntu/prod/application-jwt.yml,/home/ubuntu/prod/application-data.yml \
         -Dspring.profiles.active=prod \
         $REPOSITORY/$JAR_NAME 2>&1 &

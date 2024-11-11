@@ -1,5 +1,11 @@
 package com.gamsa.dataupdate.utils;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,12 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+@Slf4j
 @Component
 public class KakaoLocalUtils {
 
@@ -26,9 +27,9 @@ public class KakaoLocalUtils {
     public Optional<Map<String, BigDecimal>> getCoordinateByAddress(String address) {
         // 요청 URL 생성
         String url = UriComponentsBuilder.fromHttpUrl("https://dapi.kakao.com/v2/local/search/address.json")
-                .queryParam("query", address)
-                .toUriString();
-        System.out.println("Request URL: " + url);  // 디버깅 로그
+            .queryParam("query", address)
+            .build()
+            .toUriString();
 
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -58,7 +59,7 @@ public class KakaoLocalUtils {
             }
         }
 
-        System.out.println("API 요청 실패: " + response.getStatusCode());
+        log.error("API 요청 실패: " + response.getStatusCode());
         return Optional.empty();
     }
 }

@@ -3,6 +3,7 @@ spring:
     import:
       - application-jwt.yml
       - application-prod-db.yml
+      - application-data.yml
 
 logging:
   level:

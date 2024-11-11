@@ -23,6 +23,12 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
+      - name: Set YML
+        run: |
+          echo $DATA_KEY_YML | base64 --decode > src/main/resources/application-data.yml
+        env:
+          DATA_KEY_YML: ${{ secrets.APPLICATION_DATA_YML }}
+
       - name: archive build directory
         run: |
           mkdir deploy
