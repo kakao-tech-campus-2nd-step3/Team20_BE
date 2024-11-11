@@ -10,9 +10,7 @@ import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.repository.ActivityRepository;
-import com.gamsa.activity.repository.DistrictRepository;
-import com.gamsa.activity.repository.InstituteRepository;
-import com.gamsa.review.dto.QuestionResponse;
+import com.gamsa.review.domain.Question;
 import com.gamsa.review.service.QuestionService;
 import com.gamsa.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +27,6 @@ import java.util.Map;
 public class ActivityService {
 
     private final ActivityRepository activityRepository;
-    private final InstituteRepository instituteRepository;
-    private final DistrictRepository districtRepository;
     private final QuestionService questionService;
     private final ReviewService reviewService;
 
@@ -49,10 +45,10 @@ public class ActivityService {
                 .orElseThrow(() -> new ActivityException(ActivityErrorCode.ACTIVITY_NOT_EXISTS));
 
 
-        Map<QuestionResponse, BigDecimal> scores = new HashMap<>();
+        Map<Question, BigDecimal> scores = new HashMap<>();
         long instituteId = activity.getInstitute().getInstituteId();
 
-        questionService.findAllResponse().forEach(question -> {
+        questionService.findAll().forEach(question -> {
             BigDecimal score = reviewService.getAverageScore(instituteId, question.getQuestionId());
             scores.put(question, score);
         });

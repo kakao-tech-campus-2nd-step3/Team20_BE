@@ -3,7 +3,7 @@ package com.gamsa.activity.dto;
 
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
-import com.gamsa.review.dto.QuestionResponse;
+import com.gamsa.review.domain.Question;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class ActivityDetailResponse {
     private final InstituteDetailResponse institute;
     private final DistrictDetailResponse sidoGungu;
 
-    public static ActivityDetailResponse from(Activity activity, Map<QuestionResponse, BigDecimal> scores) {
+    public static ActivityDetailResponse from(Activity activity, Map<Question, BigDecimal> scores) {
         return ActivityDetailResponse.builder()
                 .actId(activity.getActId())
                 .actTitle(activity.getActTitle())
