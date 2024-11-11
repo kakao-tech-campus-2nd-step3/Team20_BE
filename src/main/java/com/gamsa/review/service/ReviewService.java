@@ -7,6 +7,7 @@ import com.gamsa.history.repository.HistoryRepository;
 import com.gamsa.review.domain.Answer;
 import com.gamsa.review.domain.Question;
 import com.gamsa.review.domain.Review;
+import com.gamsa.review.dto.ReviewResponse;
 import com.gamsa.review.dto.ReviewSaveRequest;
 import com.gamsa.review.repository.AnswerRepository;
 import com.gamsa.review.repository.QuestionRepository;
@@ -72,7 +73,7 @@ public class ReviewService {
         answers.forEach(answerRepository::save);
     }
 
-    public BigDecimal getAverageScore(long instituteId, long questionId) {
+    public BigDecimal getAverageScore(long instituteId, int questionId) {
         OptionalDouble averageScore = reviewRepository.findReviews(instituteId, questionId)
                 .stream()
                 .flatMap(review -> review.getAnswers().stream())
@@ -85,5 +86,13 @@ public class ReviewService {
         } else {
             return BigDecimal.ZERO;
         }
+    }
+
+    public List<ReviewResponse> getReview(long historyId) {
+
+        return reviewRepository.findHistoryReview(historyId)
+                .orElseThrow(NoSuchElementException::new)
+                .getAnswers().stream().map(answer -> ReviewResponse.from(answer.getQuestion(), new BigDecimal(answer.getScore())))
+                .toList();
     }
 }
