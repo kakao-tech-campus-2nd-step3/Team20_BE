@@ -4,21 +4,22 @@ import com.gamsa.activity.dto.DistrictSaveRequest;
 import com.gamsa.activity.service.DistrictService;
 import com.gamsa.dataupdate.DataUpdateErrorCode;
 import com.gamsa.dataupdate.DataUpdateException;
+import com.gamsa.dataupdate.utils.InputStreamUtils;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +47,8 @@ public class DistrictDataUpdateService {
     public void loadDataFromCSV(String csvPath) {
         try {
             ClassPathResource resource = new ClassPathResource(csvPath);
-            File file = resource.getFile();
+            InputStream inputStream = resource.getInputStream();
+            File file = InputStreamUtils.convertInputStreamToFile(inputStream);
             FileReader fileReader = new FileReader(file);
             CSVReader csvReader = new CSVReader(fileReader);
 
