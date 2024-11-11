@@ -7,11 +7,6 @@ import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.dto.InstituteApiResponse;
 import com.gamsa.dataupdate.DataUpdateErrorCode;
 import com.gamsa.dataupdate.DataUpdateException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -158,8 +159,8 @@ public class ActivityDataUtils {
                         .actEndTime(item.path("actEndTm").asInt())
                         .recruitTotalNum(item.path("rcritNmpr").asInt())
                         .actLocation(item.path("areaAddress1").asText())
-                        .longitude(new BigDecimal(item.path("areaLalo1").asText().split(",")[0]))
-                        .latitude(new BigDecimal(item.path("areaLalo1").asText().split(",")[1]))
+                        .latitude(new BigDecimal(item.path("areaLalo1").asText().split(",")[0]))
+                        .longitude(new BigDecimal(item.path("areaLalo1").asText().split(",")[1]))
                         .adultPossible(item.path("adultPosblAt").asText("").equals("Y"))
                         .teenPossible(item.path("yngbgsPosblAt").asText("").equals("Y"))
                         .groupPossible(item.path("grpPosblAt").asText("").equals("Y")).actWeek(item.path("actWkdy").asInt())
