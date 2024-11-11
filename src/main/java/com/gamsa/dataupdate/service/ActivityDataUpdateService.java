@@ -47,7 +47,8 @@ public class ActivityDataUpdateService {
         try {
             var instituteApiResponse = activityDataUtils.getInstituteApiResponse(programNo);
             InstituteSaveRequest saveRequest = instituteApiResponse.toSaveRequest(
-                    districtService.findCoordinates(instituteApiResponse.getSidoGunguCode()));
+                    kakaoLocalUtils.getCoordinateByAddress(instituteApiResponse.getLocation()).orElse(
+                            districtService.findCoordinates(instituteApiResponse.getSidoGunguCode())));
             instituteService.save(saveRequest);
         } catch (Exception e) {
             log.warn("Failed to save institute for program number {}: {}", programNo, e.getMessage());
