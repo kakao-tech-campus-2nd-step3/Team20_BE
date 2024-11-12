@@ -4,6 +4,7 @@ import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.domain.District;
 import com.gamsa.activity.domain.Institute;
 import com.gamsa.activity.dto.ActivityFilterRequest;
+import com.gamsa.activity.dto.ActivityFindDistanceOrderRequest;
 import com.gamsa.activity.repository.ActivityRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -62,6 +63,12 @@ public class StubExistsActivityRepository implements ActivityRepository {
 
     @Override
     public Slice<Activity> findSlice(ActivityFilterRequest request, Pageable pageable) {
+        return new SliceImpl<>(List.of(activity));
+    }
+
+    @Override
+    public Slice<Activity> findSliceDistanceOrder(ActivityFilterRequest filterRequest,
+        ActivityFindDistanceOrderRequest distanceOrderRequest, Pageable pageable) {
         return new SliceImpl<>(List.of(activity));
     }
 

@@ -41,7 +41,7 @@ class ActivityServiceTest {
         );
 
         // when
-        Slice<ActivityFindSliceResponse> result = activityService.findSlice(null,
+        Slice<ActivityFindSliceResponse> result = activityService.findSlice(null, null,
                 PageRequest.of(0, 10));
 
         // then

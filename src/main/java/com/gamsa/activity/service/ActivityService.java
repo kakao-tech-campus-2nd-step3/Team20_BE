@@ -6,21 +6,22 @@ import com.gamsa.activity.domain.District;
 import com.gamsa.activity.domain.Institute;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFilterRequest;
+import com.gamsa.activity.dto.ActivityFindDistanceOrderRequest;
 import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.repository.ActivityRepository;
 import com.gamsa.review.domain.Question;
+import com.gamsa.review.dto.QuestionResponse;
 import com.gamsa.review.service.QuestionService;
 import com.gamsa.review.service.ReviewService;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -34,9 +35,19 @@ public class ActivityService {
         activityRepository.save(saveRequest.toModel(institute, district));
     }
 
-    public Slice<ActivityFindSliceResponse> findSlice(ActivityFilterRequest request,
-                                                      Pageable pageable) {
-        Slice<Activity> activities = activityRepository.findSlice(request, pageable);
+    public Slice<ActivityFindSliceResponse> findSlice(ActivityFilterRequest filterRequest,
+        ActivityFindDistanceOrderRequest distanceOrderRequest,
+        Pageable pageable) {
+
+        Slice<Activity> activities;
+        // 가까운순 정렬
+        if (pageable.getSort().toString().contains("distance")) {
+            activities = activityRepository
+                .findSliceDistanceOrder(filterRequest, distanceOrderRequest, pageable);
+        } else {
+            activities = activityRepository.findSlice(filterRequest, pageable);
+        }
+
         return activities.map(ActivityFindSliceResponse::from);
     }
 

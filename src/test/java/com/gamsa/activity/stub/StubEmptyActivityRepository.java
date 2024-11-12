@@ -2,6 +2,7 @@ package com.gamsa.activity.stub;
 
 import com.gamsa.activity.domain.Activity;
 import com.gamsa.activity.dto.ActivityFilterRequest;
+import com.gamsa.activity.dto.ActivityFindDistanceOrderRequest;
 import com.gamsa.activity.repository.ActivityRepository;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,12 @@ public class StubEmptyActivityRepository implements ActivityRepository {
 
     @Override
     public Slice<Activity> findSlice(ActivityFilterRequest request, Pageable pageable) {
+        return new SliceImpl<>(List.of());
+    }
+
+    @Override
+    public Slice<Activity> findSliceDistanceOrder(ActivityFilterRequest filterRequest,
+        ActivityFindDistanceOrderRequest distanceOrderRequest, Pageable pageable) {
         return new SliceImpl<>(List.of());
     }
 
