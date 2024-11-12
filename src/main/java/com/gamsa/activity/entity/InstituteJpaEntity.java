@@ -26,10 +26,10 @@ public class InstituteJpaEntity extends BaseEntity {
     @Column(name = "location", length = 255)
     private String location;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", precision = 10, scale = 8)
     private BigDecimal latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", precision = 11, scale = 8)
     private BigDecimal longitude;
 
     @ManyToOne(fetch = FetchType.EAGER)

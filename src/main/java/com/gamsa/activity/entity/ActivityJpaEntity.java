@@ -80,10 +80,10 @@ public class ActivityJpaEntity extends BaseEntity {
     @Column(name = "online_possible")
     private boolean onlinePossible;
 
-    @Column(name = "latitude", precision = 10, scale = 6)
+    @Column(name = "latitude", precision = 10, scale = 8)
     private BigDecimal latitude;
 
-    @Column(name = "longitude", precision = 10, scale = 6)
+    @Column(name = "longitude", precision = 11, scale = 8)
     private BigDecimal longitude;
 
     @Column(name = "act_week")

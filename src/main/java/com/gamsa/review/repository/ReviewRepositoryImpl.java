@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -18,9 +19,14 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public List<Review> findReviews(Long instituteId, Long questionId) {
-        return reviewJpaRepository.findByInstituteInstituteIdAndAnswersQuestionQuestionId(instituteId, questionId).stream().map(ReviewJpaEntity::toModel).toList();
+    public List<Review> findReviews(Long instituteId, int questionId) {
+        return reviewJpaRepository.findByInstituteInstituteIdAndAnswersQuestionQuestionId(instituteId, questionId).stream()
+                .map(ReviewJpaEntity::toModel).toList();
     }
 
+    @Override
+    public Optional<Review> findHistoryReview(Long historyId) {
+        return reviewJpaRepository.findByHistoryHistoryId(historyId).map(ReviewJpaEntity::toModel);
+    }
 
 }

@@ -13,8 +13,8 @@ public class QuestionResponse {
 
     public static QuestionResponse from(Question question) {
         return QuestionResponse.builder()
-            .questionId(question.getQuestionId())
-            .content(question.getContent())
-            .build();
+                .questionId(question.getQuestionId())
+                .content(question.getContent())
+                .build();
     }
 }
