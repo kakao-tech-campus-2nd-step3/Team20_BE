@@ -3,7 +3,7 @@ package com.gamsa.activity.dto;
 
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.domain.Activity;
-import com.gamsa.review.dto.QuestionResponse;
+import com.gamsa.review.domain.Question;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,8 @@ public class ActivityDetailResponse {
     private final boolean adultPossible;
     private final boolean teenPossible;
     private final boolean groupPossible;
+    private final BigDecimal latitude;
+    private final BigDecimal longitude;
     private final int actWeek;
     private final String actManager;
     private final String actPhone;
@@ -39,7 +41,7 @@ public class ActivityDetailResponse {
     private final InstituteDetailResponse institute;
     private final DistrictDetailResponse sidoGungu;
 
-    public static ActivityDetailResponse from(Activity activity, Map<QuestionResponse, BigDecimal> scores) {
+    public static ActivityDetailResponse from(Activity activity, Map<Question, BigDecimal> scores) {
         return ActivityDetailResponse.builder()
                 .actId(activity.getActId())
                 .actTitle(activity.getActTitle())
@@ -55,6 +57,8 @@ public class ActivityDetailResponse {
                 .adultPossible(activity.isAdultPossible())
                 .teenPossible(activity.isTeenPossible())
                 .groupPossible(activity.isGroupPossible())
+                .latitude(activity.getLatitude())
+                .longitude(activity.getLongitude())
                 .actWeek(activity.getActWeek())
                 .actManager(activity.getActManager())
                 .actPhone(activity.getActPhone())

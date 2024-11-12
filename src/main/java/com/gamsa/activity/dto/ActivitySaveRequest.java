@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,15 +30,17 @@ public class ActivitySaveRequest {
     private final boolean adultPossible;
     private final boolean teenPossible;
     private final boolean groupPossible;
+    private final BigDecimal latitude;
+    private final BigDecimal longitude;
     private final int actWeek;
     private final String actManager;
     private final String actPhone;
     private final String url;
     private final Category category;
-    private final Long instituteId;
+    private final String instituteName;
     private final Integer sidoGunguCode;
 
-    public Activity toModel(Institute institute, District sidoGungu) {
+    public Activity toModel(Institute institute, District district) {
         return Activity.builder()
                 .actId(actId)
                 .actTitle(actTitle)
@@ -53,13 +56,15 @@ public class ActivitySaveRequest {
                 .adultPossible(adultPossible)
                 .teenPossible(teenPossible)
                 .groupPossible(groupPossible)
+                .longitude(longitude)
+                .latitude(latitude)
                 .actWeek(actWeek)
                 .actManager(actManager)
                 .actPhone(actPhone)
                 .url(url)
                 .category(category)
                 .institute(institute)
-                .sidoGungu(sidoGungu)
+                .sidoGungu(district)
                 .build();
     }
 }

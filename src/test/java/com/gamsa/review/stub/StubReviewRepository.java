@@ -16,6 +16,7 @@ import com.gamsa.review.repository.ReviewRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class StubReviewRepository implements ReviewRepository {
 
@@ -101,8 +102,12 @@ public class StubReviewRepository implements ReviewRepository {
     }
 
     @Override
-    public List<Review> findReviews(Long instituteID, Long questionId) {
+    public List<Review> findReviews(Long instituteID, int questionId) {
         return List.of(review1);
+    }
 
+    @Override
+    public Optional<Review> findHistoryReview(Long historyId) {
+        return Optional.of(review1);
     }
 }

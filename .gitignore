@@ -94,3 +94,4 @@ nb-configuration.xml
 ##############################
 src/main/resources/application-prod-db.yml
 src/main/resources/application-jwt.yml
+src/main/resources/application-data.yml

@@ -7,36 +7,23 @@ import com.gamsa.activity.stub.StubExistsActivityRepository;
 import com.gamsa.avatar.stub.StubExistsAvatarRepository;
 import com.gamsa.history.dto.HistorySaveRequest;
 import com.gamsa.history.stub.StubHistoryRepository;
-import com.gamsa.review.service.QuestionService;
-import com.gamsa.review.service.ReviewService;
-import com.gamsa.review.stub.StubAnswerRepository;
-import com.gamsa.review.stub.StubQuestionRepository;
-import com.gamsa.review.stub.StubReviewRepository;
-import com.gamsa.user.stub.StubExistsUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-public class HitstoryServiceTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+public class HistoryServiceTest {
 
     HistorySaveRequest historySaveRequest = HistorySaveRequest.builder()
             .actId(1L)
             .build();
 
-    ReviewService reviewService = new ReviewService(
-            new StubExistsUserRepository(),
-            new StubQuestionRepository(),
-            new StubReviewRepository(),
-            new StubAnswerRepository(),
-            new StubHistoryRepository()
-    );
-
-    QuestionService questionService = new QuestionService(
-            new StubQuestionRepository()
-    );
 
     HistoryService historyService = new HistoryService(new StubHistoryRepository(),
-            new StubExistsAvatarRepository(), new StubExistsActivityRepository(), questionService, reviewService);
+            new StubExistsAvatarRepository(),
+            new StubExistsActivityRepository());
 
     @Test
     void 새로운_기록_저장() {
