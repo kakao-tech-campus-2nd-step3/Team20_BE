@@ -25,10 +25,10 @@ public class DistrictJpaEntity extends BaseEntity {
     @Column(name = "sido_code", nullable = false)
     private int sidoCode;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", precision = 10, scale = 8)
     private BigDecimal latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", precision = 11, scale = 8)
     private BigDecimal longitude;
 
     @Column(name = "sido_name", length = 15, nullable = false)
