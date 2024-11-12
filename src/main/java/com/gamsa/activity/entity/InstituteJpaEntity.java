@@ -2,21 +2,10 @@ package com.gamsa.activity.entity;
 
 import com.gamsa.activity.domain.Institute;
 import com.gamsa.common.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.math.BigDecimal;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -37,40 +26,40 @@ public class InstituteJpaEntity extends BaseEntity {
     @Column(name = "location", length = 255)
     private String location;
 
-    @Column(name = "latitude")
+    @Column(name = "latitude", precision = 10, scale = 8)
     private BigDecimal latitude;
 
-    @Column(name = "longitude")
+    @Column(name = "longitude", precision = 11, scale = 8)
     private BigDecimal longitude;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sido_gungu_code", referencedColumnName = "sido_gungu_code")
     private DistrictJpaEntity sidoGungu;
 
-    @Column(name = "phone", length = 12)
+    @Column(name = "phone", length = 25)
     private String phone;
 
     public static InstituteJpaEntity from(Institute institute) {
         return InstituteJpaEntity.builder()
-            .instituteId(institute.getInstituteId())
-            .name(institute.getName())
-            .location(institute.getLocation())
-            .latitude(institute.getLatitude())
-            .longitude(institute.getLongitude())
-            .sidoGungu(DistrictJpaEntity.from(institute.getSidoGungu()))
-            .phone(institute.getPhone())
-            .build();
+                .instituteId(institute.getInstituteId())
+                .name(institute.getName())
+                .location(institute.getLocation())
+                .latitude(institute.getLatitude())
+                .longitude(institute.getLongitude())
+                .sidoGungu(DistrictJpaEntity.from(institute.getSidoGungu()))
+                .phone(institute.getPhone())
+                .build();
     }
 
     public Institute toModel() {
         return Institute.builder()
-            .instituteId(instituteId)
-            .name(name)
-            .location(location)
-            .latitude(latitude)
-            .longitude(longitude)
-            .sidoGungu(sidoGungu.toModel())
-            .phone(phone)
-            .build();
+                .instituteId(instituteId)
+                .name(name)
+                .location(location)
+                .latitude(latitude)
+                .longitude(longitude)
+                .sidoGungu(sidoGungu.toModel())
+                .phone(phone)
+                .build();
     }
 }

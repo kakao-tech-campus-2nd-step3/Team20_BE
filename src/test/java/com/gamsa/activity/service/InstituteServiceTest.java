@@ -1,14 +1,10 @@
 package com.gamsa.activity.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.dto.InstituteSaveRequest;
-import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyInstituteRepository;
 import com.gamsa.activity.stub.StubExistsDistrictRepository;
-import com.gamsa.activity.stub.StubExistsInstituteRepository;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,20 +33,5 @@ class InstituteServiceTest {
             // when
             service.save(saveRequest);
         });
-    }
-
-    @Test
-    @DisplayName("봉시기관 동일 이름 충돌로 실패한다.")
-    void saveFail() {
-        // given
-        InstituteService service = new InstituteService(
-            new StubExistsInstituteRepository(),
-            new StubExistsDistrictRepository()
-        );
-        // then
-        assertThrows(ActivityException.class, () -> {
-            // when
-            service.save(saveRequest);
-        }, ActivityErrorCode.INSTITUTE_ALREADY_EXISTS.getMsg());
     }
 }

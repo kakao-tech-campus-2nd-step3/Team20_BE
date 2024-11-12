@@ -16,6 +16,9 @@ spring:
   jwt:
     secret: kghobnakghwoigabsdlkbghaoigqhegowebnhlkwehgaoiwehtoaweqnbzoiwnyzbvwow
     expiration-time: 86400000
+  config:
+    import:
+      - application-data.yml
 
 logging:
   level:
