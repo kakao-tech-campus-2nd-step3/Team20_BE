@@ -41,8 +41,8 @@ class ActivityJpaRepositoryTest {
         .adultPossible(true)
         .teenPossible(false)
         .groupPossible(false)
-        .latitude(new BigDecimal("126.111111"))
-        .longitude(new BigDecimal("37.111111"))
+        .latitude(new BigDecimal("126.11111111"))
+        .longitude(new BigDecimal("37.11111111"))
         .actWeek(0111110)
         .actManager("윤순영")
         .actPhone("032-577-3026")
@@ -65,8 +65,8 @@ class ActivityJpaRepositoryTest {
         .adultPossible(true)
         .teenPossible(true)
         .groupPossible(false)
-        .latitude(new BigDecimal("127.666666"))
-        .longitude(new BigDecimal("38.666666"))
+        .latitude(new BigDecimal("127.66666666"))
+        .longitude(new BigDecimal("38.66666666"))
         .actWeek(0111110)
         .actManager("홀란드")
         .actPhone("032-111-2222")
@@ -89,8 +89,8 @@ class ActivityJpaRepositoryTest {
         .adultPossible(true)
         .teenPossible(true)
         .groupPossible(false)
-        .latitude(new BigDecimal("128.999999"))
-        .longitude(new BigDecimal("39.999999"))
+        .latitude(new BigDecimal("128.99999999"))
+        .longitude(new BigDecimal("39.99999999"))
         .actWeek(0111110)
         .actManager("사서쌤")
         .actPhone("032-111-2222")
@@ -113,7 +113,7 @@ class ActivityJpaRepositoryTest {
 
     // distance sorting
     private final ActivityFindDistanceOrderRequest distanceOrderReq = new ActivityFindDistanceOrderRequest(
-        new BigDecimal("126.111111"), new BigDecimal("37.111111"), 9999999);
+        new BigDecimal("126.11111111"), new BigDecimal("37.11111111"), 9999999);
 
     @Test
     void 새_활동_저장() {
