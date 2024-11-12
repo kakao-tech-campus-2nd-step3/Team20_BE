@@ -1,5 +1,8 @@
 package com.gamsa.history.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import com.gamsa.activity.stub.StubExistsActivityRepository;
 import com.gamsa.avatar.stub.StubExistsAvatarRepository;
 import com.gamsa.history.dto.HistorySaveRequest;
