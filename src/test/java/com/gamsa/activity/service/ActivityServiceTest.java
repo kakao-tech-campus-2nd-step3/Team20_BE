@@ -10,8 +10,6 @@ import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.exception.ActivityException;
 import com.gamsa.activity.stub.StubEmptyActivityRepository;
 import com.gamsa.activity.stub.StubExistsActivityRepository;
-import com.gamsa.activity.stub.StubExistsDistrictRepository;
-import com.gamsa.activity.stub.StubExistsInstituteRepository;
 import com.gamsa.history.stub.StubHistoryRepository;
 import com.gamsa.review.service.QuestionService;
 import com.gamsa.review.service.ReviewService;
@@ -56,8 +54,6 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
                 new StubEmptyActivityRepository(),
-                new StubExistsInstituteRepository(),
-                new StubExistsDistrictRepository(),
                 new QuestionService(
                         new StubQuestionRepository()
                 ),
@@ -71,7 +67,7 @@ class ActivityServiceTest {
         );
 
         // when
-        Slice<ActivityFindSliceResponse> result = activityService.findSlice(null,
+        Slice<ActivityFindSliceResponse> result = activityService.findSlice(null, null,
                 PageRequest.of(0, 10));
 
         // then
@@ -83,8 +79,6 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
             new StubExistsActivityRepository(),
-            new StubExistsInstituteRepository(),
-            new StubExistsDistrictRepository(),
             new QuestionService(
                 new StubQuestionRepository()
             ),
@@ -109,8 +103,6 @@ class ActivityServiceTest {
         // given
         ActivityService activityService = new ActivityService(
                 new StubEmptyActivityRepository(),
-                new StubExistsInstituteRepository(),
-                new StubExistsDistrictRepository(),
                 new QuestionService(
                         new StubQuestionRepository()
                 ),
