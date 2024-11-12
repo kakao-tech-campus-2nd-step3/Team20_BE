@@ -7,7 +7,6 @@ import com.gamsa.activity.dto.ActivitySaveRequest;
 import com.gamsa.activity.dto.InstituteApiResponse;
 import com.gamsa.dataupdate.DataUpdateErrorCode;
 import com.gamsa.dataupdate.DataUpdateException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +22,20 @@ import java.util.List;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class ActivityDataUtils {
     @Value(value = "${openapi.key}")
     private String openapiKey;
 
-    @Value(value = "${openapi.url}")
-    private String openapiUrl;
+    private final String openapiUrl = "http://openapi.1365.go.kr/openapi/service/rest/VolunteerPartcptnService/";
 
     @Value(value = "${openapi.volurl}")
     private String volUrl;
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public ActivityDataUtils(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
