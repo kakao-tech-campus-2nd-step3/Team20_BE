@@ -3,12 +3,18 @@ package com.gamsa.activity.controller;
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFilterRequest;
+import com.gamsa.activity.dto.ActivityFindDistanceOrderRequest;
 import com.gamsa.activity.dto.ActivityFindSliceResponse;
 import com.gamsa.activity.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,9 +31,10 @@ public class ActivityController {
         @RequestParam(defaultValue = "false") boolean teenPossibleOnly,
         @RequestParam(defaultValue = "false") boolean beforeDeadlineOnly,
         @RequestParam(required = false) String keyword,
+        @RequestBody(required = false) ActivityFindDistanceOrderRequest distanceOrderRequest,
         Pageable pageable) {
 
-        ActivityFilterRequest request = ActivityFilterRequest.builder()
+        ActivityFilterRequest filterRequest = ActivityFilterRequest.builder()
             .category(Category.fromValuesForSlice(category))
             .sidoGunguCode(sidoGunguCode)
             .sidoCode(sidoCode)
@@ -36,7 +43,7 @@ public class ActivityController {
             .keyword(keyword)
             .build();
 
-        return activityService.findSlice(request, pageable);
+        return activityService.findSlice(filterRequest, distanceOrderRequest, pageable);
     }
 
     @GetMapping("{activity-id}")

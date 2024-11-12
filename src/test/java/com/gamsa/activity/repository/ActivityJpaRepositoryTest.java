@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gamsa.activity.constant.Category;
 import com.gamsa.activity.dto.ActivityFilterRequest;
+import com.gamsa.activity.dto.ActivityFindDistanceOrderRequest;
 import com.gamsa.activity.entity.ActivityJpaEntity;
 import com.gamsa.common.config.TestConfig;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +26,7 @@ class ActivityJpaRepositoryTest {
     @Autowired
     private ActivityJpaRepository activityJpaRepository;
 
-    private final ActivityJpaEntity jpaEntity = ActivityJpaEntity.builder()
+    private final ActivityJpaEntity jpaEntity1 = ActivityJpaEntity.builder()
         .actId(1L)
         .actTitle("어린이놀이안전관리 및 놀잇감 청결유지 및 정리")
         .actLocation("아이사랑꿈터 서구 5호점")
@@ -39,6 +41,8 @@ class ActivityJpaRepositoryTest {
         .adultPossible(true)
         .teenPossible(false)
         .groupPossible(false)
+        .latitude(new BigDecimal("126.111111"))
+        .longitude(new BigDecimal("37.111111"))
         .actWeek(0111110)
         .actManager("윤순영")
         .actPhone("032-577-3026")
@@ -61,6 +65,8 @@ class ActivityJpaRepositoryTest {
         .adultPossible(true)
         .teenPossible(true)
         .groupPossible(false)
+        .latitude(new BigDecimal("127.666666"))
+        .longitude(new BigDecimal("38.666666"))
         .actWeek(0111110)
         .actManager("홀란드")
         .actPhone("032-111-2222")
@@ -83,6 +89,8 @@ class ActivityJpaRepositoryTest {
         .adultPossible(true)
         .teenPossible(true)
         .groupPossible(false)
+        .latitude(new BigDecimal("128.999999"))
+        .longitude(new BigDecimal("39.999999"))
         .actWeek(0111110)
         .actManager("사서쌤")
         .actPhone("032-111-2222")
@@ -103,20 +111,24 @@ class ActivityJpaRepositoryTest {
     private final ActivityFilterRequest beforeDeadlineFilterReq = new ActivityFilterRequest(
         null, null, null, false, true, null);
 
+    // distance sorting
+    private final ActivityFindDistanceOrderRequest distanceOrderReq = new ActivityFindDistanceOrderRequest(
+        new BigDecimal("126.111111"), new BigDecimal("37.111111"), 9999999);
+
     @Test
     void 새_활동_저장() {
         // when
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
 
         // then
         assertThat(activityJpaRepository.findById(1L).get().getActTitle())
-            .isEqualTo(jpaEntity.getActTitle());
+            .isEqualTo(jpaEntity1.getActTitle());
     }
 
     @Test
     void 모든_활동_리스트_반환() {
         // given
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
         // when
         List<ActivityJpaEntity> content = activityJpaRepository
             .findSlice(noFilterReq, PageRequest.of(0, 10))
@@ -128,17 +140,17 @@ class ActivityJpaRepositoryTest {
     @Test
     void 활동_상세정보_조회() {
         // given
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
         // when
         Optional<ActivityJpaEntity> result = activityJpaRepository.findById(1L);
         // then
-        assertThat(result.get().getActTitle()).isEqualTo(jpaEntity.getActTitle());
+        assertThat(result.get().getActTitle()).isEqualTo(jpaEntity1.getActTitle());
     }
 
     @Test
     void id로_정렬된_조회() {
         // given
-        activityJpaRepository.save(jpaEntity);  // id = 1L
+        activityJpaRepository.save(jpaEntity1);  // id = 1L
         activityJpaRepository.save(jpaEntity2); // id = 2L
         Pageable pageable = PageRequest.of(0, 2, Direction.DESC, "actId");
 
@@ -155,7 +167,7 @@ class ActivityJpaRepositoryTest {
     @Test
     void 마감_날짜_오름차순_정렬_조회() {
         // given
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
         activityJpaRepository.save(jpaEntity2);
         activityJpaRepository.save(jpaEntity3);
         Pageable pageable = PageRequest
@@ -177,7 +189,7 @@ class ActivityJpaRepositoryTest {
     void 마감된_공고중_마감_날짜_가까운순_정렬_조회() {
         // given
         LocalDateTime date = LocalDateTime.of(2024, 10, 1, 0, 0);
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
         activityJpaRepository.save(jpaEntity2);
         activityJpaRepository.save(jpaEntity3);
         Pageable pageable = PageRequest
@@ -200,7 +212,7 @@ class ActivityJpaRepositoryTest {
     @Test
     void 카테고리로_필터링_조회() {
         // given
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
         activityJpaRepository.save(jpaEntity2);
         Pageable pageable = PageRequest.of(0, 2, Direction.ASC, "actId");
 
@@ -216,7 +228,7 @@ class ActivityJpaRepositoryTest {
     @Test
     void 청소년_가능여부_필터링_조회() {
         // given
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
         activityJpaRepository.save(jpaEntity2);
         Pageable pageable = PageRequest.of(0, 2, Direction.ASC, "actId");
 
@@ -233,7 +245,7 @@ class ActivityJpaRepositoryTest {
     void 마감되지_않은_활동만_필터링_조회() {
         // given
         LocalDateTime date = LocalDateTime.of(2024, 10, 1, 0, 0);
-        activityJpaRepository.save(jpaEntity);
+        activityJpaRepository.save(jpaEntity1);
         activityJpaRepository.save(jpaEntity2);
         Pageable pageable = PageRequest.of(0, 2, Direction.ASC, "actId");
 
@@ -244,5 +256,24 @@ class ActivityJpaRepositoryTest {
         // then
         assertThat(content.size()).isEqualTo(1);
         assertThat(content.getFirst().getNoticeEndDate().isAfter(date)).isTrue();
+    }
+
+    @Test
+    void 가까운_거리순_정렬_조회() {
+        // given
+        activityJpaRepository.save(jpaEntity1);
+        activityJpaRepository.save(jpaEntity2);
+        activityJpaRepository.save(jpaEntity3);
+        Pageable pageable = PageRequest.of(0, 3, Direction.ASC, "distance");
+
+        // when
+        List<ActivityJpaEntity> content = activityJpaRepository.findSliceDistanceOrder(
+                noFilterReq, distanceOrderReq, pageable)
+            .getContent();
+
+        // then
+        assertThat(content.size()).isEqualTo(3);
+        assertThat(content.getFirst().getActId()).isEqualTo(jpaEntity1.getActId());
+        assertThat(content.getLast().getActId()).isEqualTo(jpaEntity3.getActId());
     }
 }
