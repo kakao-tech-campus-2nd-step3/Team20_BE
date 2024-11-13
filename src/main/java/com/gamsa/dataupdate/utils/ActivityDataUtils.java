@@ -116,7 +116,7 @@ public class ActivityDataUtils {
                         .name(item.path("mnnstNm").asText())
                         .location(item.path("postAdres").asText())
                         .sidoCode(item.path("sidoCd").asInt())
-                        .sidoGunguCode(item.path("gugunCd").asInt())
+                        .sidoGunguCode(Integer.parseInt(item.path("gugunCd").asText().substring(0, 3) + "0000"))
                         .phone(item.path("telno").asText())
                         .build();
 
@@ -170,7 +170,7 @@ public class ActivityDataUtils {
                         .url(volUrl + item.path("progrmRegistNo").asText())
                         .category(getCategory(item.path("srvcClCode").asText()))
                         .instituteName(item.path("mnnstNm").asText())
-                        .sidoGunguCode(item.path("gugunCd").asInt())
+                        .sidoGunguCode(Integer.parseInt(item.path("gugunCd").asText().substring(0, 3) + "0000"))
                         .build();
 
             } catch (Exception e) {
