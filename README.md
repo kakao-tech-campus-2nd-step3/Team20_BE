@@ -66,8 +66,7 @@
 ---
 
 # ERD
-
-![최종ERD.png](..%2F%EC%B5%9C%EC%A2%85ERD.png)
+![최종ERD](https://github.com/user-attachments/assets/82e23c03-7d9c-4063-8353-0b84d3b0e622)
 
 ---
 
