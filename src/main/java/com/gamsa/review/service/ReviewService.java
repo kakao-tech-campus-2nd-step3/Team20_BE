@@ -13,14 +13,13 @@ import com.gamsa.review.repository.AnswerRepository;
 import com.gamsa.review.repository.QuestionRepository;
 import com.gamsa.review.repository.ReviewRepository;
 import com.gamsa.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -48,15 +47,6 @@ public class ReviewService {
         history.changeReviewed(true);
         historyRepository.save(history);
 
-        // save review
-        Review review = Review.builder()
-                .avatar(avatar)
-                .history(history)
-                .institute(activity.getInstitute())
-                .build();
-
-        reviewRepository.save(review);
-
         // save answers
         List<Answer> answers = saveRequest.getAnswers().stream()
                 .map(answer -> {
@@ -71,15 +61,25 @@ public class ReviewService {
                 .toList();
 
         answers.forEach(answerRepository::save);
+
+        // save review
+        Review review = Review.builder()
+            .activity(activity)
+            .answers(answers)
+            .history(history)
+            .institute(activity.getInstitute())
+            .build();
+
+        reviewRepository.save(review);
     }
 
     public BigDecimal getAverageScore(long instituteId, int questionId) {
         OptionalDouble averageScore = reviewRepository.findReviews(instituteId, questionId)
-                .stream()
-                .flatMap(review -> review.getAnswers().stream())
-                .filter(answer -> answer.getQuestion().getQuestionId() == questionId)
-                .mapToInt(Answer::getScore)
-                .average();
+            .stream()
+            .flatMap(review -> review.getAnswers().stream())
+            .filter(answer -> answer.getQuestion().getQuestionId() == questionId)
+            .mapToDouble(Answer::getScore)
+            .average();
 
         if (averageScore.isPresent()) {
             return BigDecimal.valueOf(averageScore.getAsDouble());

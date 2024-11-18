@@ -8,5 +8,5 @@ import lombok.Getter;
 public class AnswerSaveRequest {
 
     private final Integer questionId;
-    private final int score;
+    private final double score;
 }
