@@ -1,5 +1,7 @@
 package com.gamsa.activity.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.gamsa.activity.constant.ActivityErrorCode;
 import com.gamsa.activity.dto.ActivityDetailResponse;
 import com.gamsa.activity.dto.ActivityFindSliceResponse;
@@ -9,7 +11,6 @@ import com.gamsa.activity.stub.StubExistsActivityRepository;
 import com.gamsa.history.stub.StubHistoryRepository;
 import com.gamsa.review.service.QuestionService;
 import com.gamsa.review.service.ReviewService;
-import com.gamsa.review.stub.StubAnswerRepository;
 import com.gamsa.review.stub.StubQuestionRepository;
 import com.gamsa.review.stub.StubReviewRepository;
 import com.gamsa.user.stub.StubExistsUserRepository;
@@ -17,8 +18,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ActivityServiceTest {
 
@@ -35,7 +34,6 @@ class ActivityServiceTest {
                         new StubExistsUserRepository(),
                         new StubQuestionRepository(),
                         new StubReviewRepository(),
-                        new StubAnswerRepository(),
                         new StubHistoryRepository()
                 )
         );
@@ -60,7 +58,6 @@ class ActivityServiceTest {
                         new StubExistsUserRepository(),
                         new StubQuestionRepository(),
                         new StubReviewRepository(),
-                        new StubAnswerRepository(),
                         new StubHistoryRepository()
                 )
         );
@@ -84,7 +81,6 @@ class ActivityServiceTest {
                         new StubExistsUserRepository(),
                         new StubQuestionRepository(),
                         new StubReviewRepository(),
-                        new StubAnswerRepository(),
                         new StubHistoryRepository()
                 )
         );

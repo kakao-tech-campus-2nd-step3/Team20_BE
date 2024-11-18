@@ -9,7 +9,6 @@ import com.gamsa.review.domain.Question;
 import com.gamsa.review.domain.Review;
 import com.gamsa.review.dto.ReviewResponse;
 import com.gamsa.review.dto.ReviewSaveRequest;
-import com.gamsa.review.repository.AnswerRepository;
 import com.gamsa.review.repository.QuestionRepository;
 import com.gamsa.review.repository.ReviewRepository;
 import com.gamsa.user.repository.UserRepository;
@@ -28,7 +27,6 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
     private final ReviewRepository reviewRepository;
-    private final AnswerRepository answerRepository;
     private final HistoryRepository historyRepository;
 
     @Transactional
@@ -51,16 +49,15 @@ public class ReviewService {
         List<Answer> answers = saveRequest.getAnswers().stream()
                 .map(answer -> {
                     Question question = questionRepository.findById(answer.getQuestionId())
-                            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 질문"));
+                        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 질문"));
 
                     return Answer.builder()
-                            .question(question)
-                            .score(answer.getScore())
-                            .build();
+                        .question(question)
+                        .reviewId(null)
+                        .score(answer.getScore())
+                        .build();
                 })
                 .toList();
-
-        answers.forEach(answerRepository::save);
 
         // save review
         Review review = Review.builder()
@@ -73,7 +70,7 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public BigDecimal getAverageScore(long instituteId, int questionId) {
+    public BigDecimal getAverageScore(Long instituteId, int questionId) {
         OptionalDouble averageScore = reviewRepository.findReviews(instituteId, questionId)
             .stream()
             .flatMap(review -> review.getAnswers().stream())
@@ -88,7 +85,7 @@ public class ReviewService {
         }
     }
 
-    public List<ReviewResponse> getReview(long historyId) {
+    public List<ReviewResponse> getReview(Long historyId) {
 
         return reviewRepository.findHistoryReview(historyId)
                 .orElseThrow(NoSuchElementException::new)
