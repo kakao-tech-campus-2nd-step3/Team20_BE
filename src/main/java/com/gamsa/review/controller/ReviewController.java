@@ -6,12 +6,16 @@ import com.gamsa.review.dto.ReviewResponse;
 import com.gamsa.review.dto.ReviewSaveRequest;
 import com.gamsa.review.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,7 +26,7 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<?> saveReview(@RequestBody ReviewSaveRequest saveRequest,
-                                        HttpServletRequest request) {
+        HttpServletRequest request) {
         Long userId = ExtractUserIdFromJwt.extract(request);
         reviewService.saveReview(userId, saveRequest);
 
